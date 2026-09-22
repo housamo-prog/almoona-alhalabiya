@@ -39,6 +39,7 @@
             align-items: center;
         }
 
+        /* اللوجو يعمل الآن كزر مخفي بعد 4 نقرات متتالية */
         .logo-container {
             display: flex;
             align-items: center;
@@ -48,6 +49,8 @@
             border-radius: 50px;
             border: 2px solid rgba(251, 192, 45, 0.4);
             margin-bottom: 10px;
+            cursor: pointer;
+            user-select: none;
         }
 
         .logo-icon {
@@ -231,20 +234,13 @@
             color: white;
             margin-top: 50px;
         }
-
-        .admin-toggle {
-            color: #888;
-            font-size: 0.8rem;
-            cursor: pointer;
-            margin-top: 15px;
-            display: inline-block;
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo-container">
+        <!-- عند الضغط 4 نقرات متتالية على اللوجو تفتح لوحة الإدارة المخفية -->
+        <div class="logo-container" id="secretAdminTrigger">
             <div class="logo-icon">🌿</div>
             <div class="logo-text">
                 <div class="logo-title">المونة الحلبية</div>
@@ -299,7 +295,6 @@
 
     <footer>
         <p>© 2026 <strong>المونة الحلبية</strong> — جميع الحقوق محفوظة</p>
-        <span class="admin-toggle" onclick="loginAdmin()">🔒 دخول لوحة الإدارة</span>
     </footer>
 
     <script>
@@ -339,6 +334,7 @@
         }
 
         function loginAdmin() {
+            if(isAdmin) return;
             const password = prompt("أدخل كلمة المرور لدخول لوحة التحكم:");
             if (password === getAdminPassword()) {
                 isAdmin = true;
@@ -349,6 +345,26 @@
                 alert("كلمة المرور غير صحيحة!");
             }
         }
+
+        // البرمجة الخاصة بفتح اللوحة بعد 4 نقرات متتالية سريعة
+        let clickCount = 0;
+        let clickTimer = null;
+
+        document.getElementById('secretAdminTrigger').addEventListener('click', () => {
+            clickCount++;
+            
+            clearTimeout(clickTimer);
+            
+            if (clickCount === 4) {
+                loginAdmin();
+                clickCount = 0;
+            } else {
+                // إعادة ضبط العداد إذا توقف المستخدم عن النقرات لمدة أكثر من 1.2 ثانية
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 1200);
+            }
+        });
 
         function loadProducts() {
             db.collection("products").onSnapshot((snapshot) => {
