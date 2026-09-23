@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kavallo | كافالو — أزياء عصرية من حلب</title>
-<meta name="description" content="Kavallo كافالو — متجر الأزياء العصرية. حلب، سوريا. توصيل سريع.">
+<title>Kavallo | كافالو — أزياء رجالية فاخرة من حلب</title>
+<meta name="description" content="Kavallo كافالو — أزياء رجالية عصرية. حلب، سوريا. توصيل لكل المحافظات.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Playfair+Display:wght@500;700;900&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@ a{color:inherit;text-decoration:none}
 button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{background:none;border:0;cursor:pointer}
 ul{list-style:none}
-.en{font-family:'Playfair Display',serif;letter-spacing:.02em}
+.en{font-family:'Playfair Display',serif;letter-spacing:.02em;direction:ltr;unicode-bidi:isolate}
 ::selection{background:var(--ink);color:#fff}
 ::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background:var(--cream)}
@@ -56,7 +56,22 @@ ul{list-style:none}
 .header{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(255,255,255,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid transparent;transition:all .4s var(--ease)}
 .header.scrolled{border-bottom-color:var(--line);box-shadow:var(--shadow-sm)}
 .header-inner{height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:24px}
-.logo{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;letter-spacing:.06em;display:flex;align-items:baseline;gap:2px;cursor:pointer;user-select:none}
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.7rem;
+  font-weight:900;
+  letter-spacing:.06em;
+  display:inline-flex;
+  align-items:baseline;
+  gap:2px;
+  cursor:pointer;
+  user-select:none;
+  direction:ltr;
+  unicode-bidi:isolate;
+  position:relative;
+  z-index:10;
+  white-space:nowrap;
+}
 .logo span{color:var(--gold)}
 .nav{display:flex;gap:30px;align-items:center;flex-wrap:wrap}
 .nav a{font-size:.95rem;font-weight:500;position:relative;padding:6px 0;transition:color .3s}
@@ -123,7 +138,7 @@ ul{list-style:none}
 
 /* ============ CATEGORIES ============ */
 .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.cat-grid:empty::before{content:'لا توجد أصناف بعد. أضف أصنافاً من لوحة التحكم.';grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);background:var(--cream);border-radius:var(--radius)}
+.cat-grid:empty::before{content:'لا توجد أصناف بعد.';grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);background:var(--cream);border-radius:var(--radius)}
 .cat-card{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:3/4;cursor:pointer;background:#e8e2d9;transition:.5s var(--ease)}
 .cat-card:first-child{grid-column:span 2;aspect-ratio:auto}
 .cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
@@ -196,7 +211,7 @@ ul{list-style:none}
 /* ============ FOOTER ============ */
 .footer{background:var(--ink);color:rgba(255,255,255,.68);padding:76px 0 0}
 .f-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.3fr;gap:44px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.1)}
-.f-logo{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:#fff;letter-spacing:.06em;margin-bottom:16px}
+.f-logo{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:#fff;letter-spacing:.06em;margin-bottom:16px;direction:ltr;unicode-bidi:isolate;display:inline-block}
 .f-logo span{color:var(--gold)}
 .f-about{font-size:.9rem;line-height:1.9;max-width:320px;margin-bottom:22px}
 .socials{display:flex;gap:10px}
@@ -258,7 +273,7 @@ ul{list-style:none}
 /* ============ CHECKOUT MODAL ============ */
 .checkout-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:1600;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .checkout-modal.show{display:flex;animation:fadeUp .3s}
-.checkout-box{background:#fff;border-radius:20px;padding:36px;max-width:520px;width:100%;max-height:92vh;overflow-y:auto;position:relative}
+.checkout-box{background:#fff;border-radius:20px;padding:36px;max-width:520px;width:100%;max-height:92vh;overflow-y:auto;position:relative;margin:auto}
 .checkout-box .close-btn{position:absolute;top:14px;left:14px}
 .checkout-box h2{font-size:1.4rem;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:10px}
 .checkout-box h2 svg{width:26px;height:26px;stroke:var(--wa);stroke-width:2;fill:none}
@@ -326,12 +341,21 @@ ul{list-style:none}
 .mobile-menu.open a:nth-child(5){transition-delay:.36s}
 .mobile-menu.open a:nth-child(6){transition-delay:.42s}
 
-/* ============ FLOATING WHATSAPP BUTTON ============ */
+/* ============ FLOATING WHATSAPP ============ */
 .wa-float{position:fixed;bottom:24px;left:24px;z-index:800;width:60px;height:60px;border-radius:50%;background:var(--wa);color:#fff;display:grid;place-items:center;box-shadow:0 8px 30px rgba(37,211,102,.45);transition:.35s var(--ease)}
 .wa-float:hover{transform:scale(1.1) rotate(-8deg);background:var(--wa-dark)}
 .wa-float svg{width:30px;height:30px;stroke:#fff;stroke-width:2;fill:none}
 .wa-float::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--wa);opacity:.4;animation:waPulse 2s infinite;z-index:-1}
 @keyframes waPulse{0%{transform:scale(1);opacity:.5}100%{transform:scale(1.6);opacity:0}}
+
+/* ============ ADMIN QUICK BUTTON ============ */
+.admin-quick-btn{
+  position:fixed;bottom:14px;right:14px;width:36px;height:36px;border-radius:50%;
+  background:rgba(0,0,0,.06);color:rgba(0,0,0,.2);border:0;cursor:pointer;z-index:700;
+  font-size:15px;transition:.3s;display:grid;place-items:center;
+  font-family:inherit;line-height:1;
+}
+.admin-quick-btn:hover{background:var(--gold);color:#fff;transform:scale(1.15)}
 
 /* ================================================================
    ADMIN PANEL
@@ -347,15 +371,15 @@ ul{list-style:none}
 .admin-login .err{color:var(--danger);font-size:.85rem;margin-bottom:14px;display:none;font-weight:700}
 .admin-login .err.show{display:block;animation:shake .4s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.admin-login .hint{margin-top:16px;font-size:.75rem;color:#aaa}
+.admin-login .hint{margin-top:16px;font-size:.75rem;color:#aaa;line-height:1.8}
 .admin-login .mode-tabs{display:flex;background:#f5f5f5;padding:4px;border-radius:12px;margin-bottom:20px}
-.admin-login .mode-tab{flex:1;padding:10px;border-radius:9px;font-size:.85rem;font-weight:700;color:#666;transition:.2s;background:none;border:0;cursor:pointer}
+.admin-login .mode-tab{flex:1;padding:10px;border-radius:9px;font-size:.82rem;font-weight:700;color:#666;transition:.2s;background:none;border:0;cursor:pointer}
 .admin-login .mode-tab.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 
 .admin-panel{position:fixed;inset:0;background:#f7f5f1;z-index:2001;display:none;flex-direction:column}
 .admin-panel.show{display:flex;animation:fadeUp .35s}
 .admin-header{background:#0d0d0d;color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;flex-shrink:0}
-.admin-header h2{font-size:1.2rem;font-family:'Playfair Display',serif;letter-spacing:.05em;font-weight:700}
+.admin-header h2{font-size:1.2rem;font-family:'Playfair Display',serif;letter-spacing:.05em;font-weight:700;direction:ltr;unicode-bidi:isolate}
 .admin-header h2 span{color:var(--gold)}
 .admin-header .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .admin-header button{padding:9px 20px;border-radius:8px;font-size:.85rem;font-weight:700;transition:.25s;cursor:pointer;border:0}
@@ -443,7 +467,7 @@ ul{list-style:none}
 .stat-card .num.gold{color:var(--gold)}
 .stat-card .num.green{color:var(--green)}
 
-.fb-badge{position:fixed;bottom:14px;right:14px;background:var(--green);color:#fff;font-size:.72rem;font-weight:800;padding:6px 14px;border-radius:20px;z-index:100;display:none;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(0,0,0,.2);font-family:'Tajawal',sans-serif}
+.fb-badge{position:fixed;bottom:14px;left:14px;background:var(--green);color:#fff;font-size:.72rem;font-weight:800;padding:6px 14px;border-radius:20px;z-index:100;display:none;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(0,0,0,.2);font-family:'Tajawal',sans-serif}
 .fb-badge.show{display:flex}
 .fb-badge.off{background:#999}
 .fb-badge.syncing{background:var(--gold);animation:pulse 1s infinite}
@@ -468,6 +492,7 @@ ul{list-style:none}
   .pv-info h2{font-size:1.3rem}
   .wa-float{bottom:16px;left:16px;width:52px;height:52px}
   .wa-float svg{width:26px;height:26px}
+  .admin-quick-btn{bottom:80px;right:10px;width:32px;height:32px;font-size:13px}
 }
 @media(max-width:700px){
   .admin-form-grid{grid-template-columns:1fr}
@@ -522,13 +547,13 @@ ul{list-style:none}
   <span>•</span>
   <span>📞 <a href="tel:00963944677755" dir="ltr">00963944677755</a></span>
   <span>•</span>
-  <span>🚚 توصيل مجاني فوق <strong>300 ر.س</strong></span>
+  <span>🚚 توصيل لكل المحافظات</span>
 </div>
 
 <!-- ===== HEADER ===== -->
 <header class="header" id="header">
   <div class="container header-inner">
-    <a href="#" class="logo en" id="logoTrigger" title="Kavallo">Kava<span>llo</span></a>
+    <a href="javascript:void(0)" class="logo en" id="logoTrigger" title="Kavallo — اضغط 3 مرات">Kava<span>llo</span></a>
     <nav class="nav" id="mainNav">
       <a href="#new">وصل حديثاً</a>
       <a href="#categories">الأصناف</a>
@@ -541,7 +566,7 @@ ul{list-style:none}
         <input type="search" id="searchInput" placeholder="ابحث عن منتج..." aria-label="بحث">
       </div>
       <a href="https://wa.me/963944677755" target="_blank" rel="noopener" class="icon-btn wa-btn" aria-label="واتساب" title="تواصل عبر واتساب">
-        <svg viewBox="0 0 24 24"><path d="M3 21l1.6-5.8A8.4 8.4 0 1 1 12 20.4 8.4 8.4 0 0 1 7 19L3 21z"/><path d="M8.5 8.5c0 3 2.5 5.5 5.5 5.5l1-1-2-1-1 1c-1-.5-1.5-1-2-2l1-1-1-2z" fill="currentColor" stroke="none"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M3 21l1.6-5.8A8.4 8.4 0 1 1 12 20.4 8.4 8.4 0 0 1 7 19L3 21z"/></svg>
       </a>
       <button class="icon-btn" id="cartBtn" aria-label="سلة التسوق">
         <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -567,12 +592,12 @@ ul{list-style:none}
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1920&q=80" alt="Kavallo">
+    <img src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?auto=format&fit=crop&w=1920&q=80" alt="Kavallo Men">
   </div>
   <div class="container hero-content">
-    <span class="eyebrow">مجموعة 2025</span>
-    <h1>الأناقة ليست ما ترتديه<em>بل كيف تشعر به</em></h1>
-    <p>اكتشف مجموعتنا الجديدة من الأزياء الفاخرة المصنوعة بعناية من أجود الأقمشة العالمية. تصاميم عصرية تُناسب كل ذوق وكل مناسبة.</p>
+    <span class="eyebrow">مجموعة رجالية 2025</span>
+    <h1>الأناقة الرجالية<em>تبدأ من هنا</em></h1>
+    <p>اكتشف مجموعتنا الجديدة من الأزياء الرجالية الفاخرة المصنوعة بعناية من أجود الأقمشة العالمية. تصاميم عصرية تُناسب كل ذوق وكل مناسبة.</p>
     <div class="hero-btns">
       <a href="#new" class="btn btn-primary">
         تسوّق الآن
@@ -629,11 +654,11 @@ ul{list-style:none}
 <section class="section" id="sale">
   <div class="container">
     <div class="promo reveal">
-      <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80" alt="عرض">
+      <img src="https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?auto=format&fit=crop&w=1600&q=80" alt="عرض">
       <div class="promo-body">
         <span class="eyebrow">Limited Offer</span>
         <h2>خصم يصل إلى <em>50%</em><br>على المجموعة الشتوية</h2>
-        <p>لفترة محدودة فقط. استفد من أقوى عروض الموسم على أجود القطع الشتوية.</p>
+        <p>لفترة محدودة فقط. استفد من أقوى عروض الموسم على أجود القطع الرجالية.</p>
         <div class="countdown" id="countdown">
           <div class="cd-box"><b id="cd-d">02</b><span>يوم</span></div>
           <div class="cd-box"><b id="cd-h">12</b><span>ساعة</span></div>
@@ -666,9 +691,9 @@ ul{list-style:none}
     <div class="f-grid">
       <div>
         <div class="f-logo en">Kava<span>llo</span></div>
-        <p class="f-about">كافالو علامة تجارية عصرية متخصصة في الأزياء الراقية من قلب حلب. نؤمن أن الأناقة حق للجميع، لذلك نقدم تصاميم عالية الجودة بأسعار عادلة مع توصيل لكل المحافظات السورية.</p>
+        <p class="f-about">كافالو علامة تجارية عصرية متخصصة في الأزياء الرجالية الراقية من قلب حلب. نؤمن أن الأناقة حق للجميع، لذلك نقدم تصاميم عالية الجودة بأسعار عادلة مع توصيل لكل المحافظات السورية.</p>
         <div class="socials">
-          <a href="https://wa.me/963944677755" target="_blank" rel="noopener" class="wa" aria-label="واتساب"><svg viewBox="0 0 24 24"><path d="M3 21l1.6-5.8A8.4 8.4 0 1 1 12 20.4 8.4 8.4 0 0 1 7 19L3 21z"/><path d="M8.5 8.5c0 3 2.5 5.5 5.5 5.5l1-1-2-1-1 1c-1-.5-1.5-1-2-2l1-1-1-2z" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://wa.me/963944677755" target="_blank" rel="noopener" class="wa" aria-label="واتساب"><svg viewBox="0 0 24 24"><path d="M3 21l1.6-5.8A8.4 8.4 0 1 1 12 20.4 8.4 8.4 0 0 1 7 19L3 21z"/></svg></a>
           <a href="#" aria-label="انستقرام"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff"/></svg></a>
           <a href="#" aria-label="فيسبوك"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
           <a href="#" aria-label="تيك توك"><svg viewBox="0 0 24 24"><path d="M16 3v10.5a4.5 4.5 0 1 1-4-4.5"/><path d="M16 3c0 3 2 5 5 5"/></svg></a>
@@ -718,8 +743,11 @@ ul{list-style:none}
 
 <!-- ===== FLOATING WHATSAPP ===== -->
 <a href="https://wa.me/963944677755" target="_blank" rel="noopener" class="wa-float" aria-label="تواصل واتساب">
-  <svg viewBox="0 0 24 24"><path d="M3 21l1.6-5.8A8.4 8.4 0 1 1 12 20.4 8.4 8.4 0 0 1 7 19L3 21z"/><path d="M8.5 8.5c0 3 2.5 5.5 5.5 5.5l1-1-2-1-1 1c-1-.5-1.5-1-2-2l1-1-1-2z" fill="currentColor" stroke="none"/></svg>
+  <svg viewBox="0 0 24 24"><path d="M3 21l1.6-5.8A8.4 8.4 0 1 1 12 20.4 8.4 8.4 0 0 1 7 19L3 21z"/></svg>
 </a>
+
+<!-- ===== ADMIN QUICK BUTTON ===== -->
+<button class="admin-quick-btn" id="adminQuickBtn" title="لوحة التحكم (أو اضغط F2)" aria-label="لوحة التحكم">⚙</button>
 
 <!-- ===== CART DRAWER ===== -->
 <div class="overlay" id="overlay"></div>
@@ -754,7 +782,6 @@ ul{list-style:none}
       إتمام الطلب
     </h2>
     <p class="subtitle">أدخل بياناتك وسنستلم طلبك عبر واتساب مباشرة</p>
-
     <div class="field">
       <label>الاسم الكامل *</label>
       <input type="text" id="co-name" placeholder="مثال: أحمد محمد">
@@ -771,9 +798,7 @@ ul{list-style:none}
       <label>ملاحظات إضافية (اختياري)</label>
       <textarea id="co-notes" placeholder="أي تفاصيل تريد إضافتها..."></textarea>
     </div>
-
     <div class="order-summary" id="orderSummary"></div>
-
     <button class="btn btn-wa btn-block" id="co-send">
       <svg viewBox="0 0 24 24"><path d="M3 21l1.6-5.8A8.4 8.4 0 1 1 12 20.4 8.4 8.4 0 0 1 7 19L3 21z"/></svg>
       إرسال الطلب على واتساب
@@ -797,23 +822,26 @@ ul{list-style:none}
     <p>سجّل دخولك للوصول إلى لوحة التحكم</p>
 
     <div class="mode-tabs" id="loginModeTabs">
-      <button type="button" class="mode-tab active" data-login="email">بريد إلكتروني (Firebase)</button>
-      <button type="button" class="mode-tab" data-login="local">كلمة مرور محلية</button>
+      <button type="button" class="mode-tab active" data-login="local">كلمة مرور محلية</button>
+      <button type="button" class="mode-tab" data-login="email">Firebase</button>
     </div>
 
-    <div id="loginEmailMode">
+    <div id="loginEmailMode" style="display:none">
       <input type="email" id="adminEmail" placeholder="admin@kavallo.com" autocomplete="username">
       <input type="password" id="adminPwEmail" placeholder="كلمة المرور" autocomplete="current-password">
     </div>
 
-    <div id="loginLocalMode" style="display:none">
+    <div id="loginLocalMode">
       <input type="password" id="adminPw" placeholder="••••••••" autocomplete="off">
     </div>
 
     <div class="err" id="adminErr">بيانات الدخول غير صحيحة</div>
     <button class="btn btn-dark btn-block" id="adminLoginBtn">دخول</button>
     <button style="margin-top:14px;font-size:.82rem;color:#888;text-decoration:underline;background:none;border:0;cursor:pointer;font-family:inherit" id="adminCancelLogin">إلغاء</button>
-    <div class="hint">اختصار سريع: Ctrl + Shift + A</div>
+    <div class="hint">
+      كلمة المرور الافتراضية: <strong dir="ltr">kavallo2025</strong><br>
+      اختصارات: <strong>F2</strong> أو <strong>Alt+A</strong> أو <strong>Ctrl+Shift+A</strong>
+    </div>
   </div>
 </div>
 
@@ -840,7 +868,6 @@ ul{list-style:none}
 
   <div class="admin-content">
 
-    <!-- DASHBOARD -->
     <div class="admin-page active" id="page-dashboard">
       <div class="stats">
         <div class="stat-card"><div class="lbl">المنتجات</div><div class="num gold" id="statProducts">0</div></div>
@@ -860,7 +887,6 @@ ul{list-style:none}
       </div>
     </div>
 
-    <!-- PRODUCTS -->
     <div class="admin-page" id="page-products">
       <div class="admin-toolbar">
         <button class="btn btn-dark" id="addProductBtn">+ إضافة منتج جديد</button>
@@ -911,7 +937,7 @@ ul{list-style:none}
               <div class="img-upload" id="imgDrop">
                 <input type="file" id="pf-file" accept="image/*" multiple>
                 <div class="icon">📤</div>
-                <div class="txt">اسحب الصور هنا أو <strong>اضغط للاختيار</strong><br><small>JPG, PNG, WEBP — حتى 5MB للصورة — يمكنك اختيار عدة صور</small></div>
+                <div class="txt">اسحب الصور هنا أو <strong>اضغط للاختيار</strong><br><small>JPG, PNG, WEBP — حتى 5MB — يمكنك اختيار عدة صور</small></div>
               </div>
             </div>
 
@@ -937,7 +963,6 @@ ul{list-style:none}
       </div>
     </div>
 
-    <!-- CATEGORIES -->
     <div class="admin-page" id="page-categories">
       <div class="admin-toolbar">
         <button class="btn btn-dark" id="addCatBtn">+ إضافة صنف جديد</button>
@@ -948,11 +973,11 @@ ul{list-style:none}
         <div class="admin-form-grid">
           <div class="field">
             <label>الاسم العربي *</label>
-            <input type="text" id="cf-label" placeholder="مثال: ملابس أطفال">
+            <input type="text" id="cf-label" placeholder="مثال: ملابس رجالية رسمية">
           </div>
           <div class="field">
             <label>المفتاح (إنجليزي)</label>
-            <input type="text" id="cf-key" placeholder="kids" dir="ltr">
+            <input type="text" id="cf-key" placeholder="formal" dir="ltr">
           </div>
           <div class="field full">
             <label>صورة الصنف</label>
@@ -985,11 +1010,10 @@ ul{list-style:none}
       <div class="admin-cat-list" id="adminCatList"></div>
     </div>
 
-    <!-- SETTINGS -->
     <div class="admin-page" id="page-settings">
       <div class="admin-form show">
         <h3>🔑 تغيير كلمة المرور المحلية</h3>
-        <p style="color:#888;font-size:.85rem;margin-bottom:16px">تُستخدم فقط عند تعطيل Firebase. كلمة مرور Firebase تُدار من Firebase Console.</p>
+        <p style="color:#888;font-size:.85rem;margin-bottom:16px">تُستخدم فقط عند تعطيل Firebase.</p>
         <div class="admin-form-grid">
           <div class="field"><label>كلمة المرور الحالية</label><input type="password" id="pw-old" placeholder="••••••••"></div>
           <div class="field"><label>كلمة المرور الجديدة</label><input type="password" id="pw-new" placeholder="4 أحرف على الأقل"></div>
@@ -1032,68 +1056,139 @@ ul{list-style:none}
 <div class="fb-badge" id="fbBadge">☁️ متزامن</div>
 
 <!-- ============================================================
-     MAIN SCRIPT — Store + Admin
+     MAIN SCRIPT
      ============================================================ -->
 <script>
-/* =========================================================
-   CONFIG
-   ========================================================= */
+/* ===== CONFIG ===== */
 const CURRENCY = 'ر.س';
 const FREE_SHIPPING_THRESHOLD = 300;
 const SHIPPING_COST = 25;
-const ADMIN_KEY = 'kavallo_admin_v3';
-const CART_KEY  = 'kavallo_cart_v3';
+const ADMIN_KEY = 'kavallo_admin_v4';
+const CART_KEY  = 'kavallo_cart_v4';
 const DEFAULT_PW = 'kavallo2025';
 
-/* بيانات المتجر */
 const STORE_INFO = {
   name: 'Kavallo',
   city: 'حلب',
   country: 'سوريا',
   phoneDisplay: '00963944677755',
-  phoneWA: '963944677755'   // بدون 00 للأمام
+  phoneWA: '963944677755'
 };
 
-/* =========================================================
-   DEFAULT DATA
-   ========================================================= */
+/* ===== DEFAULT DATA — رجالي فقط ===== */
 const DEFAULT_CATEGORIES = [
-  { key:'women',       label:'نسائي',     img:'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80' },
-  { key:'men',         label:'رجالي',     img:'https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=800&q=80' },
-  { key:'shoes',       label:'أحذية',     img:'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80' },
-  { key:'accessories', label:'إكسسوارات', img:'https://images.unsplash.com/photo-1523206489230-c012c64b2b48?auto=format&fit=crop&w=800&q=80' }
+  { key:'men',         label:'قمصان رجالية',    img:'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=1200&q=80' },
+  { key:'outerwear',   label:'معاطف وجاكيتات',  img:'https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=800&q=80' },
+  { key:'suits',       label:'بدلات رسمية',     img:'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80' },
+  { key:'shoes',       label:'أحذية رجالية',    img:'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80' },
+  { key:'accessories', label:'إكسسوارات',      img:'https://images.unsplash.com/photo-1523206489230-c012c64b2b48?auto=format&fit=crop&w=800&q=80' },
+  { key:'tshirts',     label:'تي شيرتات',      img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80' }
 ];
 
 const DEFAULT_PRODUCTS = [
-  { id:1,  name:'قميص قطني كلاسيكي',  cat:'men',         catLabel:'رجالي',     price:249, oldPrice:349, badge:'sale', desc:'قماش قطني 100% — مقاسات S إلى XXL', img:'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80','https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80','https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80'] },
-  { id:2,  name:'معطف صوف فاخر',      cat:'men',         catLabel:'رجالي',     price:899, oldPrice:0,   badge:'new',  desc:'صوف ميرينو فاخر — دفء وأناقة', img:'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=800&q=80','https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=800&q=80'] },
-  { id:3,  name:'حذاء جلد طبيعي',     cat:'shoes',       catLabel:'أحذية',     price:599, oldPrice:749, badge:'sale', desc:'جلد طبيعي — مقاسات 40 إلى 45', img:'https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?auto=format&fit=crop&w=800&q=80','https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&w=800&q=80'] },
-  { id:4,  name:'فستان سواريه أنيق',  cat:'women',       catLabel:'نسائي',     price:749, oldPrice:0,   badge:'new',  desc:'تصميم راقٍ للمناسبات — مقاسات 36 إلى 44', img:'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=800&q=80','https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80'] },
-  { id:5,  name:'طقم كاجوال عصري',    cat:'women',       catLabel:'نسائي',     price:389, oldPrice:480, badge:'sale', desc:'طقم مريح وأنيق للاستخدام اليومي', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80'] },
-  { id:6,  name:'حقيبة يد جلدية',     cat:'accessories', catLabel:'إكسسوارات', price:429, oldPrice:0,   badge:'',     desc:'جلد طبيعي — تصميم عملي وأنيق', img:'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80','https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=80'] },
-  { id:7,  name:'سترة جينز كاجوال',   cat:'men',         catLabel:'رجالي',     price:379, oldPrice:0,   badge:'',     desc:'جينز عالي الجودة — مقاسات M إلى XXL', img:'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=800&q=80'] },
-  { id:8,  name:'بلوزة حرير ناعمة',   cat:'women',       catLabel:'نسائي',     price:329, oldPrice:420, badge:'sale', desc:'حرير طبيعي — ملمس فاخر', img:'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=800&q=80'] },
-  { id:9,  name:'حذاء رياضي خفيف',    cat:'shoes',       catLabel:'أحذية',     price:459, oldPrice:0,   badge:'new',  desc:'نعل مريح — مثالي للرياضة والمشي', img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'] },
-  { id:10, name:'ساعة يد كلاسيكية',   cat:'accessories', catLabel:'إكسسوارات', price:799, oldPrice:999, badge:'sale', desc:'ساعة أنيقة بحركة كوارتز دقيقة', img:'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80'] },
-  { id:11, name:'بنطال قماش رسمي',    cat:'men',         catLabel:'رجالي',     price:289, oldPrice:0,   badge:'',     desc:'قماش فاخر — مقاسات 30 إلى 40', img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80'] },
-  { id:12, name:'جاكيت شتوي مبطن',    cat:'women',       catLabel:'نسائي',     price:689, oldPrice:850, badge:'sale', desc:'دفء استثنائي — تصميم عصري', img:'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80',
-    images:['https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80'] }
+  {
+    id:1, name:'قميص قطني كلاسيكي', cat:'men', catLabel:'قمصان رجالية',
+    price:249, oldPrice:349, badge:'sale',
+    desc:'قماش قطني 100% — مقاسات S إلى XXL — متوفر بألوان متعددة',
+    img:'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80',
+    images:[
+      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=800&q=80'
+    ]
+  },
+  {
+    id:2, name:'معطف صوف رجالي فاخر', cat:'outerwear', catLabel:'معاطف وجاكيتات',
+    price:899, oldPrice:0, badge:'new',
+    desc:'صوف ميرينو فاخر — دفء وأناقة — مقاسات 48 إلى 56',
+    img:'https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=800&q=80',
+    images:[
+      'https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=80'
+    ]
+  },
+  {
+    id:3, name:'بدلة رسمية كحلية', cat:'suits', catLabel:'بدلات رسمية',
+    price:1450, oldPrice:1890, badge:'sale',
+    desc:'بدلة رسمية قطعتين — صوف إيطالي — مقاسات 46 إلى 58',
+    img:'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80',
+    images:[
+      'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80'
+    ]
+  },
+  {
+    id:4, name:'حذاء جلد رسمي', cat:'shoes', catLabel:'أحذية رجالية',
+    price:599, oldPrice:749, badge:'sale',
+    desc:'جلد طبيعي — مقاسات 40 إلى 45 — مثالي للمناسبات',
+    img:'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=800&q=80',
+    images:[
+      'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=800&q=80'
+    ]
+  },
+  {
+    id:5, name:'تي شيرت قطني أساسي', cat:'tshirts', catLabel:'تي شيرتات',
+    price:129, oldPrice:179, badge:'sale',
+    desc:'قطن مصري — مقاسات S إلى XXL — ألوان متعددة',
+    img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80',
+    images:[
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=800&q=80'
+    ]
+  },
+  {
+    id:6, name:'حقيبة جلد رجالية', cat:'accessories', catLabel:'إكسسوارات',
+    price:429, oldPrice:0, badge:'',
+    desc:'جلد طبيعي — تصميم عملي وأنيق للعمل والسفر',
+    img:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
+    images:['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80']
+  },
+  {
+    id:7, name:'جاكيت جلد رجالي', cat:'outerwear', catLabel:'معاطف وجاكيتات',
+    price:1190, oldPrice:1490, badge:'sale',
+    desc:'جلد طبيعي فاخر — تصميم عصري — مقاسات M إلى XXL',
+    img:'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80',
+    images:['https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80']
+  },
+  {
+    id:8, name:'قميص كاجوال مخطط', cat:'men', catLabel:'قمصان رجالية',
+    price:189, oldPrice:0, badge:'new',
+    desc:'قماش قطني مريح — مناسب للاستخدام اليومي',
+    img:'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80',
+    images:['https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80']
+  },
+  {
+    id:9, name:'حذاء رياضي رجالي', cat:'shoes', catLabel:'أحذية رجالية',
+    price:459, oldPrice:0, badge:'new',
+    desc:'نعل مريح — مثالي للرياضة والمشي اليومي',
+    img:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+    images:['https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80']
+  },
+  {
+    id:10, name:'ساعة يد رجالية كلاسيكية', cat:'accessories', catLabel:'إكسسوارات',
+    price:899, oldPrice:1199, badge:'sale',
+    desc:'ساعة أنيقة بحركة كوارتز دقيقة — ضد الماء',
+    img:'https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80',
+    images:['https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=80']
+  },
+  {
+    id:11, name:'بنطال قماش رسمي', cat:'suits', catLabel:'بدلات رسمية',
+    price:389, oldPrice:0, badge:'',
+    desc:'قماش فاخر — مقاسات 30 إلى 40 — متوفر بألوان متعددة',
+    img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80',
+    images:['https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=800&q=80']
+  },
+  {
+    id:12, name:'بلوفر شتوي رجالي', cat:'outerwear', catLabel:'معاطف وجاكيتات',
+    price:289, oldPrice:390, badge:'sale',
+    desc:'صوف ناعم — دفء استثنائي — مقاسات M إلى XXL',
+    img:'https://images.unsplash.com/photo-1614252369475-531eba835eb1?auto=format&fit=crop&w=800&q=80',
+    images:['https://images.unsplash.com/photo-1614252369475-531eba835eb1?auto=format&fit=crop&w=800&q=80']
+  }
 ];
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
+/* ===== HELPERS ===== */
 const $  = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const fmt = n => `${Number(n).toLocaleString('en-US')} ${CURRENCY}`;
@@ -1128,9 +1223,7 @@ function adminToast(msg, type = '') {
   t._t = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-/* =========================================================
-   STATE
-   ========================================================= */
+/* ===== STATE ===== */
 let ADMIN = {
   customProducts: [],
   deletedProductIds: [],
@@ -1175,9 +1268,7 @@ function rebuildData() {
   if (activeFilter !== 'all' && !CATEGORIES.find(c => c.key === activeFilter)) activeFilter = 'all';
 }
 
-/* =========================================================
-   RENDER
-   ========================================================= */
+/* ===== RENDER ===== */
 function renderFilters() {
   const wrap = $('#filters');
   wrap.innerHTML = `<button class="filter-btn ${activeFilter==='all'?'active':''}" data-filter="all">الكل</button>` +
@@ -1254,9 +1345,7 @@ function renderProducts() {
   grid.innerHTML = list.map(productCard).join('');
 }
 
-/* =========================================================
-   CART
-   ========================================================= */
+/* ===== CART ===== */
 function loadCart() { try { cart = JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { cart = []; } }
 function saveCart() { try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch {} }
 
@@ -1340,16 +1429,12 @@ function updateCartUI(pop = false) {
   else note.textContent = '✓ مبروك! حصلت على شحن مجاني';
 }
 
-/* =========================================================
-   DRAWER / OVERLAY
-   ========================================================= */
+/* ===== DRAWER ===== */
 const drawer = $('#cartDrawer'), overlay = $('#overlay');
 function openCart() { drawer.classList.add('open'); overlay.classList.add('show'); document.body.classList.add('no-scroll'); }
 function closeCart() { drawer.classList.remove('open'); overlay.classList.remove('show'); document.body.classList.remove('no-scroll'); }
 
-/* =========================================================
-   PRODUCT QUICK VIEW
-   ========================================================= */
+/* ===== QUICK VIEW ===== */
 const pvOverlay = $('#pvOverlay');
 const pvModal = $('#pvModal');
 
@@ -1375,13 +1460,11 @@ function openProductView(id) {
         ${off ? `<span style="background:rgba(192,57,43,.1);color:var(--danger);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">خصم ${off}%</span>` : ''}
       </div>
       ${p.desc ? `<p class="desc">${esc(p.desc)}</p>` : '<p class="desc" style="color:#999">لا يوجد وصف تفصيلي لهذا المنتج.</p>'}
-
       <div class="pv-qty">
         <button id="pvMinus">−</button>
         <span id="pvQty">1</span>
         <button id="pvPlus">+</button>
       </div>
-
       <div class="actions">
         <button class="btn btn-primary" id="pvAdd">
           أضف إلى السلة
@@ -1417,7 +1500,7 @@ function openProductView(id) {
   });
 
   $('#pvWA').addEventListener('click', () => {
-    const msg = `مرحباً Kavallo 👋\n\nأريد الاستفسار عن هذا المنتج:\n\n🛍️ ${p.name}\n💰 السعر: ${fmt(p.price)}\n🏷️ الصنف: ${p.catLabel||p.cat}\n🔗 ${location.href}\n\nشكراً!`;
+    const msg = `مرحباً Kavallo 👋\n\nأريد الاستفسار عن هذا المنتج:\n\n🛍️ ${p.name}\n💰 السعر: ${fmt(p.price)}\n🏷️ الصنف: ${p.catLabel||p.cat}\n\nشكراً!`;
     window.open(`https://wa.me/${STORE_INFO.phoneWA}?text=${encodeURIComponent(msg)}`, '_blank');
   });
 }
@@ -1429,9 +1512,7 @@ function closeProductView() {
 }
 pvOverlay.addEventListener('click', e => { if (e.target === pvOverlay) closeProductView(); });
 
-/* =========================================================
-   CHECKOUT → WHATSAPP
-   ========================================================= */
+/* ===== CHECKOUT ===== */
 const checkoutModal = $('#checkoutModal');
 
 function openCheckout() {
@@ -1461,7 +1542,6 @@ function sendWhatsAppOrder() {
   const notes = $('#co-notes').value.trim();
 
   if (!name || !phone || !address) {
-    adminToast('⚠️ املأ الاسم والهاتف والعنوان', 'err');
     toast('يرجى إكمال بيانات الطلب', true);
     return;
   }
@@ -1503,9 +1583,7 @@ function sendWhatsAppOrder() {
 
 checkoutModal.addEventListener('click', e => { if (e.target === checkoutModal) closeCheckout(); });
 
-/* =========================================================
-   ADMIN — GALLERY MANAGER
-   ========================================================= */
+/* ===== ADMIN GALLERY ===== */
 let pendingImages = [];
 let pendingCatImage = null;
 let currentImgMode = 'upload';
@@ -1535,7 +1613,6 @@ function addImagesToGallery(arr) {
   renderGallery();
   adminToast(`✅ أُضيفت ${valid.length} صورة`, 'ok');
 }
-
 function removeImage(idx) { pendingImages.splice(idx, 1); renderGallery(); }
 function setMainImage(idx) {
   const [item] = pendingImages.splice(idx, 1);
@@ -1563,12 +1640,10 @@ function setCatPreview(src) {
   $('#catImgPreview').style.display = 'block';
 }
 
-/* Firebase Storage upload helper (defined here, executed by module if enabled) */
 async function uploadToFirebaseStorage(file, folder = 'products') {
   if (typeof window.kavalloUploadImage === 'function') {
     return window.kavalloUploadImage(file, folder);
   }
-  // Fallback: return base64
   return new Promise((resolve) => {
     const r = new FileReader();
     r.onload = e => resolve(e.target.result);
@@ -1579,7 +1654,7 @@ async function uploadToFirebaseStorage(file, folder = 'products') {
 async function handleFiles(files, folder, callback) {
   const list = [...files];
   const valid = list.filter(f => f && f.type.startsWith('image/') && f.size <= 5*1024*1024);
-  if (!valid.length) { adminToast('⚠️ اختر صوراً صالحة (JPG/PNG/WEBP حتى 5MB)', 'err'); return; }
+  if (!valid.length) { adminToast('⚠️ اختر صوراً صالحة', 'err'); return; }
   adminToast('📤 جارٍ رفع الصور...', 'ok');
   try {
     const results = [];
@@ -1594,9 +1669,7 @@ async function handleFiles(files, folder, callback) {
   }
 }
 
-/* =========================================================
-   ADMIN — PRODUCTS
-   ========================================================= */
+/* ===== ADMIN PRODUCTS ===== */
 function renderAdminTable() {
   const tb = $('#adminProductsTable');
   if (!PRODUCTS.length) {
@@ -1644,4 +1717,622 @@ function editProduct(id) {
   $('#pf-name').value = p.name;
   $('#pf-cat').value = p.cat;
   $('#pf-price').value = p.price;
-  $('#pf-old').value = p
+  $('#pf-old').value = p.oldPrice || 0;
+  $('#pf-badge').value = p.badge || '';
+  $('#pf-desc').value = p.desc || '';
+  pendingImages = [...getImages(p)];
+  switchImgMode('upload');
+  renderGallery();
+  showProductForm(true);
+}
+function deleteProduct(id) {
+  if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
+  if (DEFAULT_PRODUCTS.some(p => p.id === id) && !ADMIN.deletedProductIds.includes(id)) {
+    ADMIN.deletedProductIds.push(id);
+  }
+  ADMIN.customProducts = ADMIN.customProducts.filter(p => p.id !== id);
+  saveAdminData(); refreshAll();
+  adminToast('🗑️ تم حذف المنتج', 'ok');
+}
+
+/* ===== ADMIN CATEGORIES ===== */
+function renderAdminCats() {
+  const list = $('#adminCatList');
+  if (!CATEGORIES.length) {
+    list.innerHTML = `<div class="admin-empty"><div class="big">🏷️</div>لا توجد أصناف</div>`;
+    return;
+  }
+  list.innerHTML = CATEGORIES.map(c => {
+    const count = PRODUCTS.filter(p => p.cat === c.key).length;
+    const isDef = DEFAULT_CATEGORIES.some(d => d.key === c.key);
+    return `<div class="admin-cat-item">
+      <div><strong>${esc(c.label)}</strong><span class="key">${esc(c.key)}</span>${isDef?'<span class="count">(افتراضي)</span>':''}</div>
+      <div><span class="count">${count} منتج</span><button class="act-btn del" data-del-cat="${esc(c.key)}">حذف</button></div>
+    </div>`;
+  }).join('');
+}
+
+function showCatForm() {
+  $('#catForm').classList.add('show');
+  ['cf-label','cf-key','cf-img'].forEach(id => $('#'+id).value = '');
+  pendingCatImage = null;
+  setCatPreview(null);
+  switchCatImgMode('upload');
+  $('#catForm').scrollIntoView({behavior:'smooth', block:'center'});
+}
+function hideCatForm() {
+  $('#catForm').classList.remove('show');
+  pendingCatImage = null;
+  $('#cf-file').value = '';
+  setCatPreview(null);
+}
+function deleteCategory(key) {
+  if (!confirm('حذف هذا الصنف؟ (لن تُحذف المنتجات)')) return;
+  if (DEFAULT_CATEGORIES.some(c => c.key === key) && !ADMIN.deletedCategoryKeys.includes(key)) {
+    ADMIN.deletedCategoryKeys.push(key);
+  }
+  ADMIN.customCategories = ADMIN.customCategories.filter(c => c.key !== key);
+  saveAdminData(); refreshAll();
+  adminToast('🗑️ تم حذف الصنف', 'ok');
+}
+
+/* ===== REFRESH / STATS ===== */
+function refreshAll() {
+  rebuildData();
+  renderFilters();
+  renderCatGrid();
+  renderProducts();
+  renderAdminTable();
+  renderAdminCats();
+  fillCategorySelect();
+  updateStats();
+  observeReveals();
+}
+
+function updateStats() {
+  $('#statProducts').textContent = PRODUCTS.length;
+  $('#statCategories').textContent = CATEGORIES.length;
+  $('#statSale').textContent = PRODUCTS.filter(p => p.badge === 'sale').length;
+  $('#statNew').textContent = PRODUCTS.filter(p => p.badge === 'new').length;
+  $('#infoP').value = PRODUCTS.length;
+  $('#infoC').value = CATEGORIES.length;
+  try {
+    const size = new Blob([localStorage.getItem(ADMIN_KEY) || '']).size;
+    $('#infoSize').value = size > 1024*1024 ? (size/1024/1024).toFixed(1)+' MB' : Math.round(size/1024)+' KB';
+  } catch { $('#infoSize').value = '?'; }
+  $('#infoFB').value = window.FB_ENABLED ? '✅ متصل' : '⚠️ معطّل (محلي فقط)';
+}
+
+/* ===== EXPORT / IMPORT ===== */
+function exportData() {
+  const blob = new Blob([JSON.stringify(ADMIN, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `kavallo-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  adminToast('⬇ تم تصدير البيانات', 'ok');
+}
+
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const d = JSON.parse(e.target.result);
+      ADMIN = { ...ADMIN, ...d };
+      saveAdminData(); refreshAll();
+      adminToast('✅ تم الاستيراد', 'ok');
+    } catch { adminToast('❌ ملف غير صالح', 'err'); }
+  };
+  reader.readAsText(file);
+}
+
+/* ===== ADMIN ACCESS ===== */
+function setupAdminAccess() {
+  // 1) شعار — 3 نقرات
+  const logo = $('#logoTrigger');
+  let clicks = 0, timer = null;
+  logo.addEventListener('click', (e) => {
+    e.preventDefault();
+    clicks++;
+    clearTimeout(timer);
+    timer = setTimeout(() => { clicks = 0; }, 900);
+    if (clicks >= 3) { clicks = 0; openAdminLogin(); }
+  });
+
+  // 2) زر ⚙ العائم — نقرة واحدة
+  const quickBtn = $('#adminQuickBtn');
+  if (quickBtn) {
+    quickBtn.addEventListener('click', openAdminLogin);
+  }
+
+  // 3) اختصارات متعددة
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      e.preventDefault();
+      openAdminLogin();
+    } else if (e.altKey && !e.ctrlKey && !e.shiftKey && (e.key === 'a' || e.key === 'A')) {
+      e.preventDefault();
+      openAdminLogin();
+    } else if (e.key === 'F2') {
+      e.preventDefault();
+      openAdminLogin();
+    }
+  });
+}
+
+let loginMode = 'local';
+
+function openAdminLogin() {
+  $('#adminLogin').classList.add('show');
+  $('#adminErr').classList.remove('show');
+  if (window.FB_ENABLED) switchLoginMode('email');
+  else switchLoginMode('local');
+  setTimeout(() => {
+    if (loginMode === 'email') $('#adminEmail').focus();
+    else $('#adminPw').focus();
+  }, 100);
+}
+function closeAdminLogin() { $('#adminLogin').classList.remove('show'); }
+
+function switchLoginMode(mode) {
+  loginMode = mode;
+  $$('#loginModeTabs .mode-tab').forEach(t => t.classList.toggle('active', t.dataset.login === mode));
+  $('#loginEmailMode').style.display = mode === 'email' ? 'block' : 'none';
+  $('#loginLocalMode').style.display = mode === 'local' ? 'block' : 'none';
+  $('#adminErr').classList.remove('show');
+}
+
+async function tryLogin() {
+  if (loginMode === 'email') {
+    const email = $('#adminEmail').value.trim();
+    const pw = $('#adminPwEmail').value;
+    if (!email || !pw) { $('#adminErr').classList.add('show'); return; }
+    try {
+      if (typeof window.kavalloSignIn === 'function') {
+        await window.kavalloSignIn(email, pw);
+        currentUserEmail = email;
+        closeAdminLogin();
+        openAdminPanel();
+      } else {
+        $('#adminErr').classList.add('show');
+      }
+    } catch (e) {
+      console.error(e);
+      $('#adminErr').classList.add('show');
+    }
+  } else {
+    const pw = $('#adminPw').value;
+    if (pw === ADMIN.password) {
+      currentUserEmail = 'local';
+      closeAdminLogin();
+      openAdminPanel();
+    } else {
+      $('#adminErr').classList.add('show');
+      $('#adminPw').value = '';
+      $('#adminPw').focus();
+    }
+  }
+}
+
+function openAdminPanel() {
+  $('#adminPanel').classList.add('show');
+  document.body.classList.add('no-scroll');
+  $('#adminUserEmail').textContent = currentUserEmail || 'مسؤول';
+  refreshAll();
+}
+function closeAdminPanel() {
+  $('#adminPanel').classList.remove('show');
+  document.body.classList.remove('no-scroll');
+  saveAdminData();
+  refreshAll();
+}
+
+/* ===== ADMIN EVENTS ===== */
+function setupAdminEvents() {
+  $$('#loginModeTabs .mode-tab').forEach(t => t.addEventListener('click', () => switchLoginMode(t.dataset.login)));
+  $('#adminLoginBtn').addEventListener('click', tryLogin);
+  $('#adminCancelLogin').addEventListener('click', closeAdminLogin);
+  $('#adminPw').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+  $('#adminPwEmail').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+
+  $('#adminClose').addEventListener('click', closeAdminPanel);
+  $('#adminPreview').addEventListener('click', () => {
+    $('#adminPanel').classList.remove('show');
+    document.body.classList.remove('no-scroll');
+    refreshAll();
+  });
+
+  $$('.admin-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      $$('.admin-tab').forEach(t => t.classList.remove('active'));
+      $$('.admin-page').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      $('#page-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  $('#addProductBtn').addEventListener('click', () => showProductForm(false));
+  $('#pf-cancel').addEventListener('click', hideProductForm);
+  $('#exportProducts').addEventListener('click', exportData);
+
+  $$('.img-tab[data-imgtab]').forEach(t => t.addEventListener('click', () => switchImgMode(t.dataset.imgtab)));
+
+  $('#pf-file').addEventListener('change', async e => {
+    const files = [...e.target.files];
+    if (!files.length) return;
+    await handleFiles(files, 'products', imgs => addImagesToGallery(imgs));
+    e.target.value = '';
+  });
+
+  const drop = $('#imgDrop');
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('drag'); }));
+  drop.addEventListener('drop', async e => {
+    const files = [...e.dataTransfer.files];
+    if (!files.length) return;
+    await handleFiles(files, 'products', imgs => addImagesToGallery(imgs));
+  });
+  drop.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') $('#pf-file').click(); });
+
+  $('#galleryGrid').addEventListener('click', e => {
+    const rm = e.target.closest('[data-rm-img]');
+    const sm = e.target.closest('[data-set-main]');
+    if (rm) removeImage(Number(rm.dataset.rmImg));
+    if (sm) setMainImage(Number(sm.dataset.setMain));
+  });
+
+  $('#addUrlBtn').addEventListener('click', () => {
+    const url = $('#pf-img').value.trim();
+    if (!url) { adminToast('⚠️ أدخل رابطاً', 'err'); return; }
+    addImagesToGallery([url]);
+    $('#pf-img').value = '';
+  });
+
+  $('#pf-save').addEventListener('click', () => {
+    const id = $('#pf-id').value;
+    const name = $('#pf-name').value.trim();
+    const cat = $('#pf-cat').value;
+    const price = parseFloat($('#pf-price').value);
+    const oldPrice = parseFloat($('#pf-old').value) || 0;
+    const badge = $('#pf-badge').value;
+    const desc = $('#pf-desc').value.trim();
+
+    if (!name || !cat || isNaN(price) || !pendingImages.length) {
+      adminToast('⚠️ املأ الحقول وأضف صورة واحدة على الأقل', 'err');
+      return;
+    }
+    if (price <= 0) { adminToast('⚠️ السعر يجب أن يكون أكبر من صفر', 'err'); return; }
+
+    const catObj = CATEGORIES.find(c => c.key === cat);
+    const product = {
+      id: id ? Number(id) : Date.now(),
+      name, cat, catLabel: catObj ? catObj.label : cat,
+      price, oldPrice: oldPrice > price ? oldPrice : 0,
+      badge, desc,
+      img: pendingImages[0],
+      images: [...pendingImages]
+    };
+
+    if (id) {
+      const numId = Number(id);
+      const idx = ADMIN.customProducts.findIndex(p => p.id === numId);
+      if (idx >= 0) ADMIN.customProducts[idx] = product;
+      else {
+        if (!ADMIN.deletedProductIds.includes(numId)) ADMIN.deletedProductIds.push(numId);
+        ADMIN.customProducts.push(product);
+      }
+    } else {
+      ADMIN.customProducts.push(product);
+    }
+    saveAdminData(); refreshAll(); hideProductForm();
+    adminToast('✅ تم حفظ المنتج', 'ok');
+  });
+
+  $('#adminProductsTable').addEventListener('click', e => {
+    const ed = e.target.closest('[data-edit]');
+    const dl = e.target.closest('[data-del-product]');
+    if (ed) editProduct(Number(ed.dataset.edit));
+    if (dl) deleteProduct(Number(dl.dataset.delProduct));
+  });
+
+  $('#addCatBtn').addEventListener('click', showCatForm);
+  $('#cf-cancel').addEventListener('click', hideCatForm);
+  $$('.img-tab[data-imgtab2]').forEach(t => t.addEventListener('click', () => switchCatImgMode(t.dataset.imgtab2)));
+
+  $('#cf-file').addEventListener('change', async e => {
+    const files = [...e.target.files];
+    if (!files.length) return;
+    await handleFiles(files, 'categories', imgs => {
+      pendingCatImage = imgs[0];
+      setCatPreview(imgs[0]);
+    });
+    e.target.value = '';
+  });
+
+  const drop2 = $('#catImgDrop');
+  ['dragenter','dragover'].forEach(ev => drop2.addEventListener(ev, e => { e.preventDefault(); drop2.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev => drop2.addEventListener(ev, e => { e.preventDefault(); drop2.classList.remove('drag'); }));
+  drop2.addEventListener('drop', async e => {
+    const files = [...e.dataTransfer.files];
+    if (!files.length) return;
+    await handleFiles(files, 'categories', imgs => {
+      pendingCatImage = imgs[0];
+      setCatPreview(imgs[0]);
+    });
+  });
+  drop2.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') $('#cf-file').click(); });
+  $('#rmCatPreview').addEventListener('click', () => { pendingCatImage = null; setCatPreview(null); $('#cf-file').value = ''; });
+
+  $('#cf-save').addEventListener('click', () => {
+    let key = $('#cf-key').value.trim().toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9_-]/g,'');
+    const label = $('#cf-label').value.trim();
+    const urlImg = $('#cf-img').value.trim();
+    let img = '';
+    if (currentCatImgMode === 'upload') img = pendingCatImage || '';
+    else img = urlImg;
+
+    if (!label) { adminToast('⚠️ أدخل اسم الصنف', 'err'); return; }
+    if (!key) key = 'cat_' + Date.now();
+    if (CATEGORIES.find(c => c.key === key)) { adminToast('⚠️ المفتاح مستخدم', 'err'); return; }
+
+    ADMIN.customCategories.push({ key, label, img });
+    saveAdminData(); refreshAll(); hideCatForm();
+    adminToast('✅ تم إضافة الصنف', 'ok');
+  });
+
+  $('#adminCatList').addEventListener('click', e => {
+    const dl = e.target.closest('[data-del-cat]');
+    if (dl) deleteCategory(dl.dataset.delCat);
+  });
+
+  $('#pw-save').addEventListener('click', () => {
+    const oldPw = $('#pw-old').value;
+    const newPw = $('#pw-new').value;
+    if (oldPw !== ADMIN.password) { adminToast('❌ كلمة المرور الحالية خاطئة', 'err'); return; }
+    if (newPw.length < 4) { adminToast('⚠️ كلمة المرور قصيرة', 'err'); return; }
+    ADMIN.password = newPw;
+    saveAdminData();
+    $('#pw-old').value = ''; $('#pw-new').value = '';
+    adminToast('✅ تم تحديث كلمة المرور', 'ok');
+  });
+
+  $('#exportBtn').addEventListener('click', exportData);
+  $('#importFile').addEventListener('change', e => {
+    if (e.target.files[0]) importData(e.target.files[0]);
+    e.target.value = '';
+  });
+
+  $('#resetBtn').addEventListener('click', () => {
+    if (!confirm('⚠️ سيتم حذف كل المنتجات والأصناف المخصصة. متابعة؟')) return;
+    if (!confirm('تأكيد نهائي — لا يمكن التراجع!')) return;
+    ADMIN.customProducts = [];
+    ADMIN.deletedProductIds = [];
+    ADMIN.customCategories = [];
+    ADMIN.deletedCategoryKeys = [];
+    saveAdminData(); refreshAll();
+    adminToast('♻️ تم إعادة التعيين', 'ok');
+  });
+}
+
+/* ===== STORE EVENTS ===== */
+document.addEventListener('click', e => {
+  const addBtn = e.target.closest('[data-add]');
+  if (addBtn) { e.stopPropagation(); addToCart(+addBtn.dataset.add); return; }
+
+  const favBtn = e.target.closest('[data-fav]');
+  if (favBtn) { e.stopPropagation(); favBtn.classList.toggle('active'); toast(favBtn.classList.contains('active')?'أُضيف للمفضلة ♥':'أُزيل من المفضلة'); return; }
+
+  const plus = e.target.closest('[data-plus]');
+  if (plus) { changeQty(+plus.dataset.plus, 1); return; }
+  const minus = e.target.closest('[data-minus]');
+  if (minus) { changeQty(+minus.dataset.minus, -1); return; }
+  const del = e.target.closest('[data-del]');
+  if (del) { removeItem(+del.dataset.del); return; }
+
+  const productCard = e.target.closest('.product');
+  if (productCard && !e.target.closest('.p-actions') && !e.target.closest('.p-fav')) {
+    openProductView(+productCard.dataset.product);
+  }
+});
+
+$('#cartBtn').addEventListener('click', openCart);
+$('#closeCart').addEventListener('click', closeCart);
+$('#mobCartBtn').addEventListener('click', e => { e.preventDefault(); closeMenu(); openCart(); });
+overlay.addEventListener('click', closeCart);
+
+$('#checkoutBtn').addEventListener('click', openCheckout);
+$('#closeCheckout').addEventListener('click', closeCheckout);
+$('#co-send').addEventListener('click', sendWhatsAppOrder);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeCart(); closeMenu(); closeProductView(); closeCheckout(); closeAdminLogin(); }
+});
+
+const header = $('#header');
+const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
+window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+const burger = $('#burger'), mobileMenu = $('#mobileMenu');
+function closeMenu() { burger.classList.remove('active'); mobileMenu.classList.remove('open'); document.body.classList.remove('no-scroll'); }
+burger.addEventListener('click', () => {
+  const open = !mobileMenu.classList.contains('open');
+  burger.classList.toggle('active', open);
+  mobileMenu.classList.toggle('open', open);
+  document.body.classList.toggle('no-scroll', open);
+});
+$$('#mobileMenu a').forEach(a => a.addEventListener('click', closeMenu));
+
+$('#filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn'); if (!btn) return;
+  $$('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  renderProducts();
+});
+$('#searchInput').addEventListener('input', e => { searchQuery = e.target.value; renderProducts(); });
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+function observeReveals() { $$('.reveal:not(.in)').forEach((el, i) => { el.style.transitionDelay = `${(i%4)*90}ms`; io.observe(el); }); }
+
+const DEADLINE = Date.now() + (2*24*60*60*1000) + (12*60*60*1000) + (45*60*1000);
+function tick() {
+  let diff = Math.max(0, DEADLINE - Date.now());
+  const d = Math.floor(diff/86400000); diff -= d*86400000;
+  const h = Math.floor(diff/3600000);  diff -= h*3600000;
+  const m = Math.floor(diff/60000);    diff -= m*60000;
+  const s = Math.floor(diff/1000);
+  const pad = n => String(n).padStart(2,'0');
+  const $d=$('#cd-d'),$h=$('#cd-h'),$m=$('#cd-m'),$s=$('#cd-s');
+  if($d)$d.textContent = pad(d);
+  if($h)$h.textContent = pad(h);
+  if($m)$m.textContent = pad(m);
+  if($s)$s.textContent = pad(s);
+}
+setInterval(tick, 1000);
+
+$('#nlForm').addEventListener('submit', e => {
+  e.preventDefault();
+  toast('شكراً! تم الاشتراك — خصم 10% في انتظارك 🎁');
+  e.target.querySelector('input').value = '';
+});
+
+$$('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id === '#' || id.length < 2) return;
+    const t = document.querySelector(id);
+    if (!t) return;
+    e.preventDefault();
+    window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 70, behavior:'smooth' });
+  });
+});
+
+window.ADMIN = ADMIN;
+window.saveAdminData = saveAdminData;
+window.refreshAll = refreshAll;
+window.renderProducts = renderProducts;
+window.STORE_INFO = STORE_INFO;
+
+/* ===== INIT ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  loadAdminData();
+  rebuildData();
+  renderFilters();
+  renderCatGrid();
+  $('#year').textContent = new Date().getFullYear();
+  loadCart();
+  renderProducts();
+  updateCartUI();
+  observeReveals();
+  tick();
+  setupAdminAccess();
+  setupAdminEvents();
+});
+</script>
+
+<!-- ============================================================
+     FIREBASE MODULE (اختياري)
+     ============================================================ -->
+<script type="module">
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSy...ضع_قيمتك",
+  authDomain:        "kavallo.firebaseapp.com",
+  projectId:         "kavallo",
+  storageBucket:     "kavallo.appspot.com",
+  messagingSenderId: "000000000000",
+  appId:             "1:0000:web:xxxxx"
+};
+
+const FIREBASE_ENABLED = !FIREBASE_CONFIG.apiKey.includes("ضع_قيمتك");
+window.FB_ENABLED = FIREBASE_ENABLED;
+
+if (FIREBASE_ENABLED) {
+  try {
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+      = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const { getFirestore, doc, setDoc, getDoc, onSnapshot }
+      = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const { getStorage, ref, uploadBytes, getDownloadURL }
+      = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js');
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+    const docRef = doc(db, 'stores', 'kavallo');
+
+    window.kavalloSignIn = async (email, pw) => { await signInWithEmailAndPassword(auth, email, pw); };
+    window.kavalloSignOut = async () => { await signOut(auth); };
+
+    onAuthStateChanged(auth, user => {
+      const badge = document.getElementById('fbBadge');
+      if (user && badge) { badge.className = 'fb-badge show'; badge.textContent = '🔐 ' + user.email; }
+      else if (badge) { badge.className = 'fb-badge show'; badge.textContent = '☁️ متزامن'; }
+    });
+
+    onSnapshot(docRef, snap => {
+      if (!snap.exists()) return;
+      const data = snap.data();
+      if (!data) return;
+      if (data.customProducts)       window.ADMIN.customProducts = data.customProducts;
+      if (data.customCategories)     window.ADMIN.customCategories = data.customCategories;
+      if (data.deletedProductIds)    window.ADMIN.deletedProductIds = data.deletedProductIds;
+      if (data.deletedCategoryKeys)  window.ADMIN.deletedCategoryKeys = data.deletedCategoryKeys;
+      if (data.password)             window.ADMIN.password = data.password;
+      try { localStorage.setItem('kavallo_admin_v4', JSON.stringify(window.ADMIN)); } catch(e){}
+      if (typeof window.refreshAll === 'function') window.refreshAll();
+    }, err => {
+      console.warn('Firestore error:', err);
+      const badge = document.getElementById('fbBadge');
+      if (badge) { badge.className = 'fb-badge show off'; badge.textContent = '⚠️ تعذّر الاتصال'; }
+    });
+
+    window.kavalloCloudSave = async () => {
+      const badge = document.getElementById('fbBadge');
+      if (badge) { badge.className = 'fb-badge show syncing'; badge.textContent = '🔄 جارٍ المزامنة...'; }
+      try {
+        await setDoc(docRef, window.ADMIN);
+        if (badge) { badge.className = 'fb-badge show'; badge.textContent = '☁️ متزامن'; }
+      } catch (e) {
+        console.error('Cloud save failed:', e);
+        if (badge) { badge.className = 'fb-badge show off'; badge.textContent = '⚠️ فشل الحفظ'; }
+      }
+    };
+
+    window.kavalloUploadImage = async (file, folder = 'products') => {
+      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+      const storageRef = ref(storage, path);
+      await uploadBytes(storageRef, file);
+      return await getDownloadURL(storageRef);
+    };
+
+    try {
+      const initial = await getDoc(docRef);
+      if (initial.exists()) {
+        const data = initial.data();
+        if (data.customProducts)       window.ADMIN.customProducts = data.customProducts;
+        if (data.customCategories)     window.ADMIN.customCategories = data.customCategories;
+        if (data.deletedProductIds)    window.ADMIN.deletedProductIds = data.deletedProductIds;
+        if (data.deletedCategoryKeys)  window.ADMIN.deletedCategoryKeys = data.deletedCategoryKeys;
+        if (typeof window.refreshAll === 'function') window.refreshAll();
+      }
+    } catch (e) { console.warn('Initial load failed', e); }
+
+    console.log('%c☁️ Firebase متصل', 'color:#27ae60;font-weight:bold;font-size:14px');
+  } catch (e) {
+    console.error('Firebase init failed:', e);
+    window.FB_ENABLED = false;
+  }
+} else {
+  console.log('%cℹ️ Firebase معطّل — التخزين محلي فقط', 'color:#f39c12;font-weight:bold;font-size:13px');
+  const badge = document.getElementById('fbBadge');
+  if (badge) { badge.className = 'fb-badge show off'; badge.textContent = '💾 تخزين محلي'; setTimeout(() => badge.classList.remove('show'), 3000); }
+}
+</script>
+</body>
+</html>
