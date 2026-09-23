@@ -96,7 +96,7 @@
 
         .container { max-width: 900px; margin: 12px auto; padding: 0 12px; }
 
-        /* البنر المتحرك / السلايدر الترويجي */
+        /* البنر الترويجي */
         .hero-banner {
             background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
             color: #fff;
@@ -360,6 +360,24 @@
             display: none;
         }
 
+        .admin-section {
+            background: #fdfdfd;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .admin-section-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         .admin-form { display: grid; grid-template-columns: 1fr; gap: 8px; }
         .admin-input { padding: 9px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.85rem; width: 100%; }
         .admin-actions { display: flex; gap: 5px; margin-top: 8px; }
@@ -390,7 +408,6 @@
             border: 1px solid #ddd;
         }
 
-        /* خيارات المقاس واللون في نافذة الإضافة */
         .opt-select {
             padding: 8px;
             border-radius: 6px;
@@ -404,8 +421,8 @@
 <body>
 
     <!-- شريط العروض العلوي -->
-    <div class="announcement-bar">
-        ✨ تشكيلة موسيقية جديدة ومميزة - توصيل سريع لجميع المناطق 🚀
+    <div class="announcement-bar" id="announcementText">
+        ✨ تشكيلة جديدة ومميزة - توصيل سريع لجميع المناطق 🚀
     </div>
 
     <header>
@@ -420,48 +437,64 @@
 
     <div class="container">
 
-        <!-- البنر الترويجي المتحرك -->
+        <!-- البنر الترويجي -->
         <div class="hero-banner">
-            <h2>KAVALLO COLLECTION</h2>
-            <p>أرقى الموديلات والخامات العصرية بأسعار تنافسية</p>
+            <h2 id="bannerTitle">KAVALLO COLLECTION</h2>
+            <p id="bannerSub">أرقى الموديلات والخامات العصرية بأسعار تنافسية</p>
         </div>
 
         <!-- لوحة التحكم الإدارية -->
         <div class="admin-panel" id="adminPanel">
-            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                <h3 id="panelTitle" style="font-size:1rem; color:var(--primary-color);">⚙️ إدارة موديلات Kavallo</h3>
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                <h3 style="font-size:1rem; color:var(--primary-color);">⚙️ لوحة التحكم الإدارية</h3>
                 <button onclick="changeAdminPassword()" style="font-size:0.75rem; padding:4px 8px;">🔑 تغيير السر</button>
             </div>
-            <form class="admin-form" id="addProductForm">
-                <input type="hidden" id="pId">
-                
-                <input type="text" id="pTitle" class="admin-input" placeholder="اسم الموديل" required>
-                <select id="pCategory" class="admin-input" required>
-                    <option value="ألبسة رجالية">ألبسة رجالية</option>
-                    <option value="ألبسة نسائية">ألبسة نسائية</option>
-                    <option value="ألبسة أطفال">ألبسة أطفال</option>
-                    <option value="إكسسوارات وحقائب">إكسسوارات وحقائب</option>
-                </select>
-                <input type="text" id="pPrice" class="admin-input" placeholder="السعر (مثال: 150,000 ل.س)" required>
-                <input type="text" id="pSizes" class="admin-input" placeholder="المقاسات (مفصولة بفاصلة: S, M, L, XL)" required>
-                <input type="text" id="pColors" class="admin-input" placeholder="الألوان المتاحة (مفصولة بفاصلة: أسود, أبيض, كحلي)">
-                <input type="text" id="pDesc" class="admin-input" placeholder="الوصف ونوع القماش" required>
 
-                <div class="image-upload-wrapper">
-                    <label class="image-upload-label">📸 اختر صورة الموديل من الجهاز مباشرة:</label>
-                    <input type="file" id="pImgFile" class="admin-input" accept="image/*" onchange="handleImageSelection(event)">
-                    <img id="imagePreview" class="preview-img" alt="معاينة الصورة">
+            <!-- قسم تعديل الشريط والبنر -->
+            <div class="admin-section">
+                <div class="admin-section-title">📢 تعديل الإعلانات والبنر الترويجي</div>
+                <div class="admin-form">
+                    <input type="text" id="announcementInput" class="admin-input" placeholder="نص الشريط العلوي الصغير">
+                    <input type="text" id="bannerTitleInput" class="admin-input" placeholder="عنوان البنر الرئيسي (الكبير)">
+                    <input type="text" id="bannerSubInput" class="admin-input" placeholder="الوصف الفرعي للبنر">
+                    <button onclick="saveBanners()" style="background:#2e7d32; color:white; border:none; padding:8px; border-radius:8px; font-weight:bold; cursor:pointer;">💾 حفظ الإعلانات</button>
                 </div>
-                
-                <div style="display:flex; gap:12px; font-size:0.8rem; margin-top:5px; flex-wrap:wrap;">
-                    <label><input type="checkbox" id="pNew"> تشكيلة جديدة 🔥</label>
-                    <label><input type="checkbox" id="pBestSeller"> الأكثر مبيعاً ⭐</label>
-                    <label><input type="checkbox" id="pOutOfStock"> نفدت الكمية 🚫</label>
-                </div>
+            </div>
 
-                <button type="submit" id="btnSubmit" style="background:var(--primary-color); color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; margin-top:5px;">➕ إضافة الموديل</button>
-                <button type="button" id="btnCancel" onclick="resetForm()" style="display:none; background:#777; color:white; border:none; padding:8px; border-radius:8px;">إلغاء</button>
-            </form>
+            <!-- قسم إدارة الموديلات والمنتجات -->
+            <div class="admin-section">
+                <div class="admin-section-title" id="panelTitle">👕 إضافة / تعديل موديل</div>
+                <form class="admin-form" id="addProductForm">
+                    <input type="hidden" id="pId">
+                    
+                    <input type="text" id="pTitle" class="admin-input" placeholder="اسم الموديل" required>
+                    <select id="pCategory" class="admin-input" required>
+                        <option value="ألبسة رجالية">ألبسة رجالية</option>
+                        <option value="ألبسة نسائية">ألبسة نسائية</option>
+                        <option value="ألبسة أطفال">ألبسة أطفال</option>
+                        <option value="إكسسوارات وحقائب">إكسسوارات وحقائب</option>
+                    </select>
+                    <input type="text" id="pPrice" class="admin-input" placeholder="السعر (مثال: 150,000 ل.س)" required>
+                    <input type="text" id="pSizes" class="admin-input" placeholder="المقاسات (مفصولة بفاصلة: S, M, L, XL)" required>
+                    <input type="text" id="pColors" class="admin-input" placeholder="الألوان المتاحة (مفصولة بفاصلة: أسود, أبيض, كحلي)">
+                    <input type="text" id="pDesc" class="admin-input" placeholder="الوصف ونوع القماش" required>
+
+                    <div class="image-upload-wrapper">
+                        <label class="image-upload-label">📸 اختر صورة الموديل من الجهاز مباشرة:</label>
+                        <input type="file" id="pImgFile" class="admin-input" accept="image/*" onchange="handleImageSelection(event)">
+                        <img id="imagePreview" class="preview-img" alt="معاينة الصورة">
+                    </div>
+                    
+                    <div style="display:flex; gap:12px; font-size:0.8rem; margin-top:5px; flex-wrap:wrap;">
+                        <label><input type="checkbox" id="pNew"> تشكيلة جديدة 🔥</label>
+                        <label><input type="checkbox" id="pBestSeller"> الأكثر مبيعاً ⭐</label>
+                        <label><input type="checkbox" id="pOutOfStock"> نفدت الكمية 🚫</label>
+                    </div>
+
+                    <button type="submit" id="btnSubmit" style="background:var(--primary-color); color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; margin-top:5px;">➕ إضافة الموديل</button>
+                    <button type="button" id="btnCancel" onclick="resetForm()" style="display:none; background:#777; color:white; border:none; padding:8px; border-radius:8px;">إلغاء</button>
+                </form>
+            </div>
         </div>
 
         <!-- البحث والتصنيف -->
@@ -497,16 +530,14 @@
         </div>
     </div>
 
-    <!-- نافذة تفاصيل واختيار المقاس واللون عند الإضافة -->
+    <!-- نافذة اختيار المقاس واللون -->
     <div class="modal" id="optModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="optModalTitle" style="font-size:1.05rem;">اختيار التفاصيل</h3>
                 <span style="cursor:pointer; font-weight:bold; font-size:1.1rem;" onclick="closeOptModal()">✕</span>
             </div>
-            <div id="optModalBody">
-                <!-- يُبنى ديناميكياً -->
-            </div>
+            <div id="optModalBody"></div>
             <button id="optConfirmBtn" class="btn-whatsapp-send" style="background:var(--primary-color);">إضافة للسلة 🛒</button>
         </div>
     </div>
@@ -583,7 +614,7 @@
             }
         }
 
-        // تفعيل الإدارة عبر 4 نقرات متتالية على الشعار AK
+        // 4 نقرات متتالية للوحة الإدارة
         let clickCount = 0;
         let clickTimer = null;
         document.getElementById('secretAdminTrigger').addEventListener('click', () => {
@@ -596,6 +627,42 @@
                 clickTimer = setTimeout(() => { clickCount = 0; }, 1200);
             }
         });
+
+        // جلب وحفظ إعدادات البنر والشريط العلوي من السحابة
+        function loadBanners() {
+            db.collection("kavallo_settings").doc("banners").onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.announcement) {
+                        document.getElementById('announcementText').innerText = data.announcement;
+                        document.getElementById('announcementInput').value = data.announcement;
+                    }
+                    if (data.bannerTitle) {
+                        document.getElementById('bannerTitle').innerText = data.bannerTitle;
+                        document.getElementById('bannerTitleInput').value = data.bannerTitle;
+                    }
+                    if (data.bannerSub) {
+                        document.getElementById('bannerSub').innerText = data.bannerSub;
+                        document.getElementById('bannerSubInput').value = data.bannerSub;
+                    }
+                }
+            });
+        }
+
+        function saveBanners() {
+            const announcement = document.getElementById('announcementInput').value;
+            const bannerTitle = document.getElementById('bannerTitleInput').value;
+            const bannerSub = document.getElementById('bannerSubInput').value;
+
+            db.collection("kavallo_settings").doc("banners").set({
+                announcement,
+                bannerTitle,
+                bannerSub,
+                updatedAt: new Date()
+            }).then(() => {
+                alert("تم تحديث نصوص البنر والإعلانات بنجاح!");
+            });
+        }
 
         function handleImageSelection(event) {
             const file = event.target.files[0];
@@ -688,7 +755,6 @@
             });
         }
 
-        // نافذة تحديد المقاس واللون
         function promptOptions(id) {
             const prod = productsData[id];
             if (!prod) return;
@@ -740,7 +806,6 @@
                 qty: 1
             };
 
-            // التحقق من تكرار نفس المنتج بنفس الخصائص
             const existingIndex = cart.findIndex(c => c.id === item.id && c.size === item.size && c.color === item.color);
             if (existingIndex > -1) {
                 cart[existingIndex].qty++;
@@ -911,7 +976,7 @@
             const preview = document.getElementById('imagePreview');
             preview.src = '';
             preview.style.display = 'none';
-            document.getElementById('panelTitle').innerText = '⚙️ إضافة موديل جديد';
+            document.getElementById('panelTitle').innerText = '👕 إضافة / تعديل موديل';
             document.getElementById('btnSubmit').innerText = '➕ إضافة الموديل';
             document.getElementById('btnCancel').style.display = 'none';
         }
@@ -941,6 +1006,7 @@
             });
         }
 
+        loadBanners();
         loadProducts();
     </script>
 </body>
