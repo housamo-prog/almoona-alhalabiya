@@ -15,9 +15,10 @@
     <meta property="og:title" content="Kavallo - الألبسة الجاهزة">
     <meta property="og:type" content="website">
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
         :root {
@@ -65,15 +66,6 @@
             cursor: pointer;
         }
 
-        .logo-img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #555;
-            background: #000;
-        }
-
         .logo-title { font-size: 1.3rem; font-weight: 900; color: #ffffff; letter-spacing: 1px; }
         .logo-subtitle { font-size: 0.72rem; color: #b0bec5; }
 
@@ -89,7 +81,6 @@
 
         .container { max-width: 900px; margin: 15px auto; padding: 0 12px; }
 
-        /* التحكم والبحث */
         .controls {
             display: flex;
             gap: 10px;
@@ -107,7 +98,6 @@
 
         .search-box { flex: 1; }
 
-        /* شبكة كروت الألبسة */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -195,7 +185,6 @@
             font-weight: bold;
         }
 
-        /* شريط سفلي ثابت */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -235,7 +224,6 @@
             font-weight: bold;
         }
 
-        /* نافذة السلة */
         .modal {
             display: none;
             position: fixed;
@@ -287,7 +275,6 @@
             cursor: pointer;
         }
 
-        /* لوحة التحكم */
         .admin-panel {
             background: white;
             padding: 15px;
@@ -303,20 +290,35 @@
         .btn-edit, .btn-delete { flex: 1; padding: 6px; border: none; border-radius: 6px; color: white; font-size: 0.75rem; font-weight: bold; }
         .btn-edit { background: #1976d2; }
         .btn-delete { background: #d32f2f; }
+        
+        /* تنسيق خانة رفع الصور */
+        .image-upload-wrapper {
+            background: #f9f9f9;
+            border: 2px dashed #ccc;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .image-upload-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo-container">
-            <!-- رمز شعار حرف AK متناسق ومستقر -->
             <div style="width:42px; height:42px; border-radius:50%; background:#333; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1rem; border:2px solid #666;">AK</div>
             <div>
                 <div class="logo-title">Kavallo</div>
                 <div class="logo-subtitle">للألبسة الجاهزة والأناقة العصرية</div>
             </div>
         </div>
-        <!-- زر مباشر للوحة التحكم -->
         <button class="admin-trigger-btn" onclick="loginAdmin()">⚙️ الإدارة</button>
     </header>
 
@@ -330,6 +332,8 @@
             </div>
             <form class="admin-form" id="addProductForm">
                 <input type="hidden" id="pId">
+                <input type="hidden" id="pExistingImg">
+                
                 <input type="text" id="pTitle" class="admin-input" placeholder="اسم الموديل" required>
                 <select id="pCategory" class="admin-input" required>
                     <option value="ألبسة رجالية">ألبسة رجالية</option>
@@ -340,9 +344,15 @@
                 <input type="text" id="pPrice" class="admin-input" placeholder="السعر" required>
                 <input type="text" id="pSizes" class="admin-input" placeholder="المقاسات (مثال: S, M, L, XL)" required>
                 <input type="text" id="pDesc" class="admin-input" placeholder="الوصف ونوع القماش" required>
-                <input type="url" id="pImg" class="admin-input" placeholder="رابط صورة الموديل (URL)" required>
+
+                <!-- قسم رفع الصورة مباشرة من الجوال -->
+                <div class="image-upload-wrapper">
+                    <label class="image-upload-label" for="pImgFile">📸 اختر صورة الموديل من الجهاز:</label>
+                    <input type="file" id="pImgFile" class="admin-input" accept="image/*">
+                    <div id="uploadProgress" style="font-size:0.8rem; color:#1976d2; margin-top:4px;"></div>
+                </div>
                 
-                <div style="display:flex; gap:15px; font-size:0.8rem;">
+                <div style="display:flex; gap:15px; font-size:0.8rem; margin-top:5px;">
                     <label><input type="checkbox" id="pNew"> تشكيلة جديدة 🔥</label>
                     <label><input type="checkbox" id="pOutOfStock"> نفدت الكمية 🚫</label>
                 </div>
@@ -410,6 +420,7 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         let isAdmin = false;
         let productsData = {};
@@ -448,7 +459,6 @@
             }
         }
 
-        // جلب منتجات Kavallo من مجموعة (kavallo_products)
         function loadProducts() {
             db.collection("kavallo_products").onSnapshot((snapshot) => {
                 const grid = document.getElementById('productsGrid');
@@ -468,7 +478,7 @@
                     const cardHtml = `
                         <div class="product-card" data-category="${data.category}" data-name="${data.title}">
                             ${data.isNew ? `<div class="badge">جديد 🔥</div>` : ''}
-                            <img src="${data.image}" alt="${data.title}" class="product-image">
+                            <img src="${data.image || 'https://via.placeholder.com/200?text=Kavallo'}" alt="${data.title}" class="product-image">
                             <div class="product-info">
                                 <span class="product-category">${data.category}</span>
                                 <h4 class="product-title">${data.title}</h4>
@@ -572,17 +582,49 @@
             window.open(`https://wa.me/96394467755?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        document.getElementById('addProductForm').addEventListener('submit', (e) => {
+        // معالجة إضافة وتعديل صنف مع رفع الصورة سحابياً
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const btnSubmit = document.getElementById('btnSubmit');
+            const progressDiv = document.getElementById('uploadProgress');
             const pId = document.getElementById('pId').value;
-            
+            const fileInput = document.getElementById('pImgFile');
+            const existingImg = document.getElementById('pExistingImg').value;
+
+            let imageUrl = existingImg;
+
+            // إذا أخذ المستخدم صورة جديدة من الكاميرا أو الاستوديو
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const storageRef = storage.ref(`kavallo_images/${Date.now()}_${file.name}`);
+                
+                btnSubmit.disabled = true;
+                progressDiv.innerText = "جاري رفع الصورة إلى السحابة...";
+
+                try {
+                    const snapshot = await storageRef.put(file);
+                    imageUrl = await snapshot.ref.getDownloadURL();
+                    progressDiv.innerText = "تم رفع الصورة بنجاح! ✅";
+                } catch (error) {
+                    alert("حدث خطأ في رفع الصورة، تحقق من الاتصال.");
+                    btnSubmit.disabled = false;
+                    progressDiv.innerText = "";
+                    return;
+                }
+            }
+
+            if (!imageUrl && !pId) {
+                alert("يرجى اختيار صورة للموديل!");
+                return;
+            }
+
             const productData = {
                 title: document.getElementById('pTitle').value,
                 category: document.getElementById('pCategory').value,
                 price: document.getElementById('pPrice').value,
                 sizes: document.getElementById('pSizes').value,
                 desc: document.getElementById('pDesc').value,
-                image: document.getElementById('pImg').value,
+                image: imageUrl,
                 isNew: document.getElementById('pNew').checked,
                 isOutOfStock: document.getElementById('pOutOfStock').checked,
                 updatedAt: new Date()
@@ -590,16 +632,17 @@
 
             if (pId) {
                 db.collection("kavallo_products").doc(pId).update(productData).then(() => {
-                    alert("تم التعديل بنجاح!");
+                    alert("تم تعديل الموديل بنجاح!");
                     resetForm();
                 });
             } else {
                 productData.createdAt = new Date();
                 db.collection("kavallo_products").add(productData).then(() => {
-                    alert("تمت الإضافة بنجاح!");
+                    alert("تمت إضافة الموديل بنجاح!");
                     resetForm();
                 });
             }
+            btnSubmit.disabled = false;
         });
 
         function editProduct(id) {
@@ -607,12 +650,12 @@
             if (!data) return;
 
             document.getElementById('pId').value = id;
+            document.getElementById('pExistingImg').value = data.image || '';
             document.getElementById('pTitle').value = data.title;
             document.getElementById('pCategory').value = data.category;
             document.getElementById('pPrice').value = data.price;
             document.getElementById('pSizes').value = data.sizes;
             document.getElementById('pDesc').value = data.desc;
-            document.getElementById('pImg').value = data.image;
             document.getElementById('pNew').checked = !!data.isNew;
             document.getElementById('pOutOfStock').checked = !!data.isOutOfStock;
 
@@ -626,6 +669,8 @@
         function resetForm() {
             document.getElementById('addProductForm').reset();
             document.getElementById('pId').value = '';
+            document.getElementById('pExistingImg').value = '';
+            document.getElementById('uploadProgress').innerText = '';
             document.getElementById('panelTitle').innerText = '⚙️ إضافة موديل جديد';
             document.getElementById('btnSubmit').innerText = '➕ إضافة الموديل';
             document.getElementById('btnCancel').style.display = 'none';
@@ -660,4 +705,3 @@
     </script>
 </body>
 </html>
-
