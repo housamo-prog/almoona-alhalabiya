@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-title" content="Kavallo">
 
     <!-- SEO & Social Meta -->
-    <meta name="description" content="Kavallo - تشكيلة مميزة من الألبسة الجاهزة العصرية بأفضل الأسعار. تصفح الكتالوج واطلب مباشرة عبر الواتساب.">
+    <meta name="description" content="Kavallo - تشكيلة مميزة من الألبسة الجاهزة العصرية بأفضل الأسعار.">
     <meta property="og:title" content="Kavallo - الألبسة الجاهزة">
     <meta property="og:type" content="website">
 
@@ -21,9 +21,9 @@
 
     <style>
         :root {
-            --primary-color: #212121; /* أسود فاخر هادئ */
+            --primary-color: #212121;
             --primary-dark: #121212;
-            --accent-color: #757575;  /* رمادي معدني مستوحى من الشعار */
+            --accent-color: #757575;
             --bg-color: #f4f4f6;
             --card-bg: #ffffff;
             --text-color: #1a1a1a;
@@ -49,7 +49,9 @@
             background: linear-gradient(135deg, var(--primary-dark), #2c2c2c);
             color: white;
             padding: 15px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
             position: sticky;
             top: 0;
@@ -57,7 +59,7 @@
         }
 
         .logo-container {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
@@ -69,11 +71,21 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #555;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            background: #000;
         }
 
-        .logo-title { font-size: 1.4rem; font-weight: 900; color: #ffffff; letter-spacing: 1px; }
-        .logo-subtitle { font-size: 0.75rem; color: #b0bec5; }
+        .logo-title { font-size: 1.3rem; font-weight: 900; color: #ffffff; letter-spacing: 1px; }
+        .logo-subtitle { font-size: 0.72rem; color: #b0bec5; }
+
+        .admin-trigger-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #555;
+            color: #ccc;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
 
         .container { max-width: 900px; margin: 15px auto; padding: 0 12px; }
 
@@ -172,8 +184,6 @@
             width: 100%;
             margin-top: auto;
         }
-
-        .btn-add-cart:active { opacity: 0.85; }
 
         .out-of-stock {
             color: #c62828;
@@ -277,7 +287,7 @@
             cursor: pointer;
         }
 
-        /* لوحة التحكم السرية (4 نقرات) */
+        /* لوحة التحكم */
         .admin-panel {
             background: white;
             padding: 15px;
@@ -298,14 +308,16 @@
 <body>
 
     <header>
-        <div class="logo-container" id="secretAdminTrigger">
-            <!-- الشعار الجديد لشاشة الهيدر -->
-            <img src="https://i.ibb.co/L89Xv74/leaf-icon.png" alt="Kavallo Logo" class="logo-img" id="kavalloLogoImg">
+        <div class="logo-container">
+            <!-- رمز شعار حرف AK متناسق ومستقر -->
+            <div style="width:42px; height:42px; border-radius:50%; background:#333; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1rem; border:2px solid #666;">AK</div>
             <div>
                 <div class="logo-title">Kavallo</div>
                 <div class="logo-subtitle">للألبسة الجاهزة والأناقة العصرية</div>
             </div>
         </div>
+        <!-- زر مباشر للوحة التحكم -->
+        <button class="admin-trigger-btn" onclick="loginAdmin()">⚙️ الإدارة</button>
     </header>
 
     <div class="container">
@@ -421,7 +433,10 @@
         }
 
         function loginAdmin() {
-            if(isAdmin) return;
+            if(isAdmin) {
+                document.getElementById('adminPanel').style.display = 'block';
+                return;
+            }
             const password = prompt("أدخل كلمة السر للوحة الإدارة:");
             if (password === getAdminPassword()) {
                 isAdmin = true;
@@ -433,21 +448,6 @@
             }
         }
 
-        // 4 نقرات متتالية للوحة التحكم على اللوجو
-        let clickCount = 0;
-        let clickTimer = null;
-
-        document.getElementById('secretAdminTrigger').addEventListener('click', () => {
-            clickCount++;
-            clearTimeout(clickTimer);
-            if (clickCount === 4) {
-                loginAdmin();
-                clickCount = 0;
-            } else {
-                clickTimer = setTimeout(() => { clickCount = 0; }, 1200);
-            }
-        });
-
         // جلب منتجات Kavallo من مجموعة (kavallo_products)
         function loadProducts() {
             db.collection("kavallo_products").onSnapshot((snapshot) => {
@@ -456,7 +456,7 @@
                 productsData = {};
 
                 if (snapshot.empty) {
-                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color:#777;">لا توجد موديلات حالياً.</p>';
+                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color:#777;">لا توجد موديلات حالياً. اضغط على "⚙️ الإدارة" بالأعلى لإضافة منتجات.</p>';
                     return;
                 }
 
@@ -548,4 +548,116 @@
             document.getElementById('cartModal').style.display = 'none';
         }
 
-        function changeQty(id, d
+        function changeQty(id, delta) {
+            if (cart[id]) {
+                cart[id].qty += delta;
+                if (cart[id].qty <= 0) delete cart[id];
+            }
+            updateCartUI();
+            openCartModal();
+        }
+
+        function sendCartToWhatsApp() {
+            let text = "أهلاً Kavallo، أود طلب الموديلات التالية:\n\n";
+            let count = 0;
+            for (let id in cart) {
+                count++;
+                text += `• ${cart[id].title} (المقاسات: ${cart[id].sizes}) - العدد: ${cart[id].qty} - السعر: ${cart[id].price}\n`;
+            }
+            if(count === 0) {
+                alert("السلة فارغة!");
+                return;
+            }
+            text += "\nيرجى تأكيد التوفر والتوصيل.";
+            window.open(`https://wa.me/96394467755?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        document.getElementById('addProductForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pId = document.getElementById('pId').value;
+            
+            const productData = {
+                title: document.getElementById('pTitle').value,
+                category: document.getElementById('pCategory').value,
+                price: document.getElementById('pPrice').value,
+                sizes: document.getElementById('pSizes').value,
+                desc: document.getElementById('pDesc').value,
+                image: document.getElementById('pImg').value,
+                isNew: document.getElementById('pNew').checked,
+                isOutOfStock: document.getElementById('pOutOfStock').checked,
+                updatedAt: new Date()
+            };
+
+            if (pId) {
+                db.collection("kavallo_products").doc(pId).update(productData).then(() => {
+                    alert("تم التعديل بنجاح!");
+                    resetForm();
+                });
+            } else {
+                productData.createdAt = new Date();
+                db.collection("kavallo_products").add(productData).then(() => {
+                    alert("تمت الإضافة بنجاح!");
+                    resetForm();
+                });
+            }
+        });
+
+        function editProduct(id) {
+            const data = productsData[id];
+            if (!data) return;
+
+            document.getElementById('pId').value = id;
+            document.getElementById('pTitle').value = data.title;
+            document.getElementById('pCategory').value = data.category;
+            document.getElementById('pPrice').value = data.price;
+            document.getElementById('pSizes').value = data.sizes;
+            document.getElementById('pDesc').value = data.desc;
+            document.getElementById('pImg').value = data.image;
+            document.getElementById('pNew').checked = !!data.isNew;
+            document.getElementById('pOutOfStock').checked = !!data.isOutOfStock;
+
+            document.getElementById('panelTitle').innerText = '✏️ تعديل موديل';
+            document.getElementById('btnSubmit').innerText = '💾 حفظ التعديلات';
+            document.getElementById('btnCancel').style.display = 'block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('addProductForm').reset();
+            document.getElementById('pId').value = '';
+            document.getElementById('panelTitle').innerText = '⚙️ إضافة موديل جديد';
+            document.getElementById('btnSubmit').innerText = '➕ إضافة الموديل';
+            document.getElementById('btnCancel').style.display = 'none';
+        }
+
+        function deleteProduct(id) {
+            if (confirm("هل أنت تأكد من الحذف؟")) {
+                db.collection("kavallo_products").doc(id).delete().then(() => {
+                    alert("تم الحذف بنجاح!");
+                    resetForm();
+                });
+            }
+        }
+
+        function filterProducts() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const categoryValue = document.getElementById('categoryFilter').value;
+            const cards = document.querySelectorAll('.product-card');
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const category = card.getAttribute('data-category');
+
+                const matchesSearch = name.includes(searchValue);
+                const matchesCategory = categoryValue === 'all' || category === categoryValue;
+
+                card.style.display = (matchesSearch && matchesCategory) ? 'flex' : 'none';
+            });
+        }
+
+        loadProducts();
+    </script>
+</body>
+</html>
+
