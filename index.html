@@ -278,14 +278,13 @@
                 
                 <input type="text" id="pTitle" class="admin-input" placeholder="اسم المنتج (مثال: زعتر أصل حلب)" required>
                 <select id="pCategory" class="admin-input" required>
-                    <option value="زعتر ومقبلات">زعتر ومقبلات</option>
-                    <option value="أجبان وألبان">أجبان وألبان</option>
-                    <option value="زيوت ومكبوسات">زيوت ومكبوسات</option>
-                    <option value="مربيات وعصائر">مربيات وعصائر</option>
-                    <option value="منتجات جافة وبقوليات">منتجات جافة وبقوليات</option>
+                    <option value="زعتر وبهارات">زعتر وبهارات</option>
+                    <option value="زيوت وسمنة">زيوت وسمنة</option>
+                    <option value="مكبوسات ومخللات">مكبوسات ومخللات</option>
+                    <option value="مكسرات وفستق">مكسرات وفستق</option>
                 </select>
                 <input type="text" id="pPrice" class="admin-input" placeholder="السعر (مثال: 45,000 ل.س / كيلو)" required>
-                <input type="text" id="pDetails" class="admin-input" placeholder="التفاصيل والمكونات" required>
+                <input type="text" id="pDesc" class="admin-input" placeholder="التفاصيل والمكونات" required>
 
                 <!-- مربع رفع الصورة مباشرة -->
                 <div class="image-upload-box">
@@ -303,12 +302,11 @@
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
             <select id="categoryFilter" class="filter-select" onchange="filterProducts()">
-                <option value="all">جميع الأقسام</option>
-                <option value="زعتر ومقبلات">زعتر ومقبلات</option>
-                <option value="أجبان وألبان">أجبان وألبان</option>
-                <option value="زيوت ومكبوسات">زيوت ومكبوسات</option>
-                <option value="مربيات وعصائر">مربيات وعصائر</option>
-                <option value="منتجات جافة وبقوليات">منتجات جافة وبقوليات</option>
+                <option value="all">جميع التصنيفات</option>
+                <option value="زعتر وبهارات">زعتر وبهارات</option>
+                <option value="زيوت وسمنة">زيوت وسمنة</option>
+                <option value="مكبوسات ومخللات">مكبوسات ومخللات</option>
+                <option value="مكسرات وفستق">مكسرات وفستق</option>
             </select>
         </div>
 
@@ -429,8 +427,9 @@
             reader.readAsDataURL(file);
         }
 
+        // تم التعديل للتحميل من مجلد products الأساسي لتعود كافة المنتجات السابقة
         function loadProducts() {
-            db.collection("moona_products").onSnapshot((snapshot) => {
+            db.collection("products").onSnapshot((snapshot) => {
                 const grid = document.getElementById('productsGrid');
                 grid.innerHTML = '';
                 productsData = {};
@@ -451,9 +450,9 @@
                             <div class="product-info">
                                 <span class="product-category">${data.category}</span>
                                 <h3 class="product-title">${data.title}</h3>
-                                <p class="product-details">${data.details}</p>
-                                <div class="product-price">${data.price}</div>
-                                <a href="https://wa.me/963944677755?text=${encodeURIComponent('أهلاً، أود طلب المنتج: ' + data.title + ' بسعر: ' + data.price)}" target="_blank" class="btn-whatsapp">
+                                <p class="product-details">${data.desc || data.details || ''}</p>
+                                <div class="product-price">السعر: ${data.price}</div>
+                                <a href="https://wa.me/963944677755?text=${encodeURIComponent('أهلاً المونة الحلبية، أود طلب: ' + data.title + ' بسعر: ' + data.price)}" target="_blank" class="btn-whatsapp">
                                     💬 طلب عبر الواتساب
                                 </a>
                                 ${isAdmin ? `
@@ -483,7 +482,7 @@
                 title: document.getElementById('pTitle').value,
                 category: document.getElementById('pCategory').value,
                 price: document.getElementById('pPrice').value,
-                details: document.getElementById('pDetails').value,
+                desc: document.getElementById('pDesc').value,
                 updatedAt: new Date()
             };
 
@@ -492,13 +491,13 @@
             }
 
             if (pId) {
-                db.collection("moona_products").doc(pId).update(productData).then(() => {
+                db.collection("products").doc(pId).update(productData).then(() => {
                     alert("تم التعديل بنجاح!");
                     resetForm();
                 });
             } else {
                 productData.createdAt = new Date();
-                db.collection("moona_products").add(productData).then(() => {
+                db.collection("products").add(productData).then(() => {
                     alert("تمت الإضافة بنجاح!");
                     resetForm();
                 });
@@ -513,7 +512,7 @@
             document.getElementById('pTitle').value = data.title;
             document.getElementById('pCategory').value = data.category;
             document.getElementById('pPrice').value = data.price;
-            document.getElementById('pDetails').value = data.details;
+            document.getElementById('pDesc').value = data.desc || data.details || '';
 
             if (data.image) {
                 currentBase64Image = data.image;
@@ -543,7 +542,7 @@
 
         function deleteProduct(id) {
             if (confirm("هل أنت تأكد من الحذف؟")) {
-                db.collection("moona_products").doc(id).delete().then(() => {
+                db.collection("products").doc(id).delete().then(() => {
                     alert("تم الحذف بنجاح!");
                     resetForm();
                 });
