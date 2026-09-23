@@ -36,7 +36,6 @@
             user-select: none;
         }
 
-        /* شريط العروض العلوي */
         .announcement-bar {
             background: linear-gradient(90deg, #fbc02d, #f57f17);
             color: #0d3b10;
@@ -87,7 +86,6 @@
 
         .container { max-width: 1000px; margin: 15px auto; padding: 0 12px; }
 
-        /* البنر الترويجي الرئيسية */
         .hero-banner {
             background: linear-gradient(135deg, #1b5e20, #0d3b10);
             color: #fff;
@@ -122,7 +120,6 @@
 
         .search-box { flex: 1; }
 
-        /* شبكة المنتجات العصرية */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
@@ -142,20 +139,6 @@
         }
 
         .product-card:active { transform: scale(0.98); }
-
-        .badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #d32f2f;
-            color: white;
-            font-size: 0.68rem;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 12px;
-            z-index: 2;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
 
         .product-image {
             width: 100%;
@@ -241,7 +224,6 @@
             font-weight: 800;
         }
 
-        /* النوافذ المنبثقة السريعة */
         .modal {
             display: none;
             position: fixed;
@@ -300,7 +282,6 @@
             box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
         }
 
-        /* مكبر الصور الرائع */
         .lightbox-modal {
             display: none;
             position: fixed;
@@ -321,7 +302,6 @@
             box-shadow: 0 0 25px rgba(255,255,255,0.2);
         }
 
-        /* لوحة التحكم المحترفة */
         .admin-panel {
             background: white;
             padding: 18px;
@@ -382,7 +362,6 @@
 </head>
 <body>
 
-    <!-- شريط الإعلانات الديناميكي -->
     <div class="announcement-bar" id="announcementText">
         🌿 أحدث منتجات المونة الحلبية الطبيعية 100% - توصيل لكافة المناطق 🚀
     </div>
@@ -399,20 +378,17 @@
 
     <div class="container">
 
-        <!-- البنر الرئيسي -->
         <div class="hero-banner">
             <h2 id="bannerTitle">أصالة المونة الحلبية</h2>
             <p id="bannerSub">طعم حقيقي ومكونات نقية من قلب حلب إليكم مباشرة</p>
         </div>
 
-        <!-- لوحة التحكم الإدارية -->
         <div class="admin-panel" id="adminPanel">
             <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                 <h3 style="font-size:1rem; color:var(--primary-color);">⚙️ إدارة متجر المونة الحلبية</h3>
                 <button onclick="changeAdminPassword()" style="font-size:0.78rem; padding:4px 10px; background:#f57c00; color:white; border:none; border-radius:6px;">🔑 تغيير كلمة السر</button>
             </div>
 
-            <!-- التحكم بالإعلانات والبنر -->
             <div class="admin-section">
                 <div class="admin-section-title">📢 تعديل الشريط الإعلاني والبنر الرئيسي</div>
                 <div class="admin-form">
@@ -423,7 +399,6 @@
                 </div>
             </div>
 
-            <!-- إدارة الموديلات والمنتجات -->
             <div class="admin-section">
                 <div class="admin-section-title" id="panelTitle">🌿 إضافة / تعديل صنف</div>
                 <form class="admin-form" id="addProductForm">
@@ -452,7 +427,6 @@
             </div>
         </div>
 
-        <!-- البحث والتصنيف -->
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
             <select id="categoryFilter" class="filter-select" onchange="filterProducts()">
@@ -465,13 +439,11 @@
             </select>
         </div>
 
-        <!-- شبكة عرض المنتجات -->
         <div class="products-grid" id="productsGrid">
             <p style="text-align: center; grid-column: 1/-1; color:#777;">جاري تحميل منتجات المونة الحلبية...</p>
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي -->
     <div class="bottom-nav">
         <div class="nav-item" onclick="window.scrollTo({top:0, behavior:'smooth'})">
             <div class="nav-icon">🌿</div>
@@ -486,7 +458,6 @@
         </div>
     </div>
 
-    <!-- نافذة السلة -->
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -498,7 +469,6 @@
         </div>
     </div>
 
-    <!-- نافذة تكبير الصور (Lightbox) -->
     <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
         <img class="lightbox-img" id="lightboxImg" src="" alt="صورة المنتج مكبرة">
         <p id="lightboxCaption" style="color:#fff; margin-top:12px; font-size:0.95rem; font-weight:bold;"></p>
@@ -561,7 +531,6 @@
             }
         }
 
-        // 4 نقرات متتالية للوحة الإدارة
         let clickCount = 0;
         let clickTimer = null;
         document.getElementById('secretAdminTrigger').addEventListener('click', () => {
@@ -651,7 +620,6 @@
             reader.readAsDataURL(file);
         }
 
-        // قراءة مجلد products الأساسي لضمان سلامة كافة المنتجات المسجلة
         function loadProducts() {
             db.collection("products").onSnapshot((snapshot) => {
                 const grid = document.getElementById('productsGrid');
@@ -754,6 +722,7 @@
             openCartModal();
         }
 
+        // تم ضبط رقم الهاتف الخاص بالمونة الحلبية 00963933267910
         function sendCartToWhatsApp() {
             if (cart.length === 0) {
                 alert("السلة فارغة!");
@@ -766,7 +735,7 @@
             });
 
             text += "\nيرجى تأكيد التوفر والتوصيل.";
-            window.open(`https://wa.me/963944677755?text=${encodeURIComponent(text)}`, '_blank');
+            window.open(`https://wa.me/963933267910?text=${encodeURIComponent(text)}`, '_blank');
         }
 
         function openLightbox(imgUrl, caption) {
