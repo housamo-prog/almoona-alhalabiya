@@ -15,10 +15,9 @@
     <meta property="og:title" content="Kavallo - الألبسة الجاهزة">
     <meta property="og:type" content="website">
 
-    <!-- Firebase SDKs (Compat Version) -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
         :root {
@@ -63,7 +62,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            cursor: pointer;
         }
 
         .logo-title { font-size: 1.3rem; font-weight: 900; color: #ffffff; letter-spacing: 1px; }
@@ -285,16 +283,16 @@
         }
 
         .admin-form { display: grid; grid-template-columns: 1fr; gap: 8px; }
-        .admin-input { padding: 9px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.85rem; }
+        .admin-input { padding: 9px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.85rem; width: 100%; }
         .admin-actions { display: flex; gap: 5px; margin-top: 8px; }
         .btn-edit, .btn-delete { flex: 1; padding: 6px; border: none; border-radius: 6px; color: white; font-size: 0.75rem; font-weight: bold; }
         .btn-edit { background: #1976d2; }
         .btn-delete { background: #d32f2f; }
         
-        /* تنسيق خانة رفع الصور */
+        /* مربع رفع الصور المباشر */
         .image-upload-wrapper {
-            background: #f9f9f9;
-            border: 2px dashed #ccc;
+            background: #f8f9fa;
+            border: 2px dashed #bbb;
             padding: 12px;
             border-radius: 8px;
             text-align: center;
@@ -305,7 +303,14 @@
             font-weight: bold;
             color: #333;
             margin-bottom: 6px;
-            cursor: pointer;
+        }
+        .preview-img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 8px;
+            margin-top: 8px;
+            display: none;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
@@ -332,7 +337,6 @@
             </div>
             <form class="admin-form" id="addProductForm">
                 <input type="hidden" id="pId">
-                <input type="hidden" id="pExistingImg">
                 
                 <input type="text" id="pTitle" class="admin-input" placeholder="اسم الموديل" required>
                 <select id="pCategory" class="admin-input" required>
@@ -345,11 +349,11 @@
                 <input type="text" id="pSizes" class="admin-input" placeholder="المقاسات (مثال: S, M, L, XL)" required>
                 <input type="text" id="pDesc" class="admin-input" placeholder="الوصف ونوع القماش" required>
 
-                <!-- قسم رفع الصورة مباشرة من الجوال -->
+                <!-- قسم رفع الصور المباشر بطلب الجوال -->
                 <div class="image-upload-wrapper">
-                    <label class="image-upload-label" for="pImgFile">📸 اختر صورة الموديل من الجهاز:</label>
-                    <input type="file" id="pImgFile" class="admin-input" accept="image/*">
-                    <div id="uploadProgress" style="font-size:0.8rem; color:#1976d2; margin-top:4px;"></div>
+                    <label class="image-upload-label">📸 اختر صورة الموديل من الجهاز مباشرة:</label>
+                    <input type="file" id="pImgFile" class="admin-input" accept="image/*" onchange="handleImageSelection(event)">
+                    <img id="imagePreview" class="preview-img" alt="معاينة الصورة">
                 </div>
                 
                 <div style="display:flex; gap:15px; font-size:0.8rem; margin-top:5px;">
@@ -420,11 +424,11 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         let isAdmin = false;
         let productsData = {};
         let cart = {};
+        let currentBase64Image = "";
 
         function getAdminPassword() {
             return localStorage.getItem('clothesAdminPassword') || '123456';
@@ -457,6 +461,49 @@
             } else if (password !== null) {
                 alert("كلمة السر غير صحيحة!");
             }
+        }
+
+        // دالة معالجة وتحويل الصورة المرفوقة إلى Base64 مع تقليل الحجم لسرعة التحميل
+        function handleImageSelection(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    // ضغط الحجم الأقصى للعدسة والشبكة
+                    const max_size = 600;
+                    if (width > height) {
+                        if (width > max_size) {
+                            height *= max_size / width;
+                            width = max_size;
+                        }
+                    } else {
+                        if (height > max_size) {
+                            width *= max_size / height;
+                            height = max_size;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    currentBase64Image = canvas.toDataURL('image/jpeg', 0.7);
+                    
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = currentBase64Image;
+                    preview.style.display = 'inline-block';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         function loadProducts() {
@@ -582,39 +629,12 @@
             window.open(`https://wa.me/96394467755?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // معالجة إضافة وتعديل صنف مع رفع الصورة سحابياً
-        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+        document.getElementById('addProductForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const btnSubmit = document.getElementById('btnSubmit');
-            const progressDiv = document.getElementById('uploadProgress');
             const pId = document.getElementById('pId').value;
-            const fileInput = document.getElementById('pImgFile');
-            const existingImg = document.getElementById('pExistingImg').value;
-
-            let imageUrl = existingImg;
-
-            // إذا أخذ المستخدم صورة جديدة من الكاميرا أو الاستوديو
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                const storageRef = storage.ref(`kavallo_images/${Date.now()}_${file.name}`);
-                
-                btnSubmit.disabled = true;
-                progressDiv.innerText = "جاري رفع الصورة إلى السحابة...";
-
-                try {
-                    const snapshot = await storageRef.put(file);
-                    imageUrl = await snapshot.ref.getDownloadURL();
-                    progressDiv.innerText = "تم رفع الصورة بنجاح! ✅";
-                } catch (error) {
-                    alert("حدث خطأ في رفع الصورة، تحقق من الاتصال.");
-                    btnSubmit.disabled = false;
-                    progressDiv.innerText = "";
-                    return;
-                }
-            }
-
-            if (!imageUrl && !pId) {
-                alert("يرجى اختيار صورة للموديل!");
+            
+            if (!currentBase64Image && !pId) {
+                alert("يرجى اختيار صورة للموديل من جهازك أولاً!");
                 return;
             }
 
@@ -624,25 +644,27 @@
                 price: document.getElementById('pPrice').value,
                 sizes: document.getElementById('pSizes').value,
                 desc: document.getElementById('pDesc').value,
-                image: imageUrl,
                 isNew: document.getElementById('pNew').checked,
                 isOutOfStock: document.getElementById('pOutOfStock').checked,
                 updatedAt: new Date()
             };
 
+            if (currentBase64Image) {
+                productData.image = currentBase64Image;
+            }
+
             if (pId) {
                 db.collection("kavallo_products").doc(pId).update(productData).then(() => {
-                    alert("تم تعديل الموديل بنجاح!");
+                    alert("تم التعديل بنجاح!");
                     resetForm();
                 });
             } else {
                 productData.createdAt = new Date();
                 db.collection("kavallo_products").add(productData).then(() => {
-                    alert("تمت إضافة الموديل بنجاح!");
+                    alert("تمت الإضافة بنجاح!");
                     resetForm();
                 });
             }
-            btnSubmit.disabled = false;
         });
 
         function editProduct(id) {
@@ -650,7 +672,6 @@
             if (!data) return;
 
             document.getElementById('pId').value = id;
-            document.getElementById('pExistingImg').value = data.image || '';
             document.getElementById('pTitle').value = data.title;
             document.getElementById('pCategory').value = data.category;
             document.getElementById('pPrice').value = data.price;
@@ -658,6 +679,13 @@
             document.getElementById('pDesc').value = data.desc;
             document.getElementById('pNew').checked = !!data.isNew;
             document.getElementById('pOutOfStock').checked = !!data.isOutOfStock;
+
+            if (data.image) {
+                currentBase64Image = data.image;
+                const preview = document.getElementById('imagePreview');
+                preview.src = data.image;
+                preview.style.display = 'inline-block';
+            }
 
             document.getElementById('panelTitle').innerText = '✏️ تعديل موديل';
             document.getElementById('btnSubmit').innerText = '💾 حفظ التعديلات';
@@ -669,8 +697,10 @@
         function resetForm() {
             document.getElementById('addProductForm').reset();
             document.getElementById('pId').value = '';
-            document.getElementById('pExistingImg').value = '';
-            document.getElementById('uploadProgress').innerText = '';
+            currentBase64Image = "";
+            const preview = document.getElementById('imagePreview');
+            preview.src = '';
+            preview.style.display = 'none';
             document.getElementById('panelTitle').innerText = '⚙️ إضافة موديل جديد';
             document.getElementById('btnSubmit').innerText = '➕ إضافة الموديل';
             document.getElementById('btnCancel').style.display = 'none';
