@@ -11,7 +11,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Kavallo">
 
-    <!-- SEO & Social Meta -->
     <meta name="description" content="Kavallo - أحدث تشكيلات الألبسة الجاهزة والأناقة العصرية بأفضل الأسعار.">
     <meta property="og:title" content="Kavallo - الألبسة الجاهزة">
     <meta property="og:type" content="website">
@@ -23,7 +22,7 @@
     <style>
         :root {
             --primary-color: #121212;
-            --accent-color: #d4af37; /* ذهبي أنيق للتفاصيل المميزة */
+            --accent-color: #d4af37;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --text-color: #1a1a1a;
@@ -45,7 +44,6 @@
             user-select: none;
         }
 
-        /* شريط الإعلانات العلوي */
         .announcement-bar {
             background: #d4af37;
             color: #121212;
@@ -96,7 +94,6 @@
 
         .container { max-width: 900px; margin: 12px auto; padding: 0 12px; }
 
-        /* البنر الترويجي */
         .hero-banner {
             background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
             color: #fff;
@@ -176,6 +173,7 @@
             object-fit: cover;
             background-color: #f0f0f0;
             cursor: pointer;
+            transition: opacity 0.2s ease;
         }
 
         .product-info {
@@ -194,6 +192,29 @@
             font-weight: 800;
             color: #121212;
             margin: 4px 0 8px 0;
+        }
+
+        /* دوائر استعراض الألوان في البطاقة */
+        .card-color-swatches {
+            display: flex;
+            gap: 6px;
+            margin: 6px 0;
+            flex-wrap: wrap;
+        }
+
+        .swatch-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+
+        .swatch-circle.active {
+            border-color: var(--accent-color);
+            transform: scale(1.15);
         }
 
         .btn-add-cart {
@@ -262,7 +283,6 @@
             font-weight: bold;
         }
 
-        /* النوافذ المنبثقة (Modals) */
         .modal {
             display: none;
             position: fixed;
@@ -320,7 +340,6 @@
             cursor: pointer;
         }
 
-        /* نافذة مكبر الصور (Lightbox) */
         .lightbox-modal {
             display: none;
             position: fixed;
@@ -350,7 +369,6 @@
             cursor: pointer;
         }
 
-        /* لوحة التحكم الإدارية */
         .admin-panel {
             background: white;
             padding: 15px;
@@ -381,46 +399,62 @@
         .admin-form { display: grid; grid-template-columns: 1fr; gap: 8px; }
         .admin-input { padding: 9px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.85rem; width: 100%; }
         .admin-actions { display: flex; gap: 5px; margin-top: 8px; }
-        .btn-edit, .btn-delete { flex: 1; padding: 6px; border: none; border-radius: 6px; color: white; font-size: 0.75rem; font-weight: bold; }
+        .btn-edit, .btn-delete { flex: 1; padding: 6px; border: none; border-radius: 6px; color: white; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
         .btn-edit { background: #1976d2; }
         .btn-delete { background: #d32f2f; }
-        
-        .image-upload-wrapper {
-            background: #f8f9fa;
-            border: 2px dashed #bbb;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .image-upload-label {
-            display: block;
-            font-size: 0.85rem;
+
+        .btn-quick-size {
+            background: #e0e0e0;
+            border: 1px solid #ccc;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
             font-weight: bold;
-            color: #333;
-            margin-bottom: 6px;
-        }
-        .preview-img {
-            max-width: 120px;
-            max-height: 120px;
-            border-radius: 8px;
-            margin-top: 8px;
-            display: none;
-            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .opt-select {
-            padding: 8px;
+        .btn-quick-size:hover {
+            background: #121212;
+            color: #fff;
+        }
+
+        .color-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: transform 0.15s ease;
+        }
+
+        .color-circle:hover {
+            transform: scale(1.2);
+        }
+
+        /* كروت إضافة الصور لكل لون في إدارة الصنف */
+        .color-image-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 6px;
+        }
+
+        .color-image-preview {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
             border-radius: 6px;
             border: 1px solid #ccc;
-            width: 100%;
-            margin-top: 5px;
-            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- شريط العروض العلوي -->
     <div class="announcement-bar" id="announcementText">
         ✨ تشكيلة جديدة ومميزة - توصيل سريع لجميع المناطق 🚀
     </div>
@@ -437,7 +471,6 @@
 
     <div class="container">
 
-        <!-- البنر الترويجي -->
         <div class="hero-banner">
             <h2 id="bannerTitle">KAVALLO COLLECTION</h2>
             <p id="bannerSub">أرقى الموديلات والخامات العصرية بأسعار تنافسية</p>
@@ -447,10 +480,9 @@
         <div class="admin-panel" id="adminPanel">
             <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                 <h3 style="font-size:1rem; color:var(--primary-color);">⚙️ لوحة التحكم الإدارية</h3>
-                <button onclick="changeAdminPassword()" style="font-size:0.75rem; padding:4px 8px;">🔑 تغيير السر</button>
+                <button onclick="changeAdminPassword()" style="font-size:0.75rem; padding:4px 8px; cursor:pointer;">🔑 تغيير السر</button>
             </div>
 
-            <!-- قسم تعديل الشريط والبنر -->
             <div class="admin-section">
                 <div class="admin-section-title">📢 تعديل الإعلانات والبنر الترويجي</div>
                 <div class="admin-form">
@@ -461,10 +493,9 @@
                 </div>
             </div>
 
-            <!-- قسم إدارة الموديلات والمنتجات -->
             <div class="admin-section">
                 <div class="admin-section-title" id="panelTitle">👕 إضافة / تعديل موديل</div>
-                <form class="admin-form" id="addProductForm">
+                <form class="admin-form" id="addProductForm" onsubmit="handleProductSubmit(event)">
                     <input type="hidden" id="pId">
                     
                     <input type="text" id="pTitle" class="admin-input" placeholder="اسم الموديل" required>
@@ -475,29 +506,55 @@
                         <option value="إكسسوارات وحقائب">إكسسوارات وحقائب</option>
                     </select>
                     <input type="text" id="pPrice" class="admin-input" placeholder="السعر (مثال: 150,000 ل.س)" required>
-                    <input type="text" id="pSizes" class="admin-input" placeholder="المقاسات (مفصولة بفاصلة: S, M, L, XL)" required>
-                    <input type="text" id="pColors" class="admin-input" placeholder="الألوان المتاحة (مفصولة بفاصلة: أسود, أبيض, كحلي)">
+                    
+                    <!-- حقل المقاسات -->
+                    <div>
+                        <label style="font-size:0.8rem; font-weight:bold; display:block; margin-bottom:4px;">المقاسات المتاحة:</label>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
+                            <button type="button" class="btn-quick-size" onclick="toggleSize('S')">S</button>
+                            <button type="button" class="btn-quick-size" onclick="toggleSize('M')">M</button>
+                            <button type="button" class="btn-quick-size" onclick="toggleSize('L')">L</button>
+                            <button type="button" class="btn-quick-size" onclick="toggleSize('XL')">XL</button>
+                            <button type="button" class="btn-quick-size" onclick="toggleSize('XXL')">XXL</button>
+                            <button type="button" class="btn-quick-size" onclick="toggleSize('3XL')">3XL</button>
+                        </div>
+                        <input type="text" id="pSizes" class="admin-input" placeholder="المقاسات المحددة (يمكن تعديلها يدوياً)" required>
+                    </div>
+
+                    <!-- اختيار الألوان وإدارة صور الألوان -->
+                    <div>
+                        <label style="font-size:0.8rem; font-weight:bold; display:block; margin-bottom:4px;">الألوان المتاحة والصور الخاصة بكل لون:</label>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; align-items:center;">
+                            <div class="color-circle" style="background:#000000;" title="أسود" onclick="toggleColor('أسود', '#000000')"></div>
+                            <div class="color-circle" style="background:#ffffff; border:1px solid #ccc;" title="أبيض" onclick="toggleColor('أبيض', '#ffffff')"></div>
+                            <div class="color-circle" style="background:#000080;" title="كحلي" onclick="toggleColor('كحلي', '#000080')"></div>
+                            <div class="color-circle" style="background:#808080;" title="رمادي" onclick="toggleColor('رمادي', '#808080')"></div>
+                            <div class="color-circle" style="background:#a52a2a;" title="بني" onclick="toggleColor('بني', '#a52a2a')"></div>
+                            <div class="color-circle" style="background:#f5f5dc; border:1px solid #ccc;" title="بيج" onclick="toggleColor('بيج', '#f5f5dc')"></div>
+                            <div class="color-circle" style="background:#d32f2f;" title="أحمر" onclick="toggleColor('أحمر', '#d32f2f')"></div>
+                            <div class="color-circle" style="background:#1b5e20;" title="زيتي" onclick="toggleColor('زيتي', '#1b5e20')"></div>
+                            <div class="color-circle" style="background:#1976d2;" title="أزرق" onclick="toggleColor('أزرق', '#1976d2')"></div>
+                            <div class="color-circle" style="background:#fbc02d;" title="أصفر" onclick="toggleColor('أصفر', '#fbc02d')"></div>
+                        </div>
+
+                        <!-- حاوية صور الألوان -->
+                        <div id="colorImagesContainer"></div>
+                    </div>
+
                     <input type="text" id="pDesc" class="admin-input" placeholder="الوصف ونوع القماش" required>
 
-                    <div class="image-upload-wrapper">
-                        <label class="image-upload-label">📸 اختر صورة الموديل من الجهاز مباشرة:</label>
-                        <input type="file" id="pImgFile" class="admin-input" accept="image/*" onchange="handleImageSelection(event)">
-                        <img id="imagePreview" class="preview-img" alt="معاينة الصورة">
-                    </div>
-                    
                     <div style="display:flex; gap:12px; font-size:0.8rem; margin-top:5px; flex-wrap:wrap;">
                         <label><input type="checkbox" id="pNew"> تشكيلة جديدة 🔥</label>
                         <label><input type="checkbox" id="pBestSeller"> الأكثر مبيعاً ⭐</label>
                         <label><input type="checkbox" id="pOutOfStock"> نفدت الكمية 🚫</label>
                     </div>
 
-                    <button type="submit" id="btnSubmit" style="background:var(--primary-color); color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; margin-top:5px;">➕ إضافة الموديل</button>
-                    <button type="button" id="btnCancel" onclick="resetForm()" style="display:none; background:#777; color:white; border:none; padding:8px; border-radius:8px;">إلغاء</button>
+                    <button type="submit" id="btnSubmit" style="background:var(--primary-color); color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; margin-top:5px; cursor:pointer;">➕ إضافة الموديل</button>
+                    <button type="button" id="btnCancel" onclick="resetForm()" style="display:none; background:#777; color:white; border:none; padding:8px; border-radius:8px; cursor:pointer;">إلغاء</button>
                 </form>
             </div>
         </div>
 
-        <!-- البحث والتصنيف -->
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن موديل..." onkeyup="filterProducts()">
             <select id="categoryFilter" class="filter-select" onchange="filterProducts()">
@@ -509,13 +566,11 @@
             </select>
         </div>
 
-        <!-- شبكة عرض المنتجات -->
         <div class="products-grid" id="productsGrid">
             <p style="text-align: center; grid-column: 1/-1; color:#777;">جاري تحميل التشكيلة...</p>
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي -->
     <div class="bottom-nav">
         <div class="nav-item" onclick="window.scrollTo({top:0, behavior:'smooth'})">
             <div class="nav-icon">👕</div>
@@ -530,7 +585,7 @@
         </div>
     </div>
 
-    <!-- نافذة اختيار المقاس واللون -->
+    <!-- نافذة طلب الاصناف واختيار الألوان والقياسات -->
     <div class="modal" id="optModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -542,7 +597,6 @@
         </div>
     </div>
 
-    <!-- نافذة السلة -->
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -554,7 +608,6 @@
         </div>
     </div>
 
-    <!-- نافذة تكبير الصور (Lightbox) -->
     <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
         <span class="lightbox-close">&times;</span>
         <img class="lightbox-img" id="lightboxImg" src="" alt="صورة الموديل مكبرة">
@@ -563,130 +616,99 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyCxZkeX6fn58z_I1sjxZLE...",
-            authDomain: "almoona-store.firebaseapp.com",
-            projectId: "almoona-store",
-            storageBucket: "almoona-store.appspot.com",
-            messagingSenderId: "261930876292",
-            appId: "1:261930876292:web:41d94db43...",
-            measurementId: "G-SX209YGE6H"
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
 
-        let isAdmin = false;
-        let productsData = {};
+        let products = [];
         let cart = [];
-        let currentBase64Image = "";
-        let selectedProductForOpt = null;
+        let adminPassword = localStorage.getItem('kavallo_admin_pass') || '123456';
+        let clickCount = 0;
+        let selectedProductForCart = null;
+        let currentModalSelectedColor = null;
 
-        function getAdminPassword() {
-            return localStorage.getItem('clothesAdminPassword') || '123456';
-        }
+        // مصفوفة كائنات الألوان للصنف الحالي في لوحة التحكم: [{ name: 'أسود', code: '#000000', image: 'base64...' }]
+        let productColorsData = [];
 
-        function changeAdminPassword() {
-            const currentPass = prompt("كلمة السر الحالية:");
-            if (currentPass === getAdminPassword()) {
-                const newPass = prompt("كلمة السر الجديدة:");
-                if (newPass && newPass.trim() !== "") {
-                    localStorage.setItem('clothesAdminPassword', newPass.trim());
-                    alert("تم تحديث كلمة السر بنجاح!");
-                }
-            } else if (currentPass !== null) {
-                alert("كلمة السر غير صحيحة!");
+        // ** 1. إدارة المقاسات والألوان بالموديل **
+        function toggleSize(size) {
+            const input = document.getElementById('pSizes');
+            let currentSizes = input.value ? input.value.split(',').map(s => s.trim()) : [];
+
+            if (currentSizes.includes(size)) {
+                currentSizes = currentSizes.filter(s => s !== size);
+            } else {
+                currentSizes.push(size);
             }
+
+            input.value = currentSizes.join(', ');
         }
 
-        function loginAdmin() {
-            if(isAdmin) {
-                document.getElementById('adminPanel').style.display = 'block';
+        function toggleColor(colorName, colorCode) {
+            const existingIndex = productColorsData.findIndex(c => c.name === colorName);
+
+            if (existingIndex > -1) {
+                productColorsData.splice(existingIndex, 1);
+            } else {
+                productColorsData.push({
+                    name: colorName,
+                    code: colorCode,
+                    image: ''
+                });
+            }
+
+            renderAdminColorImageUploads();
+        }
+
+        function renderAdminColorImageUploads() {
+            const container = document.getElementById('colorImagesContainer');
+            if (productColorsData.length === 0) {
+                container.innerHTML = `<small style="color:#888;">اختر ألوان الصنف من الدوائر الملونة أعلاه لإضافة صورة لكل لون.</small>`;
                 return;
             }
-            const password = prompt("أدخل كلمة السر للوحة الإدارة:");
-            if (password === getAdminPassword()) {
-                isAdmin = true;
-                document.getElementById('adminPanel').style.display = 'block';
-                alert("تم الدخول للوحة التحكم!");
-                loadProducts();
-            } else if (password !== null) {
-                alert("كلمة السر غير صحيحة!");
-            }
+
+            container.innerHTML = productColorsData.map((colorObj, idx) => `
+                <div class="color-image-card">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="color-circle" style="background:${colorObj.code}; width:20px; height:20px; display:inline-block;"></span>
+                        <strong style="font-size:0.85rem;">${colorObj.name}</strong>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <input type="file" accept="image/*" style="font-size:0.75rem;" onchange="handleColorImageUpload(event, ${idx})">
+                        ${colorObj.image ? `<img src="${colorObj.image}" class="color-image-preview">` : `<span style="font-size:0.75rem; color:#888;">بدون صورة</span>`}
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // 4 نقرات متتالية للوحة الإدارة
-        let clickCount = 0;
-        let clickTimer = null;
-        document.getElementById('secretAdminTrigger').addEventListener('click', () => {
-            clickCount++;
-            clearTimeout(clickTimer);
-            if (clickCount === 4) {
-                loginAdmin();
-                clickCount = 0;
-            } else {
-                clickTimer = setTimeout(() => { clickCount = 0; }, 1200);
-            }
-        });
-
-        // جلب وحفظ إعدادات البنر والشريط العلوي من السحابة
-        function loadBanners() {
-            db.collection("kavallo_settings").doc("banners").onSnapshot((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    if (data.announcement) {
-                        document.getElementById('announcementText').innerText = data.announcement;
-                        document.getElementById('announcementInput').value = data.announcement;
-                    }
-                    if (data.bannerTitle) {
-                        document.getElementById('bannerTitle').innerText = data.bannerTitle;
-                        document.getElementById('bannerTitleInput').value = data.bannerTitle;
-                    }
-                    if (data.bannerSub) {
-                        document.getElementById('bannerSub').innerText = data.bannerSub;
-                        document.getElementById('bannerSubInput').value = data.bannerSub;
-                    }
-                }
-            });
-        }
-
-        function saveBanners() {
-            const announcement = document.getElementById('announcementInput').value;
-            const bannerTitle = document.getElementById('bannerTitleInput').value;
-            const bannerSub = document.getElementById('bannerSubInput').value;
-
-            db.collection("kavallo_settings").doc("banners").set({
-                announcement,
-                bannerTitle,
-                bannerSub,
-                updatedAt: new Date()
-            }).then(() => {
-                alert("تم تحديث نصوص البنر والإعلانات بنجاح!");
-            });
-        }
-
-        function handleImageSelection(event) {
-            const file = event.target.files[0];
+        function handleColorImageUpload(e, index) {
+            const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     let width = img.width;
                     let height = img.height;
+                    const max = 600;
 
-                    const max_size = 650;
-                    if (width > height) {
-                        if (width > max_size) {
-                            height *= max_size / width;
-                            width = max_size;
-                        }
-                    } else {
-                        if (height > max_size) {
-                            width *= max_size / height;
-                            height = max_size;
-                        }
+                    if (width > height && width > max) {
+                        height *= max / width;
+                        width = max;
+                    } else if (height > max) {
+                        width *= max / height;
+                        height = max;
                     }
 
                     canvas.width = width;
@@ -694,94 +716,301 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    currentBase64Image = canvas.toDataURL('image/jpeg', 0.75);
-                    
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = currentBase64Image;
-                    preview.style.display = 'inline-block';
+                    productColorsData[index].image = canvas.toDataURL('image/jpeg', 0.7);
+                    renderAdminColorImageUploads();
                 };
-                img.src = e.target.result;
+                img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        function loadProducts() {
-            db.collection("kavallo_products").onSnapshot((snapshot) => {
-                const grid = document.getElementById('productsGrid');
-                grid.innerHTML = '';
-                productsData = {};
-
-                if (snapshot.empty) {
-                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color:#777;">لا توجد موديلات حالياً.</p>';
-                    return;
-                }
-
-                snapshot.forEach((doc) => {
+        // ** 2. البنرات والإعلانات **
+        function loadSettings() {
+            db.collection('settings').doc('banners').onSnapshot(doc => {
+                if (doc.exists) {
                     const data = doc.data();
-                    const pId = doc.id;
-                    productsData[pId] = data;
-
-                    let badgeHtml = '';
-                    if (data.isNew) badgeHtml = `<div class="badge">جديد 🔥</div>`;
-                    else if (data.isBestSeller) badgeHtml = `<div class="badge badge-gold">الأكثر مبيعاً ⭐</div>`;
-
-                    const cardHtml = `
-                        <div class="product-card" data-category="${data.category}" data-name="${data.title}">
-                            ${badgeHtml}
-                            <img src="${data.image || 'https://via.placeholder.com/200?text=Kavallo'}" alt="${data.title}" class="product-image" onclick="openLightbox('${data.image}', '${data.title}')">
-                            <div class="product-info">
-                                <span class="product-category">${data.category}</span>
-                                <h4 class="product-title">${data.title}</h4>
-                                <div class="product-desc">${data.desc || ''}</div>
-                                <div class="product-price">${data.price}</div>
-                                
-                                ${data.isOutOfStock ? `
-                                    <div class="out-of-stock">غير متوفر حالياً 🚫</div>
-                                ` : `
-                                    <button class="btn-add-cart" onclick="promptOptions('${pId}')">🛒 إضافـة للسلة</button>
-                                `}
-
-                                ${isAdmin ? `
-                                    <div class="admin-actions">
-                                        <button class="btn-edit" onclick="editProduct('${pId}')">تعديل</button>
-                                        <button class="btn-delete" onclick="deleteProduct('${pId}')">حذف</button>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
-                    `;
-                    grid.innerHTML += cardHtml;
-                });
+                    if (data.announcement) document.getElementById('announcementText').innerText = data.announcement;
+                    if (data.bannerTitle) document.getElementById('bannerTitle').innerText = data.bannerTitle;
+                    if (data.bannerSub) document.getElementById('bannerSub').innerText = data.bannerSub;
+                }
             });
         }
 
-        function promptOptions(id) {
-            const prod = productsData[id];
-            if (!prod) return;
-            selectedProductForOpt = { id, ...prod };
+        function saveBanners() {
+            const ann = document.getElementById('announcementInput').value;
+            const title = document.getElementById('bannerTitleInput').value;
+            const sub = document.getElementById('bannerSubInput').value;
 
-            const sizesArr = prod.sizes ? prod.sizes.split(',').map(s => s.trim()) : [];
-            const colorsArr = prod.colors ? prod.colors.split(',').map(c => c.trim()) : [];
+            db.collection('settings').doc('banners').set({
+                announcement: ann || document.getElementById('announcementText').innerText,
+                bannerTitle: title || document.getElementById('bannerTitle').innerText,
+                bannerSub: sub || document.getElementById('bannerSub').innerText
+            }).then(() => alert("تم حفظ الإعلانات والبنر بنجاح!"));
+        }
 
-            let html = `<p style="font-size:0.9rem; font-weight:bold; margin-bottom:10px;">${prod.title} (${prod.price})</p>`;
+        // ** 3. إدارة الوصول والإدارة **
+        document.getElementById('secretAdminTrigger').addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 3) {
+                const pass = prompt("أدخل كلمة المرور للوحة التحكم:");
+                if (pass === adminPassword) {
+                    document.getElementById('adminPanel').style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    alert("كلمة المرور غير صحيحة!");
+                }
+                clickCount = 0;
+            }
+            setTimeout(() => clickCount = 0, 1500);
+        });
 
-            if (sizesArr.length > 0) {
-                html += `<label style="font-size:0.8rem; font-weight:600;">اختر المقاس:</label>
-                         <select id="selectSize" class="opt-select">
-                            ${sizesArr.map(s => `<option value="${s}">${s}</option>`).join('')}
-                         </select><br><br>`;
+        function changeAdminPassword() {
+            const currentPass = prompt("أدخل كلمة السر الحالية:");
+            if (currentPass === adminPassword) {
+                const newPass = prompt("أدخل كلمة السر الجديدة:");
+                if (newPass) {
+                    adminPassword = newPass;
+                    localStorage.setItem('kavallo_admin_pass', newPass);
+                    alert("تم تغيير كلمة السر بنجاح!");
+                }
+            } else {
+                alert("كلمة السر الحالية خاطئة!");
+            }
+        }
+
+        // ** 4. إضافة وتعديل الاصناف **
+        function handleProductSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('pId').value;
+            const title = document.getElementById('pTitle').value;
+            const category = document.getElementById('pCategory').value;
+            const price = document.getElementById('pPrice').value;
+            const sizes = document.getElementById('pSizes').value;
+            const desc = document.getElementById('pDesc').value;
+            const isNew = document.getElementById('pNew').checked;
+            const isBestSeller = document.getElementById('pBestSeller').checked;
+            const isOutOfStock = document.getElementById('pOutOfStock').checked;
+
+            if (productColorsData.length === 0) {
+                alert("يرجى اختيار لون واحد على الأقل للموديل!");
+                return;
             }
 
-            if (colorsArr.length > 0) {
-                html += `<label style="font-size:0.8rem; font-weight:600;">اختر اللون:</label>
-                         <select id="selectColor" class="opt-select">
-                            ${colorsArr.map(c => `<option value="${c}">${c}</option>`).join('')}
-                         </select>`;
+            const mainImage = productColorsData.find(c => c.image !== '')?.image || 'https://via.placeholder.com/300';
+
+            const productData = {
+                title, category, price, sizes, desc,
+                colorsData: productColorsData,
+                image: mainImage,
+                isNew, isBestSeller, isOutOfStock,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if (id) {
+                db.collection('products').doc(id).update(productData).then(() => {
+                    alert("تم تعديل الموديل بنجاح!");
+                    resetForm();
+                });
+            } else {
+                db.collection('products').add(productData).then(() => {
+                    alert("تم إضافة الموديل بنجاح!");
+                    resetForm();
+                });
             }
+        }
+
+        function resetForm() {
+            document.getElementById('addProductForm').reset();
+            document.getElementById('pId').value = '';
+            document.getElementById('btnSubmit').innerText = '➕ إضافة الموديل';
+            document.getElementById('btnCancel').style.display = 'none';
+            document.getElementById('panelTitle').innerText = '👕 إضافة / تعديل موديل';
+            productColorsData = [];
+            renderAdminColorImageUploads();
+        }
+
+        function editProduct(id) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+
+            document.getElementById('pId').value = p.id;
+            document.getElementById('pTitle').value = p.title;
+            document.getElementById('pCategory').value = p.category;
+            document.getElementById('pPrice').value = p.price;
+            document.getElementById('pSizes').value = p.sizes;
+            document.getElementById('pDesc').value = p.desc;
+            document.getElementById('pNew').checked = p.isNew || false;
+            document.getElementById('pBestSeller').checked = p.isBestSeller || false;
+            document.getElementById('pOutOfStock').checked = p.isOutOfStock || false;
+
+            productColorsData = p.colorsData || [];
+            renderAdminColorImageUploads();
+
+            document.getElementById('btnSubmit').innerText = '💾 حفظ التعديلات';
+            document.getElementById('btnCancel').style.display = 'inline-block';
+            document.getElementById('panelTitle').innerText = '✏️ تعديل الموديل الحالي';
+            window.scrollTo({ top: document.getElementById('adminPanel').offsetTop, behavior: 'smooth' });
+        }
+
+        function deleteProduct(id) {
+            if (confirm("هل أنت تأكد من حذف هذا الموديل؟")) {
+                db.collection('products').doc(id).delete().then(() => alert("تم حذف الموديل!"));
+            }
+        }
+
+        // ** 5. جلب وعرض الأصناف واستعراض الألوان تفاعلياً **
+        function loadProducts() {
+            db.collection('products').onSnapshot(snapshot => {
+                products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderProducts(products);
+            });
+        }
+
+        function renderProducts(list) {
+            const grid = document.getElementById('productsGrid');
+            const isAdminVisible = document.getElementById('adminPanel').style.display === 'block';
+
+            if (list.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color:#999; padding:20px;">لا توجد موديلات حالياً.</p>`;
+                return;
+            }
+
+            grid.innerHTML = list.map(p => {
+                let badge = '';
+                if (p.isNew) badge = `<span class="badge">جديد 🔥</span>`;
+                else if (p.isBestSeller) badge = `<span class="badge badge-gold">الأكثر مبيعاً ⭐</span>`;
+
+                const colorsList = p.colorsData || [];
+                const defaultImg = p.image || (colorsList[0] ? colorsList[0].image : 'https://via.placeholder.com/300');
+
+                // بناء دوائر الألوان لاستعراض صورها
+                const colorSwatchesHtml = colorsList.map((c, i) => `
+                    <span class="swatch-circle ${i === 0 ? 'active' : ''}" 
+                          style="background:${c.code};" 
+                          title="${c.name}"
+                          onclick="switchCardImage(event, '${p.id}', '${c.image}')">
+                    </span>
+                `).join('');
+
+                return `
+                    <div class="product-card" id="card-${p.id}">
+                        ${badge}
+                        <img id="img-${p.id}" src="${defaultImg}" class="product-image" onclick="openLightbox(this.src, '${p.title}')" alt="${p.title}">
+                        <div class="product-info">
+                            <span class="product-category">${p.category}</span>
+                            <div class="product-title">${p.title}</div>
+                            <div class="product-desc">${p.desc}</div>
+                            
+                            <div class="card-color-swatches">
+                                ${colorSwatchesHtml}
+                            </div>
+
+                            <div class="product-price">${p.price}</div>
+
+                            ${p.isOutOfStock ? `
+                                <div class="out-of-stock">نفدت الكمية 🚫</div>
+                            ` : `
+                                <button class="btn-add-cart" onclick="openOptModal('${p.id}')">🛒 طلب الموديل</button>
+                            `}
+
+                            ${isAdminVisible ? `
+                                <div class="admin-actions">
+                                    <button class="btn-edit" onclick="editProduct('${p.id}')">تعديل</button>
+                                    <button class="btn-delete" onclick="deleteProduct('${p.id}')">حذف</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // دالة تبديل صورة الصنف عند ضغط الزبون على دائر لون معينة
+        function switchCardImage(event, prodId, imageUrl) {
+            event.stopPropagation();
+            if (!imageUrl) return;
+
+            const card = document.getElementById(`card-${prodId}`);
+            const img = document.getElementById(`img-${prodId}`);
+            
+            img.style.opacity = '0.3';
+            setTimeout(() => {
+                img.src = imageUrl;
+                img.style.opacity = '1';
+            }, 150);
+
+            const swatches = card.querySelectorAll('.swatch-circle');
+            swatches.forEach(s => s.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function filterProducts() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+
+            const filtered = products.filter(p => {
+                const matchesSearch = p.title.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
+                const matchesCategory = category === 'all' || p.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            renderProducts(filtered);
+        }
+
+        // ** 6. نافذة الطلب التفاعلية بحسب اللون المحدد **
+        function openOptModal(prodId) {
+            selectedProductForCart = products.find(p => p.id === prodId);
+            if (!selectedProductForCart) return;
+
+            const sizes = selectedProductForCart.sizes ? selectedProductForCart.sizes.split(',') : [];
+            const colorsList = selectedProductForCart.colorsData || [];
+
+            document.getElementById('optModalTitle').innerText = selectedProductForCart.title;
+
+            const initialColor = colorsList[0] || { name: 'افتراضي', image: selectedProductForCart.image };
+            currentModalSelectedColor = initialColor.name;
+
+            let html = `
+                <div style="text-align:center; margin-bottom:12px;">
+                    <img id="modalPreviewImg" src="${initialColor.image || selectedProductForCart.image}" style="width:130px; height:130px; object-fit:cover; border-radius:10px; border:1px solid #ddd;">
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:0.85rem; font-weight:bold; display:block; margin-bottom:6px;">اختر اللون المطلوب:</label>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        ${colorsList.map((c, i) => `
+                            <button type="button" class="btn-quick-size modal-color-btn ${i === 0 ? 'active' : ''}" 
+                                    style="display:flex; align-items:center; gap:5px;"
+                                    onclick="selectModalColor(this, '${c.name}', '${c.image}')">
+                                <span style="width:12px; height:12px; border-radius:50%; background:${c.code}; border:1px solid #ccc; display:inline-block;"></span>
+                                ${c.name}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div style="margin-bottom:12px;">
+                    <label style="font-size:0.85rem; font-weight:bold; display:block; margin-bottom:4px;">المقاس المطلوب:</label>
+                    <select id="sizeSelect" class="opt-select" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+                        ${sizes.map(s => `<option value="${s.trim()}">${s.trim()}</option>`).join('')}
+                    </select>
+                </div>
+            `;
 
             document.getElementById('optModalBody').innerHTML = html;
             document.getElementById('optConfirmBtn').onclick = confirmAddToCart;
             document.getElementById('optModal').style.display = 'flex';
+        }
+
+        function selectModalColor(btn, colorName, imageUrl) {
+            currentModalSelectedColor = colorName;
+            const modalBtns = document.querySelectorAll('.modal-color-btn');
+            modalBtns.forEach(b => b.style.borderColor = '#ccc');
+            btn.style.borderColor = 'var(--primary-color)';
+
+            if (imageUrl) {
+                document.getElementById('modalPreviewImg').src = imageUrl;
+            }
         }
 
         function closeOptModal() {
@@ -789,70 +1018,46 @@
         }
 
         function confirmAddToCart() {
-            if (!selectedProductForOpt) return;
+            const size = document.getElementById('sizeSelect').value;
 
-            const sizeElem = document.getElementById('selectSize');
-            const colorElem = document.getElementById('selectColor');
+            cart.push({
+                ...selectedProductForCart,
+                selectedSize: size,
+                selectedColor: currentModalSelectedColor
+            });
 
-            const chosenSize = sizeElem ? sizeElem.value : '';
-            const chosenColor = colorElem ? colorElem.value : '';
-
-            const item = {
-                id: selectedProductForOpt.id,
-                title: selectedProductForOpt.title,
-                price: selectedProductForOpt.price,
-                size: chosenSize,
-                color: chosenColor,
-                qty: 1
-            };
-
-            const existingIndex = cart.findIndex(c => c.id === item.id && c.size === item.size && c.color === item.color);
-            if (existingIndex > -1) {
-                cart[existingIndex].qty++;
-            } else {
-                cart.push(item);
-            }
-
+            updateCartBadge();
             closeOptModal();
-            updateCartUI();
+            alert("تمت الإضافة لـ سلة الطلبات!");
         }
 
-        function updateCartUI() {
-            let totalItems = 0;
-            cart.forEach(c => totalItems += c.qty);
+        // ** 7. السلة والواتساب **
+        function updateCartBadge() {
             const badge = document.getElementById('cartBadge');
-            badge.innerText = totalItems;
-            badge.style.display = totalItems > 0 ? 'inline-block' : 'none';
+            if (cart.length > 0) {
+                badge.innerText = cart.length;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
         }
 
         function openCartModal() {
             const list = document.getElementById('cartItemsList');
-            list.innerHTML = '';
-
             if (cart.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:#888; padding:15px;">السلة فارغة</p>';
+                list.innerHTML = `<p style="text-align:center; padding:20px; color:#777;">السلة فارغة حالياً.</p>`;
             } else {
-                cart.forEach((item, index) => {
-                    list.innerHTML += `
-                        <div class="cart-item">
-                            <div>
-                                <strong style="font-size:0.9rem;">${item.title}</strong><br>
-                                <small style="color:#666;">
-                                    ${item.size ? 'المقاس: ' + item.size : ''} 
-                                    ${item.color ? ' | اللون: ' + item.color : ''} 
-                                    | السعر: ${item.price}
-                                </small>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <button onclick="changeCartQty(${index}, -1)" style="width:24px; height:24px;">-</button>
-                                <span>${item.qty}</span>
-                                <button onclick="changeCartQty(${index}, 1)" style="width:24px; height:24px;">+</button>
-                            </div>
+                list.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.title}</strong><br>
+                            <small style="color:#666;">المقاس: ${item.selectedSize} | اللون: ${item.selectedColor}</small><br>
+                            <span style="color:var(--accent-color); font-weight:bold;">${item.price}</span>
                         </div>
-                    `;
-                });
+                        <button onclick="removeFromCart(${index})" style="background:#ffcdd2; color:#b71c1c; border:none; padding:4px 8px; border-radius:6px; cursor:pointer;">إزالة</button>
+                    </div>
+                `).join('');
             }
-
             document.getElementById('cartModal').style.display = 'flex';
         }
 
@@ -860,12 +1065,9 @@
             document.getElementById('cartModal').style.display = 'none';
         }
 
-        function changeCartQty(index, delta) {
-            cart[index].qty += delta;
-            if (cart[index].qty <= 0) {
-                cart.splice(index, 1);
-            }
-            updateCartUI();
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartBadge();
             openCartModal();
         }
 
@@ -875,24 +1077,19 @@
                 return;
             }
 
-            let text = "أهلاً Kavallo، أود طلب الموديلات التالية:\n\n";
-            cart.forEach((item) => {
-                let details = [];
-                if (item.size) details.push(`المقاس: ${item.size}`);
-                if (item.color) details.push(`اللون: ${item.color}`);
-                let detailsStr = details.length > 0 ? ` (${details.join(' - ')})` : '';
-
-                text += `• ${item.title}${detailsStr} - العدد: ${item.qty} - السعر: ${item.price}\n`;
+            let msg = "مرحباً Kavallo 👋، أود طلب الموديلات التالية:\n\n";
+            cart.forEach((item, i) => {
+                msg += `${i + 1}. *${item.title}*\n- المقاس: ${item.selectedSize}\n- اللون: ${item.selectedColor}\n- السعر: ${item.price}\n\n`;
             });
 
-            text += "\nيرجى تأكيد التوفر والتوصيل.";
-            window.open(`https://wa.me/963944677755?text=${encodeURIComponent(text)}`, '_blank');
+            const phone = "963900000000"; 
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
         }
 
-        function openLightbox(imgUrl, caption) {
-            if (!imgUrl) return;
-            document.getElementById('lightboxImg').src = imgUrl;
-            document.getElementById('lightboxCaption').innerText = caption || '';
+        function openLightbox(src, caption) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxCaption').innerText = caption;
             document.getElementById('lightboxModal').style.display = 'flex';
         }
 
@@ -900,114 +1097,11 @@
             document.getElementById('lightboxModal').style.display = 'none';
         }
 
-        document.getElementById('addProductForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const pId = document.getElementById('pId').value;
-            
-            if (!currentBase64Image && !pId) {
-                alert("يرجى اختيار صورة للموديل من جهازك أولاً!");
-                return;
-            }
-
-            const productData = {
-                title: document.getElementById('pTitle').value,
-                category: document.getElementById('pCategory').value,
-                price: document.getElementById('pPrice').value,
-                sizes: document.getElementById('pSizes').value,
-                colors: document.getElementById('pColors').value || '',
-                desc: document.getElementById('pDesc').value,
-                isNew: document.getElementById('pNew').checked,
-                isBestSeller: document.getElementById('pBestSeller').checked,
-                isOutOfStock: document.getElementById('pOutOfStock').checked,
-                updatedAt: new Date()
-            };
-
-            if (currentBase64Image) {
-                productData.image = currentBase64Image;
-            }
-
-            if (pId) {
-                db.collection("kavallo_products").doc(pId).update(productData).then(() => {
-                    alert("تم التعديل بنجاح!");
-                    resetForm();
-                });
-            } else {
-                productData.createdAt = new Date();
-                db.collection("kavallo_products").add(productData).then(() => {
-                    alert("تمت الإضافة بنجاح!");
-                    resetForm();
-                });
-            }
-        });
-
-        function editProduct(id) {
-            const data = productsData[id];
-            if (!data) return;
-
-            document.getElementById('pId').value = id;
-            document.getElementById('pTitle').value = data.title;
-            document.getElementById('pCategory').value = data.category;
-            document.getElementById('pPrice').value = data.price;
-            document.getElementById('pSizes').value = data.sizes;
-            document.getElementById('pColors').value = data.colors || '';
-            document.getElementById('pDesc').value = data.desc;
-            document.getElementById('pNew').checked = !!data.isNew;
-            document.getElementById('pBestSeller').checked = !!data.isBestSeller;
-            document.getElementById('pOutOfStock').checked = !!data.isOutOfStock;
-
-            if (data.image) {
-                currentBase64Image = data.image;
-                const preview = document.getElementById('imagePreview');
-                preview.src = data.image;
-                preview.style.display = 'inline-block';
-            }
-
-            document.getElementById('panelTitle').innerText = '✏️ تعديل موديل';
-            document.getElementById('btnSubmit').innerText = '💾 حفظ التعديلات';
-            document.getElementById('btnCancel').style.display = 'block';
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function resetForm() {
-            document.getElementById('addProductForm').reset();
-            document.getElementById('pId').value = '';
-            currentBase64Image = "";
-            const preview = document.getElementById('imagePreview');
-            preview.src = '';
-            preview.style.display = 'none';
-            document.getElementById('panelTitle').innerText = '👕 إضافة / تعديل موديل';
-            document.getElementById('btnSubmit').innerText = '➕ إضافة الموديل';
-            document.getElementById('btnCancel').style.display = 'none';
-        }
-
-        function deleteProduct(id) {
-            if (confirm("هل أنت تأكد من الحذف؟")) {
-                db.collection("kavallo_products").doc(id).delete().then(() => {
-                    alert("تم الحذف بنجاح!");
-                    resetForm();
-                });
-            }
-        }
-
-        function filterProducts() {
-            const searchValue = document.getElementById('searchInput').value.toLowerCase();
-            const categoryValue = document.getElementById('categoryFilter').value;
-            const cards = document.querySelectorAll('.product-card');
-
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name').toLowerCase();
-                const category = card.getAttribute('data-category');
-
-                const matchesSearch = name.includes(searchValue);
-                const matchesCategory = categoryValue === 'all' || category === categoryValue;
-
-                card.style.display = (matchesSearch && matchesCategory) ? 'flex' : 'none';
-            });
-        }
-
-        loadBanners();
-        loadProducts();
+        window.onload = function() {
+            loadSettings();
+            loadProducts();
+            renderAdminColorImageUploads();
+        };
     </script>
 </body>
 </html>
