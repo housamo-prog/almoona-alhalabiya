@@ -62,20 +62,11 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            cursor: pointer;
         }
 
         .logo-title { font-size: 1.3rem; font-weight: 900; color: #ffffff; letter-spacing: 1px; }
         .logo-subtitle { font-size: 0.72rem; color: #b0bec5; }
-
-        .admin-trigger-btn {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid #555;
-            color: #ccc;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
 
         .container { max-width: 900px; margin: 15px auto; padding: 0 12px; }
 
@@ -289,7 +280,6 @@
         .btn-edit { background: #1976d2; }
         .btn-delete { background: #d32f2f; }
         
-        /* مربع رفع الصور المباشر */
         .image-upload-wrapper {
             background: #f8f9fa;
             border: 2px dashed #bbb;
@@ -317,19 +307,19 @@
 <body>
 
     <header>
-        <div class="logo-container">
+        <!-- عند النقر 4 نقرات متتالية على اللوجو يفتح وضع الإدارة -->
+        <div class="logo-container" id="secretAdminTrigger">
             <div style="width:42px; height:42px; border-radius:50%; background:#333; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1rem; border:2px solid #666;">AK</div>
             <div>
                 <div class="logo-title">Kavallo</div>
                 <div class="logo-subtitle">للألبسة الجاهزة والأناقة العصرية</div>
             </div>
         </div>
-        <button class="admin-trigger-btn" onclick="loginAdmin()">⚙️ الإدارة</button>
     </header>
 
     <div class="container">
 
-        <!-- لوحة التحكم الإدارية -->
+        <!-- لوحة التحكم الإدارية (تظهر عند فتح وضع الإدارة) -->
         <div class="admin-panel" id="adminPanel">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                 <h3 id="panelTitle" style="font-size:1rem; color:var(--primary-color);">⚙️ إدارة موديلات Kavallo</h3>
@@ -463,7 +453,22 @@
             }
         }
 
-        // دالة معالجة وتحويل الصورة المرفوقة إلى Base64 مع تقليل الحجم لسرعة التحميل
+        // تفعيل الإدارة عبر 4 نقرات سريعة متتالية على اللوجو
+        let clickCount = 0;
+        let clickTimer = null;
+
+        document.getElementById('secretAdminTrigger').addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            if (clickCount === 4) {
+                loginAdmin();
+                clickCount = 0;
+            } else {
+                clickTimer = setTimeout(() => { clickCount = 0; }, 1200);
+            }
+        });
+
+        // تحويل وتقليل حجم الصورة المختارة من الجهاز
         function handleImageSelection(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -476,7 +481,6 @@
                     let width = img.width;
                     let height = img.height;
 
-                    // ضغط الحجم الأقصى للعدسة والشبكة
                     const max_size = 600;
                     if (width > height) {
                         if (width > max_size) {
@@ -513,7 +517,7 @@
                 productsData = {};
 
                 if (snapshot.empty) {
-                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color:#777;">لا توجد موديلات حالياً. اضغط على "⚙️ الإدارة" بالأعلى لإضافة منتجات.</p>';
+                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color:#777;">لا توجد موديلات حالياً.</p>';
                     return;
                 }
 
@@ -614,6 +618,7 @@
             openCartModal();
         }
 
+        // إرسال الطلب إلى الرقم الجديد 00963944677755
         function sendCartToWhatsApp() {
             let text = "أهلاً Kavallo، أود طلب الموديلات التالية:\n\n";
             let count = 0;
@@ -626,7 +631,7 @@
                 return;
             }
             text += "\nيرجى تأكيد التوفر والتوصيل.";
-            window.open(`https://wa.me/96394467755?text=${encodeURIComponent(text)}`, '_blank');
+            window.open(`https://wa.me/963944677755?text=${encodeURIComponent(text)}`, '_blank');
         }
 
         document.getElementById('addProductForm').addEventListener('submit', (e) => {
