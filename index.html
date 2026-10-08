@@ -1,491 +1,852 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="scroll-smooth">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المونة الحلبية — أصالة الطعم والمنتجات الطبيعية</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f4f7f5',
-                            100: '#e3ebe5',
-                            500: '#2d6a4f',
-                            600: '#1b4332',
-                            700: '#081c15',
-                            gold: '#d4af37'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Tajawal', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Google Fonts: Tajawal -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>المونة الحلبية - أصالة الطعم والمنتجات الطبيعية</title>
+
+    <meta name="theme-color" content="#1b5e20">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
     <style>
-        body { font-family: 'Tajawal', sans-serif; }
-        .glass-header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
+        :root {
+            --primary-color: #1b5e20;
+            --primary-dark: #0d3b10;
+            --accent-color: #fbc02d;
+            --accent-hover: #f57f17;
+            --bg-color: #f4f6f3;
+            --card-bg: #ffffff;
+            --text-color: #1a252c;
+            --bottom-nav-height: 62px;
         }
-        .dark .glass-header {
-            background: rgba(15, 23, 42, 0.85);
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: calc(var(--bottom-nav-height) + 25px);
+            user-select: none;
+        }
+
+        .announcement-bar {
+            background: linear-gradient(90deg, #fbc02d, #f57f17);
+            color: #0d3b10;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 7px 10px;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 0 10px rgba(251, 192, 45, 0.3);
+        }
+
+        .logo-title { font-size: 1.35rem; font-weight: 900; color: #ffffff; }
+        .logo-subtitle { font-size: 0.72rem; color: var(--accent-color); font-weight: 600; }
+
+        .container { max-width: 1000px; margin: 15px auto; padding: 0 12px; }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #1b5e20, #0d3b10);
+            color: #fff;
+            border-radius: 16px;
+            padding: 22px 18px;
+            margin-bottom: 18px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(13, 59, 16, 0.25);
+            border: 1px solid rgba(251, 192, 45, 0.4);
+        }
+
+        .hero-banner h2 { font-size: 1.3rem; color: var(--accent-color); margin-bottom: 6px; font-weight: 900; }
+        .hero-banner p { font-size: 0.88rem; color: #e8f5e9; opacity: 0.95; }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .search-box, .filter-select {
+            padding: 11px 14px;
+            border: 1px solid #d0d7de;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            outline: none;
+            background-color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .search-box { flex: 1; }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+            gap: 14px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #eef2f5;
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .product-card:active { transform: scale(0.98); }
+
+        .product-image {
+            width: 100%;
+            height: 185px;
+            object-fit: cover;
+            background-color: #f1f3f5;
+            cursor: pointer;
+        }
+
+        .product-info {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-category { font-size: 0.72rem; color: var(--primary-color); font-weight: bold; }
+        .product-title { font-size: 0.98rem; margin: 3px 0; color: #111; font-weight: 800; }
+        .product-desc { font-size: 0.76rem; color: #666; margin-bottom: 8px; line-height: 1.3; }
+        
+        .product-price {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--primary-dark);
+            background: #e8f5e9;
+            padding: 4px 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+
+        .btn-add-cart {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.82rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(27, 94, 32, 0.2);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: var(--bottom-nav-height);
+            background: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #e2e8f0;
+            box-shadow: 0 -3px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .nav-icon { font-size: 1.35rem; position: relative; }
+
+        .cart-badge {
+            position: absolute;
+            top: -4px; right: -8px;
+            background: #e53e3e;
+            color: white;
+            font-size: 0.65rem;
+            border-radius: 10px;
+            padding: 1px 6px;
+            font-weight: 800;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideUp 0.25s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .btn-whatsapp-send {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 13px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.98rem;
+            margin-top: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.92);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .lightbox-img {
+            max-width: 92%;
+            max-height: 75vh;
+            border-radius: 14px;
+            object-fit: contain;
+            box-shadow: 0 0 25px rgba(255,255,255,0.2);
+        }
+
+        .admin-panel {
+            background: white;
+            padding: 18px;
+            border-radius: 16px;
+            border: 2px solid var(--primary-color);
+            margin-bottom: 20px;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .admin-section {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .admin-section-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .admin-form { display: grid; grid-template-columns: 1fr; gap: 9px; }
+        .admin-input { padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.88rem; width: 100%; }
+        .admin-actions { display: flex; gap: 6px; margin-top: 8px; }
+        .btn-edit, .btn-delete { flex: 1; padding: 7px; border: none; border-radius: 6px; color: white; font-size: 0.78rem; font-weight: bold; }
+        .btn-edit { background: #1976d2; }
+        .btn-delete { background: #d32f2f; }
+        
+        .image-upload-wrapper {
+            background: #fff;
+            border: 2px dashed #a5d6a7;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .preview-img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 8px;
+            margin-top: 8px;
+            display: none;
+            border: 1px solid #ddd;
+        }
+
+        footer {
+            text-align: center;
+            padding: 22px;
+            background: var(--primary-dark);
+            color: white;
+            margin-top: 40px;
+            font-size: 0.82rem;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col">
+<body>
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-gradient-to-r from-brand-600 to-brand-500 text-white text-xs md:text-sm py-2 px-4 text-center font-medium flex justify-center items-center gap-2 shadow-sm">
-        <span>🌿 منتجات طبيعية 100% من قلب حلب — توصيل لكافة المناطق</span>
-        <span class="hidden md:inline">🚀</span>
+    <div class="announcement-bar" id="announcementText">
+        🌿 أحدث منتجات المونة الحلبية الطبيعية 100% - توصيل لكافة المناطق 🚀
     </div>
 
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-40 glass-header border-b border-gray-100 dark:border-slate-800 transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <!-- Brand Logo / Name -->
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-emerald-400 flex items-center justify-center text-white text-2xl shadow-lg shadow-brand-500/20">
-                    🌿
-                </div>
-                <div>
-                    <h1 class="text-xl md:text-2xl font-extrabold text-brand-700 dark:text-white tracking-tight" id="hero-title-text">المونة الحلبية</h1>
-                    <p class="text-xs text-brand-500 dark:text-emerald-400 font-medium" id="hero-subtitle-text">أصالة الطعم والمنتجات الطبيعية</p>
-                </div>
-            </div>
-
-            <!-- Actions: Dark Mode, Admin, Cart -->
-            <div class="flex items-center gap-2 sm:gap-4">
-                <!-- Toggle Dark Mode -->
-                <button id="theme-toggle" class="p-2.5 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition">
-                    <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-amber-400"></i>
-                </button>
-
-                <!-- Admin Modal Toggle -->
-                <button onclick="toggleAdminModal()" class="p-2.5 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition flex items-center gap-2 text-sm font-medium">
-                    <i data-lucide="settings" class="w-5 h-5"></i>
-                    <span class="hidden md:inline">الإدارة</span>
-                </button>
-
-                <!-- Floating Cart Trigger -->
-                <button onclick="toggleCartDrawer()" class="relative bg-brand-600 hover:bg-brand-500 text-white px-4 py-2.5 rounded-xl shadow-lg shadow-brand-600/20 transition flex items-center gap-2 font-medium">
-                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                    <span class="hidden sm:inline">السلة</span>
-                    <span id="cart-badge" class="bg-brand-gold text-brand-700 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px]">0</span>
-                </button>
+    <header>
+        <div class="logo-container" id="secretAdminTrigger">
+            <div class="logo-badge">🌿</div>
+            <div>
+                <div class="logo-title">المونة الحلبية</div>
+                <div class="logo-subtitle">أصالة الطعم والمنتجات الطبيعية</div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
-        
-        <!-- Hero Banner -->
-        <div class="relative rounded-3xl bg-gradient-to-r from-brand-700 via-brand-600 to-emerald-800 text-white p-8 md:p-12 mb-10 shadow-2xl overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
-                <i data-lucide="leaf" class="w-96 h-96"></i>
+    <div class="container">
+
+        <div class="hero-banner">
+            <h2 id="bannerTitle">أصالة المونة الحلبية</h2>
+            <p id="bannerSub">طعم حقيقي ومكونات نقية من قلب حلب إليكم مباشرة</p>
+        </div>
+
+        <div class="admin-panel" id="adminPanel">
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                <h3 style="font-size:1rem; color:var(--primary-color);">⚙️ إدارة متجر المونة الحلبية</h3>
+                <button onclick="changeAdminPassword()" style="font-size:0.78rem; padding:4px 10px; background:#f57c00; color:white; border:none; border-radius:6px;">🔑 تغيير كلمة السر</button>
             </div>
-            <div class="relative z-10 max-w-2xl">
-                <span class="inline-block bg-white/10 backdrop-blur-md text-amber-300 border border-white/20 text-xs font-bold px-3 py-1 rounded-full mb-4">جودة عالية واستثنائية ✨</span>
-                <h2 class="text-3xl md:text-5xl font-black mb-4 leading-tight">أصالة المونة الحلبية بين يديك</h2>
-                <p class="text-gray-200 text-base md:text-lg mb-6 leading-relaxed">نقدم لكم أجود أنواع المونة الحلبية المصنوعة بأيدي ماهرة وبطرق تقليدية تحفظ النكهة والذوق الاصيل.</p>
+
+            <div class="admin-section">
+                <div class="admin-section-title">📢 تعديل الشريط الإعلاني والبنر الرئيسي</div>
+                <div class="admin-form">
+                    <input type="text" id="announcementInput" class="admin-input" placeholder="نص الشريط العلوي الصغير">
+                    <input type="text" id="bannerTitleInput" class="admin-input" placeholder="عنوان البنر الرئيسي">
+                    <input type="text" id="bannerSubInput" class="admin-input" placeholder="الوصف الفرعي للبنر">
+                    <button onclick="saveBanners()" style="background:#2e7d32; color:white; border:none; padding:9px; border-radius:8px; font-weight:bold; cursor:pointer;">💾 حفظ النصوص والإعلانات</button>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title" id="panelTitle">🌿 إضافة / تعديل صنف</div>
+                <form class="admin-form" id="addProductForm">
+                    <input type="hidden" id="pId">
+                    
+                    <input type="text" id="pTitle" class="admin-input" placeholder="اسم المنتج (مثال: زعتر أصل حلب)" required>
+                    <select id="pCategory" class="admin-input" required>
+                        <option value="زعتر وبهارات">زعتر وبهارات</option>
+                        <option value="زيوت وسمنة">زيوت وسمنة</option>
+                        <option value="مكبوسات ومخللات">مكبوسات ومخللات</option>
+                        <option value="مكسرات وفستق">مكسرات وفستق</option>
+                        <option value="مربيات وعصائر">مربيات وعصائر</option>
+                    </select>
+                    <input type="text" id="pPrice" class="admin-input" placeholder="السعر" required>
+                    <input type="text" id="pDesc" class="admin-input" placeholder="وصف قصير للمكونات">
+
+                    <div class="image-upload-wrapper">
+                        <label style="font-size:0.85rem; font-weight:bold; color:#333; display:block; margin-bottom:5px;">📸 رفع صورة المنتج من جهازك مباشرة:</label>
+                        <input type="file" id="pImgFile" class="admin-input" accept="image/*" onchange="handleImageSelection(event)">
+                        <center><img id="imagePreview" class="preview-img" alt="معاينة الصورة"></center>
+                    </div>
+
+                    <button type="submit" id="btnSubmit" style="background:var(--primary-color); color:white; border:none; padding:11px; border-radius:8px; font-weight:bold; margin-top:5px;">➕ إضافة المنتج للموقع</button>
+                    <button type="button" id="btnCancel" onclick="resetForm()" style="display:none; background:#777; color:white; border:none; padding:9px; border-radius:8px;">إلغاء</button>
+                </form>
             </div>
         </div>
 
-        <!-- Search & Filter Section -->
-        <div class="flex flex-col md:flex-row gap-4 mb-8 items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-            <!-- Search Box -->
-            <div class="relative w-full md:w-96">
-                <i data-lucide="search" class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="text" id="search-input" oninput="filterProducts()" placeholder="ابحث عن منتج، زعتر، دبس..." class="w-full pr-10 pl-4 py-2.5 rounded-xl bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+        <div class="controls">
+            <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
+            <select id="categoryFilter" class="filter-select" onchange="filterProducts()">
+                <option value="all">جميع الأقسام</option>
+                <option value="زعتر وبهارات">زعتر وبهارات</option>
+                <option value="زيوت وسمنة">زيوت وسمنة</option>
+                <option value="مكبوسات ومخللات">مكبوسات ومخللات</option>
+                <option value="مكسرات وفستق">مكسرات وفستق</option>
+                <option value="مربيات وعصائر">مربيات وعصائر</option>
+            </select>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <p style="text-align: center; grid-column: 1/-1; color:#777;">جاري تحميل منتجات المونة الحلبية...</p>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <div class="nav-icon">🌿</div>
+            <div>المنتجات</div>
+        </div>
+        <div class="nav-item" onclick="openCartModal()">
+            <div class="nav-icon">
+                🛒
+                <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
             </div>
+            <div>سلة الطلبات</div>
+        </div>
+    </div>
 
-            <!-- Category Filter Dropdown -->
-            <div class="flex items-center gap-2 w-full md:w-auto">
-                <i data-lucide="filter" class="w-5 h-5 text-gray-400 hidden sm:block"></i>
-                <select id="category-filter" onchange="filterProducts()" class="w-full md:w-64 px-4 py-2.5 rounded-xl bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-medium">
-                    <option value="all">كل الأقسام</option>
-                    <option value="زعتر وبهارات">زعتر وبهارات</option>
-                    <option value="دبس">دبس</option>
-                    <option value="زيوت وسمنة">زيوت وسمنة</option>
-                    <option value="مكبوسات ومخللات">مكبوسات ومخللات</option>
-                    <option value="مكسرات وفستق">مكسرات وفستق</option>
-                    <option value="مربيات وعصائر">مربيات وعصائر</option>
-                    <option value="ألبان وأجبان">ألبان وأجبان</option>
-                    <option value="حلويات">حلويات</option>
-                </select>
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="font-size:1.05rem;">🛒 قائمة طلبيات المونة الحلبية</h3>
+                <span style="cursor:pointer; font-weight:bold; font-size:1.2rem;" onclick="closeCartModal()">✕</span>
             </div>
+            <div id="cartItemsList"></div>
+            <button class="btn-whatsapp-send" onclick="sendCartToWhatsApp()">إرسال الطلب عبر الواتساب 💬</button>
         </div>
+    </div>
 
-        <!-- Products Grid -->
-        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Dynamically Rendered Products -->
-        </div>
+    <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+        <img class="lightbox-img" id="lightboxImg" src="" alt="صورة المنتج مكبرة">
+        <p id="lightboxCaption" style="color:#fff; margin-top:12px; font-size:0.95rem; font-weight:bold;"></p>
+    </div>
 
-        <!-- Empty State -->
-        <div id="empty-state" class="hidden text-center py-16">
-            <i data-lucide="package-x" class="w-16 h-16 mx-auto text-gray-300 dark:text-slate-600 mb-4"></i>
-            <h3 class="text-lg font-bold text-gray-600 dark:text-gray-400">لم يتم العثور على منتجات matching</h3>
-            <p class="text-sm text-gray-400">جرب البحث بكلمات أخرى أو اختر قسماً آخر.</p>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white dark:bg-slate-800 border-t border-gray-100 dark:border-slate-700 py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">© <span id="year"></span> المونة الحلبية — جميع الحقوق محفوظة</p>
-            <div class="mt-4 flex items-center justify-center gap-4">
-                <a href="https://wa.me/963933267910" target="_blank" class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-bold text-sm bg-emerald-50 dark:bg-emerald-950/40 px-4 py-2 rounded-xl border border-emerald-200 dark:border-emerald-800/40">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    تواصل معنا عبر واتساب: 0933 267 910
-                </a>
-            </div>
-        </div>
+    <footer>
+        <p>© المونة الحلبية - جميع الحقوق محفوظة</p>
     </footer>
 
-    <!-- Slide-over Cart Drawer -->
-    <div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="toggleCartDrawer()"></div>
-        
-        <div class="absolute inset-y-0 left-0 max-w-full flex">
-            <div class="w-screen max-w-md bg-white dark:bg-slate-800 shadow-2xl flex flex-col pointer-events-auto transform -translate-x-full transition-transform duration-300" id="cart-panel">
-                
-                <!-- Drawer Header -->
-                <div class="p-5 border-b border-gray-100 dark:border-slate-700 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="shopping-cart" class="w-6 h-6 text-brand-600 dark:text-emerald-400"></i>
-                        <h3 class="font-bold text-lg">سلة الطلبات</h3>
-                    </div>
-                    <button onclick="toggleCartDrawer()" class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white rounded-lg">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                </div>
-
-                <!-- Items Container -->
-                <div class="flex-grow overflow-y-auto p-5 space-y-4" id="cart-items-container">
-                    <!-- Dynamic Cart Items -->
-                </div>
-
-                <!-- Drawer Footer -->
-                <div class="p-5 border-t border-gray-100 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-gray-500 dark:text-gray-400 font-medium">المجموع الإجمالي:</span>
-                        <span class="text-xl font-black text-brand-600 dark:text-emerald-400" id="cart-total">0 ل.س</span>
-                    </div>
-                    <button onclick="checkoutWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-600/20 transition flex items-center justify-center gap-2">
-                        <i data-lucide="send" class="w-5 h-5"></i>
-                        إرسال الطلب عبر واتساب
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Modal -->
-    <div id="admin-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-        <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 dark:border-slate-700 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
-                <h3 class="font-bold text-lg flex items-center gap-2">
-                    <i data-lucide="settings" class="w-5 h-5 text-brand-600"></i>
-                    لوحة التحكم بالإدارة
-                </h3>
-                <button onclick="toggleAdminModal()" class="text-gray-400 hover:text-gray-600">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <!-- Header Edit -->
-            <div class="space-y-4 mb-6">
-                <h4 class="text-sm font-bold text-brand-600 dark:text-emerald-400">تعديل النصوص الرئيسية</h4>
-                <div>
-                    <label class="block text-xs font-medium mb-1">العنوان الرئيسي</label>
-                    <input type="text" id="admin-title-input" class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 dark:bg-slate-900 text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium mb-1">الوصف الفرعي</label>
-                    <input type="text" id="admin-subtitle-input" class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 dark:bg-slate-900 text-sm">
-                </div>
-                <button onclick="saveHeaderInfo()" class="bg-brand-600 text-white px-4 py-2 rounded-xl text-xs font-bold">حفظ العناوين</button>
-            </div>
-
-            <hr class="my-6 border-gray-100 dark:border-slate-700">
-
-            <!-- Add Product -->
-            <form id="add-product-form" onsubmit="handleAddProduct(event)" class="space-y-4">
-                <h4 class="text-sm font-bold text-brand-600 dark:text-emerald-400">إضافة منتج جديد</h4>
-                <div>
-                    <label class="block text-xs font-medium mb-1">اسم المنتج</label>
-                    <input type="text" id="p-name" required class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 dark:bg-slate-900 text-sm">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium mb-1">السعر (ل.س)</label>
-                        <input type="number" id="p-price" required class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 dark:bg-slate-900 text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium mb-1">القسم</label>
-                        <select id="p-category" required class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 dark:bg-slate-900 text-sm">
-                            <option value="زعتر وبهارات">زعتر وبهارات</option>
-                            <option value="دبس">دبس</option>
-                            <option value="زيوت وسمنة">زيوت وسمنة</option>
-                            <option value="مكبوسات ومخللات">مكبوسات ومخللات</option>
-                            <option value="مكسرات وفستق">مكسرات وفستق</option>
-                            <option value="مربيات وعصائر">مربيات وعصائر</option>
-                            <option value="ألبان وأجبان">ألبان وأجبان</option>
-                            <option value="حلويات">حلويات</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium mb-1">رابط الصورة (URL)</label>
-                    <input type="url" id="p-image" placeholder="https://..." class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 dark:bg-slate-900 text-sm">
-                </div>
-                <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-sm shadow">إضافة المنتج للمتجر</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Application Script -->
     <script>
-        // Default Sample Data
-        const initialProducts = [
-            { id: 1, name: 'زعتر حلبي ملكي ممتاز', price: 25000, category: 'زعتر وبهارات', image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&q=80' },
-            { id: 2, name: 'دبس رمان طبيعي 100%', price: 45000, category: 'دبس', image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=500&q=80' },
-            { id: 3, name: 'زيت زيتون بكر ممتاز (لتر)', price: 85000, category: 'زيوت وسمنة', image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500&q=80' },
-            { id: 4, name: 'مكدوس باذنجان جوز وحبش', price: 35000, category: 'مكبوسات ومخللات', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&q=80' }
-        ];
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxZkeX6fn58z_I1sjxZLE...",
+            authDomain: "almoona-store.firebaseapp.com",
+            projectId: "almoona-store",
+            storageBucket: "almoona-store.appspot.com",
+            messagingSenderId: "261930876292",
+            appId: "1:261930876292:web:41d94db43...",
+            measurementId: "G-SX209YGE6H"
+        };
 
-        let products = JSON.parse(localStorage.getItem('almoona_products')) || initialProducts;
-        let cart = JSON.parse(localStorage.getItem('almoona_cart')) || [];
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        // App Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('year').textContent = new Date().getFullYear();
-            renderProducts(products);
-            updateCartUI();
-            lucide.createIcons();
-            
-            // Dark mode check
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
+        let isAdmin = false;
+        let productsData = {};
+        let cart = [];
+        let currentBase64Image = "";
+
+        function getAdminPassword() {
+            return localStorage.getItem('moonaAdminPassword') || localStorage.getItem('adminPassword') || '123456';
+        }
+
+        function changeAdminPassword() {
+            const currentPass = prompt("كلمة السر الحالية:");
+            if (currentPass === getAdminPassword()) {
+                const newPass = prompt("كلمة السر الجديدة:");
+                if (newPass && newPass.trim() !== "") {
+                    localStorage.setItem('moonaAdminPassword', newPass.trim());
+                    localStorage.setItem('adminPassword', newPass.trim());
+                    alert("تم تحديث كلمة السر بنجاح!");
+                }
+            } else if (currentPass !== null) {
+                alert("كلمة السر غير صحيحة!");
             }
-        });
+        }
 
-        // Theme Toggle Functionality
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-        });
-
-        // Render Products Grid
-        function renderProducts(items) {
-            const container = document.getElementById('products-grid');
-            const emptyState = document.getElementById('empty-state');
-            container.innerHTML = '';
-
-            if (items.length === 0) {
-                emptyState.classList.remove('hidden');
+        function loginAdmin() {
+            if(isAdmin) {
+                document.getElementById('adminPanel').style.display = 'block';
                 return;
             }
-            emptyState.classList.add('hidden');
-
-            items.forEach(product => {
-                const card = document.createElement('div');
-                card.className = "group bg-white dark:bg-slate-800 rounded-3xl p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-700/60 flex flex-col justify-between";
-                card.innerHTML = `
-                    <div>
-                        <div class="relative w-full h-48 rounded-2xl overflow-hidden bg-gray-100 dark:bg-slate-700 mb-4">
-                            <img src="${product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 right-3 bg-brand-600/90 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded-full font-medium">
-                                ${product.category}
-                            </span>
-                        </div>
-                        <h3 class="text-base font-bold text-gray-800 dark:text-gray-100 group-hover:text-brand-600 dark:group-hover:text-emerald-400 transition-colors mb-2">${product.name}</h3>
-                    </div>
-                    <div class="pt-4 border-t border-gray-50 dark:border-slate-700/50 flex items-center justify-between mt-2">
-                        <div>
-                            <span class="text-lg font-black text-brand-600 dark:text-emerald-400">${product.price.toLocaleString()}</span>
-                            <span class="text-xs text-gray-400">ل.س</span>
-                        </div>
-                        <button onclick="addToCart(${product.id})" class="bg-brand-50 dark:bg-slate-700 hover:bg-brand-600 hover:text-white text-brand-600 dark:text-emerald-400 p-2.5 rounded-xl transition-all duration-200 flex items-center justify-center">
-                            <i data-lucide="plus" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            lucide.createIcons();
+            const password = prompt("أدخل كلمة السر للوحة الإدارة:");
+            if (password === getAdminPassword()) {
+                isAdmin = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                alert("تم الدخول للوحة التحكم!");
+                loadProducts();
+            } else if (password !== null) {
+                alert("كلمة السر غير صحيحة!");
+            }
         }
 
-        // Search and Filter Functions
-        function filterProducts() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const category = document.getElementById('category-filter').value;
-
-            const filtered = products.filter(p => {
-                const matchesSearch = p.name.toLowerCase().includes(query);
-                const matchesCategory = category === 'all' || p.category === category;
-                return matchesSearch && matchesCategory;
-            });
-
-            renderProducts(filtered);
-        }
-
-        // Cart State Management
-        function addToCart(id) {
-            const item = products.find(p => p.id === id);
-            const existing = cart.find(c => c.id === id);
-
-            if (existing) {
-                existing.quantity += 1;
+        let clickCount = 0;
+        let clickTimer = null;
+        document.getElementById('secretAdminTrigger').addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            if (clickCount === 4) {
+                loginAdmin();
+                clickCount = 0;
             } else {
-                cart.push({ ...item, quantity: 1 });
+                clickTimer = setTimeout(() => { clickCount = 0; }, 1200);
             }
+        });
 
-            saveCart();
-            updateCartUI();
-            toggleCartDrawer(true);
-        }
-
-        function updateQuantity(id, delta) {
-            const item = cart.find(c => c.id === id);
-            if (item) {
-                item.quantity += delta;
-                if (item.quantity <= 0) {
-                    cart = cart.filter(c => c.id !== id);
+        function loadBanners() {
+            db.collection("moona_settings").doc("banners").onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.announcement) {
+                        document.getElementById('announcementText').innerText = data.announcement;
+                        document.getElementById('announcementInput').value = data.announcement;
+                    }
+                    if (data.bannerTitle) {
+                        document.getElementById('bannerTitle').innerText = data.bannerTitle;
+                        document.getElementById('bannerTitleInput').value = data.bannerTitle;
+                    }
+                    if (data.bannerSub) {
+                        document.getElementById('bannerSub').innerText = data.bannerSub;
+                        document.getElementById('bannerSubInput').value = data.bannerSub;
+                    }
                 }
-            }
-            saveCart();
-            updateCartUI();
+            });
         }
 
-        function saveCart() {
-            localStorage.setItem('almoona_cart', JSON.stringify(cart));
+        function saveBanners() {
+            const announcement = document.getElementById('announcementInput').value;
+            const bannerTitle = document.getElementById('bannerTitleInput').value;
+            const bannerSub = document.getElementById('bannerSubInput').value;
+
+            db.collection("moona_settings").doc("banners").set({
+                announcement,
+                bannerTitle,
+                bannerSub,
+                updatedAt: new Date()
+            }).then(() => {
+                alert("تم تحديث نصوص البنر والإعلانات بنجاح!");
+            });
+        }
+
+        function handleImageSelection(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    const max_size = 650;
+                    if (width > height) {
+                        if (width > max_size) {
+                            height *= max_size / width;
+                            width = max_size;
+                        }
+                    } else {
+                        if (height > max_size) {
+                            width *= max_size / height;
+                            height = max_size;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    currentBase64Image = canvas.toDataURL('image/jpeg', 0.75);
+                    
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = currentBase64Image;
+                    preview.style.display = 'inline-block';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadProducts() {
+            db.collection("products").onSnapshot((snapshot) => {
+                const grid = document.getElementById('productsGrid');
+                grid.innerHTML = '';
+                productsData = {};
+
+                if (snapshot.empty) {
+                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color:#777;">لا توجد منتجات حالياً.</p>';
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const pId = doc.id;
+                    productsData[pId] = data;
+
+                    const cardHtml = `
+                        <div class="product-card" data-category="${data.category}" data-name="${data.title}">
+                            <img src="${data.image || 'https://via.placeholder.com/200?text=المونة+الحلبية'}" alt="${data.title}" class="product-image" onclick="openLightbox('${data.image}', '${data.title}')">
+                            <div class="product-info">
+                                <span class="product-category">${data.category}</span>
+                                <h4 class="product-title">${data.title}</h4>
+                                <div class="product-desc">${data.desc || data.details || ''}</div>
+                                <div class="product-price">${data.price}</div>
+                                
+                                <button class="btn-add-cart" onclick="addToCart('${pId}')">🛒 إضافـة للسلة</button>
+
+                                ${isAdmin ? `
+                                    <div class="admin-actions">
+                                        <button class="btn-edit" onclick="editProduct('${pId}')">تعديل</button>
+                                        <button class="btn-delete" onclick="deleteProduct('${pId}')">حذف</button>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                    grid.innerHTML += cardHtml;
+                });
+            });
+        }
+
+        function addToCart(id) {
+            const prod = productsData[id];
+            if (!prod) return;
+
+            const existingIndex = cart.findIndex(c => c.id === id);
+            if (existingIndex > -1) {
+                cart[existingIndex].qty++;
+            } else {
+                cart.push({ id, title: prod.title, price: prod.price, qty: 1 });
+            }
+            updateCartUI();
         }
 
         function updateCartUI() {
-            const badge = document.getElementById('cart-badge');
-            const container = document.getElementById('cart-items-container');
-            const totalEl = document.getElementById('cart-total');
-
-            const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-            const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-
-            badge.textContent = totalCount;
-            totalEl.textContent = `${totalPrice.toLocaleString()} ل.س`;
-
-            container.innerHTML = '';
-
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-400">
-                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
-                        <p class="text-sm">السلة فارغة حالياً</p>
-                    </div>
-                `;
-                lucide.createIcons();
-                return;
-            }
-
-            cart.forEach(item => {
-                const el = document.createElement('div');
-                el.className = "flex items-center justify-between bg-gray-50 dark:bg-slate-900 p-3 rounded-2xl border border-gray-100 dark:border-slate-700/50";
-                el.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <img src="${item.image}" class="w-12 h-12 rounded-xl object-cover">
-                        <div>
-                            <h4 class="text-sm font-bold">${item.name}</h4>
-                            <p class="text-xs text-brand-600 dark:text-emerald-400 font-semibold">${(item.price * item.quantity).toLocaleString()} ل.س</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 bg-white dark:bg-slate-800 px-2 py-1 rounded-xl border border-gray-200 dark:border-slate-700">
-                        <button onclick="updateQuantity(${item.id}, -1)" class="text-gray-500 hover:text-red-500 font-bold">-</button>
-                        <span class="text-xs font-bold px-1">${item.quantity}</span>
-                        <button onclick="updateQuantity(${item.id}, 1)" class="text-gray-500 hover:text-emerald-500 font-bold">+</button>
-                    </div>
-                `;
-                container.appendChild(el);
-            });
-            lucide.createIcons();
+            let totalItems = 0;
+            cart.forEach(c => totalItems += c.qty);
+            const badge = document.getElementById('cartBadge');
+            badge.innerText = totalItems;
+            badge.style.display = totalItems > 0 ? 'inline-block' : 'none';
         }
 
-        // Drawer Controls
-        function toggleCartDrawer(openForce = null) {
-            const drawer = document.getElementById('cart-drawer');
-            const panel = document.getElementById('cart-panel');
-            
-            const isOpening = openForce !== null ? openForce : drawer.classList.contains('pointer-events-none');
+        function openCartModal() {
+            const list = document.getElementById('cartItemsList');
+            list.innerHTML = '';
 
-            if (isOpening) {
-                drawer.classList.remove('pointer-events-none', 'opacity-0');
-                panel.classList.remove('-translate-x-full');
+            if (cart.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#888; padding:15px;">السلة فارغة</p>';
             } else {
-                drawer.classList.add('opacity-0', 'pointer-events-none');
-                panel.classList.add('-translate-x-full');
+                cart.forEach((item, index) => {
+                    list.innerHTML += `
+                        <div class="cart-item">
+                            <div>
+                                <strong style="font-size:0.9rem;">${item.title}</strong><br>
+                                <small style="color:#666;">السعر: ${item.price}</small>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <button onclick="changeCartQty(${index}, -1)" style="width:24px; height:24px;">-</button>
+                                <span>${item.qty}</span>
+                                <button onclick="changeCartQty(${index}, 1)" style="width:24px; height:24px;">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
             }
+
+            document.getElementById('cartModal').style.display = 'flex';
         }
 
-        // WhatsApp Checkout
-        function checkoutWhatsApp() {
+        function closeCartModal() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function changeCartQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+            openCartModal();
+        }
+
+        // تم ضبط رقم الهاتف الخاص بالمونة الحلبية 00963933267910
+        function sendCartToWhatsApp() {
             if (cart.length === 0) {
-                alert('السلة فارغة!');
+                alert("السلة فارغة!");
                 return;
             }
 
-            let text = "مرحباً، أود طلب المونة التالية من موقع المونة الحلبية:\n\n";
-            cart.forEach(item => {
-                text += `• ${item.name} (${item.quantity}x) — ${(item.price * item.quantity).toLocaleString()} ل.س\n`;
+            let text = "أهلاً المونة الحلبية، أود طلب القائمة التالية:\n\n";
+            cart.forEach((item) => {
+                text += `• ${item.title} - العدد: ${item.qty} - السعر: ${item.price}\n`;
             });
-            const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-            text += `\n*الإجمالي: ${total.toLocaleString()} ل.س*`;
 
-            const url = `https://wa.me/963933267910?text=${encodeURIComponent(text)}`;
-            window.open(url, '_blank');
+            text += "\nيرجى تأكيد التوفر والتوصيل.";
+            window.open(`https://wa.me/963933267910?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // Admin Functionality
-        function toggleAdminModal() {
-            const modal = document.getElementById('admin-modal');
-            modal.classList.toggle('hidden');
+        function openLightbox(imgUrl, caption) {
+            if (!imgUrl) return;
+            document.getElementById('lightboxImg').src = imgUrl;
+            document.getElementById('lightboxCaption').innerText = caption || '';
+            document.getElementById('lightboxModal').style.display = 'flex';
         }
 
-        function handleAddProduct(e) {
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+
+        document.getElementById('addProductForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const newProduct = {
-                id: Date.now(),
-                name: document.getElementById('p-name').value,
-                price: parseFloat(document.getElementById('p-price').value),
-                category: document.getElementById('p-category').value,
-                image: document.getElementById('p-image').value || 'https://via.placeholder.com/300'
+            const pId = document.getElementById('pId').value;
+            
+            if (!currentBase64Image && !pId) {
+                alert("يرجى اختيار صورة للمنتج من جهازك أولاً!");
+                return;
+            }
+
+            const productData = {
+                title: document.getElementById('pTitle').value,
+                category: document.getElementById('pCategory').value,
+                price: document.getElementById('pPrice').value,
+                desc: document.getElementById('pDesc').value,
+                updatedAt: new Date()
             };
 
-            products.push(newProduct);
-            localStorage.setItem('almoona_products', JSON.stringify(products));
-            renderProducts(products);
-            toggleAdminModal();
-            e.target.reset();
+            if (currentBase64Image) {
+                productData.image = currentBase64Image;
+            }
+
+            if (pId) {
+                db.collection("products").doc(pId).update(productData).then(() => {
+                    alert("تم التعديل بنجاح!");
+                    resetForm();
+                });
+            } else {
+                productData.createdAt = new Date();
+                db.collection("products").add(productData).then(() => {
+                    alert("تمت الإضافة بنجاح!");
+                    resetForm();
+                });
+            }
+        });
+
+        function editProduct(id) {
+            const data = productsData[id];
+            if (!data) return;
+
+            document.getElementById('pId').value = id;
+            document.getElementById('pTitle').value = data.title;
+            document.getElementById('pCategory').value = data.category;
+            document.getElementById('pPrice').value = data.price;
+            document.getElementById('pDesc').value = data.desc || data.details || '';
+
+            if (data.image) {
+                currentBase64Image = data.image;
+                const preview = document.getElementById('imagePreview');
+                preview.src = data.image;
+                preview.style.display = 'inline-block';
+            }
+
+            document.getElementById('panelTitle').innerText = '✏️ تعديل صنف';
+            document.getElementById('btnSubmit').innerText = '💾 حفظ التعديلات';
+            document.getElementById('btnCancel').style.display = 'block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function saveHeaderInfo() {
-            const title = document.getElementById('admin-title-input').value;
-            const subtitle = document.getElementById('admin-subtitle-input').value;
-            if (title) document.getElementById('hero-title-text').textContent = title;
-            if (subtitle) document.getElementById('hero-subtitle-text').textContent = subtitle;
-            toggleAdminModal();
+        function resetForm() {
+            document.getElementById('addProductForm').reset();
+            document.getElementById('pId').value = '';
+            currentBase64Image = "";
+            const preview = document.getElementById('imagePreview');
+            preview.src = '';
+            preview.style.display = 'none';
+            document.getElementById('panelTitle').innerText = '🌿 إضافة / تعديل صنف';
+            document.getElementById('btnSubmit').innerText = '➕ إضافة المنتج للموقع';
+            document.getElementById('btnCancel').style.display = 'none';
         }
+
+        function deleteProduct(id) {
+            if (confirm("هل أنت تأكد من الحذف؟")) {
+                db.collection("products").doc(id).delete().then(() => {
+                    alert("تم الحذف بنجاح!");
+                    resetForm();
+                });
+            }
+        }
+
+        function filterProducts() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const categoryValue = document.getElementById('categoryFilter').value;
+            const cards = document.querySelectorAll('.product-card');
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const category = card.getAttribute('data-category');
+
+                const matchesSearch = name.includes(searchValue);
+                const matchesCategory = categoryValue === 'all' || category === categoryValue;
+
+                card.style.display = (matchesSearch && matchesCategory) ? 'flex' : 'none';
+            });
+        }
+
+        loadBanners();
+        loadProducts();
     </script>
 </body>
 </html>
