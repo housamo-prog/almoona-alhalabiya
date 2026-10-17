@@ -581,29 +581,32 @@
                     <input type="text" id="announcementInput" class="admin-input" placeholder="نص الشريط العلوي الصغير">
                     <input type="text" id="bannerTitleInput" class="admin-input" placeholder="عنوان البنر الرئيسي">
                     <input type="text" id="bannerSubInput" class="admin-input" placeholder="الوصف الفرعي للبنر">
-                    <button onclick="saveBanners()" style="background:#2e7d32; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">💾 حفظ النصوص الإعلانية</button>
+                    <button onclick="saveBanners()" style="background:var(--primary); color:white; border:none; padding:10px; border-radius:var(--radius-sm); font-weight:bold; cursor:pointer;">💾 حفظ النصوص</button>
                 </div>
             </div>
 
             <div class="admin-section">
-                <div class="admin-section-title" id="panelTitle">🌿 إضافة / تعديل منتج</div>
+                <div class="admin-section-title" id="panelTitle">🌿 إضافة / تعديل صنف</div>
                 <form class="admin-form" id="addProductForm">
                     <input type="hidden" id="pId">
-                    <input type="text" id="pTitle" class="admin-input" placeholder="اسم المنتج (مثال: زعتر أصل حلب)" required>
+                    
+                    <input type="text" id="pTitle" class="admin-input" placeholder="اسم المنتج" required>
                     <select id="pCategory" class="admin-input" required>
                         <option value="زعتر وبهارات">زعتر وبهارات</option>
                         <option value="زيوت وسمنة">زيوت وسمنة</option>
                         <option value="مكبوسات ومخللات">مكبوسات ومخللات</option>
                         <option value="مكسرات وفستق">مكسرات وفستق</option>
                         <option value="مربيات وعصائر">مربيات وعصائر</option>
+                        <option value="ألبان وأجبان">ألبان وأجبان</option>
+                        <option value="دبس">دبس</option>
                     </select>
-                    <input type="text" id="pPrice" class="admin-input" placeholder="السعر (مثال: 25,000 ل.س)" required>
+                    <input type="text" id="pPrice" class="admin-input" placeholder="السعر (مثلاً: 450 ل.س)" required>
                     <input type="text" id="pDesc" class="admin-input" placeholder="وصف قصير للمكونات">
 
-                    <div style="background:#fff; border:2px dashed #a5d6a7; padding:12px; border-radius:8px; text-align:center;">
-                        <label style="font-size:0.85rem; font-weight:bold; display:block; margin-bottom:5px;">📸 رفع صورة المنتج:</label>
+                    <div style="background:white; border:2px dashed #a5d6a7; padding:12px; border-radius:var(--radius-sm); text-align:center;">
+                        <label style="font-size:0.85rem; font-weight:800; color:#333; display:block; margin-bottom:6px;">📸 صورة المنتج:</label>
                         <input type="file" id="pImgFile" class="admin-input" accept="image/*" onchange="handleImageSelection(event)">
-                        <center><img id="imagePreview" style="max-width:120px; max-height:120px; border-radius:8px; margin-top:8px; display:none; border:1px solid #ddd;" alt="معاينة الصورة"></center>
+                        <img id="imagePreview" style="max-width:120px; max-height:120px; border-radius:8px; margin-top:8px; display:none; border:1px solid #ddd;" alt="معاينة">
                     </div>
 
                     <button type="submit" id="btnSubmit" style="background:var(--primary); color:white; border:none; padding:11px; border-radius:8px; font-weight:bold; margin-top:5px; cursor:pointer;">➕ إضافة المنتج للموقع</button>
@@ -612,38 +615,32 @@
             </div>
         </div>
 
-        <!-- Controls: Search & Category Chips -->
         <div class="controls">
             <div class="search-box-wrapper">
+                <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن منتج..." onkeyup="filterProducts()">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن منتج بالمونة الحلبية..." onkeyup="filterProducts()">
             </div>
-            
-            <div class="category-scroll" id="categoryScroll">
-                <div class="chip active" onclick="setCategoryFilter('all', this)">الكل 🌿</div>
-                <div class="chip" onclick="setCategoryFilter('زعتر وبهارات', this)">زعتر وبهارات</div>
-                <div class="chip" onclick="setCategoryFilter('زيوت وسمنة', this)">زيوت وسمنة</div>
-                <div class="chip" onclick="setCategoryFilter('مكبوسات ومخللات', this)">مكبوسات ومخللات</div>
-                <div class="chip" onclick="setCategoryFilter('مكسرات وفستق', this)">مكسرات وفستق</div>
-                <div class="chip" onclick="setCategoryFilter('مربيات وعصائر', this)">مربيات وعصائر</div>
+            <div class="category-scroll" id="categoryFilterContainer">
+                <button class="chip active" onclick="filterByCategory('all', this)">الكل</button>
+                <button class="chip" onclick="filterByCategory('زعتر وبهارات', this)">زعتر وبهارات</button>
+                <button class="chip" onclick="filterByCategory('دبس', this)">دبس</button>
+                <button class="chip" onclick="filterByCategory('مكسرات وفستق', this)">مكسرات</button>
+                <button class="chip" onclick="filterByCategory('زيوت وسمنة', this)">زيوت</button>
+                <button class="chip" onclick="filterByCategory('مكبوسات ومخللات', this)">مخللات</button>
+                <button class="chip" onclick="filterByCategory('مربيات وعصائر', this)">مربيات</button>
             </div>
         </div>
 
-        <!-- Products Grid Container -->
         <div class="products-grid" id="productsGrid">
-            <p style="text-align: center; grid-column: 1/-1; color:#777; padding:20px;">جاري تحميل منتجات المونة الحلبية الأصيلة...</p>
+            <p style="text-align: center; grid-column: 1/-1; color:#777; padding:20px;">جاري تحميل المنتجات...</p>
         </div>
     </div>
 
-    <!-- Floating Bottom Navigation Bar -->
+    <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="window.scrollTo({top:0, behavior:'smooth'})">
             <div class="nav-icon">🌿</div>
             <div>المنتجات</div>
-        </div>
-        <div class="nav-item" onclick="openWheelModal()">
-            <div class="nav-icon">🎁</div>
-            <div>العروض</div>
         </div>
         <div class="nav-item" onclick="openCartModal()">
             <div class="nav-icon">
@@ -658,55 +655,44 @@
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 style="font-size:1.1rem; font-weight:800;">🛒 طلبات المونة الحلبية</h3>
-                <span style="cursor:pointer; font-weight:bold; font-size:1.3rem;" onclick="closeCartModal()">✕</span>
+                <h3 style="font-size:1.05rem;">🛒 سلة الطلبات</h3>
+                <span style="cursor:pointer; font-weight:bold; font-size:1.2rem;" onclick="closeCartModal()">✕</span>
             </div>
-            
             <div id="cartItemsList"></div>
-
-            <div id="discountContainer" style="display:none;">
-                <div class="discount-applied-box">
-                    <span>🎁 الخصم المكتسب:</span>
-                    <span id="discountText">0%</span>
-                </div>
-            </div>
-
-            <button class="btn-whatsapp-send" onclick="sendCartToWhatsApp()">إرسال الطلب مباشرة عبر الواتساب 💬</button>
+            <div id="discountBox"></div>
+            <button class="btn-whatsapp-send" onclick="sendCartToWhatsApp()">إرسال الطلب عبر الواتساب 💬</button>
         </div>
     </div>
 
-    <!-- Spin & Win Wheel Modal -->
+    <!-- Wheel Modal -->
     <div class="modal" id="wheelModal">
-        <div class="modal-content" style="text-align:center;">
+        <div class="modal-content">
             <div class="modal-header">
-                <h3 style="font-size:1.1rem; font-weight:800;">🎁 دولاب الحظ والمفاجآت</h3>
-                <span style="cursor:pointer; font-weight:bold; font-size:1.3rem;" onclick="closeWheelModal()">✕</span>
+                <h3 style="font-size:1.05rem;">🎁 دولاب الحظ - اربح خصم!</h3>
+                <span style="cursor:pointer; font-weight:bold; font-size:1.2rem;" onclick="closeWheelModal()">✕</span>
             </div>
-            
-            <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">دك عجلة الحظ واحصل على خصم فوري يطبق تلقائياً عند طلبك!</p>
-            
             <div class="wheel-container">
                 <div class="wheel-pointer">▼</div>
                 <div class="wheel-box" id="wheelBox">
                     <canvas id="wheelCanvas" class="wheel-canvas" width="260" height="260"></canvas>
                 </div>
-                <button class="btn-spin" id="btnSpin" onclick="spinWheel()">ادور العجلة الآن! 🎲</button>
+                <button class="btn-spin" onclick="spinWheel()" id="spinBtn">لف العجلة 🎡</button>
             </div>
         </div>
     </div>
 
-    <!-- Lightbox Modal -->
+    <!-- Lightbox -->
     <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
-        <img class="lightbox-img" id="lightboxImg" src="" alt="صورة مكبرة">
-        <p id="lightboxCaption" style="color:#fff; margin-top:12px; font-size:1rem; font-weight:bold;"></p>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="صورة المنتج">
+        <p id="lightboxCaption" style="color:#fff; margin-top:12px; font-size:0.95rem; font-weight:bold;"></p>
     </div>
 
     <footer>
-        <p>© المونة الحلبية - أصالة الطعم والمنتجات الطبيعية 100%</p>
+        <p>© <span id="year"></span> المونة الحلبية - جميع الحقوق محفوظة</p>
     </footer>
 
     <script>
-        // Firebase Initialization
+        // إعدادات Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCxZkeX6fn58z_I1sjxZLE...",
             authDomain: "almoona-store.firebaseapp.com",
@@ -722,15 +708,12 @@
 
         let isAdmin = false;
         let productsData = {};
-        let cart = [];
-        let activeCategory = "all";
+        let cart = JSON.parse(localStorage.getItem('moonaCart') || '[]');
         let currentBase64Image = "";
-        let appliedDiscount = 0;
-        let hasSpunWheel = false;
 
-        // Admin Security & Access Controls
+        // دالة إصلاح كلمة المرور
         function getAdminPassword() {
-            return localStorage.getItem('moonaAdminPassword') || localStorage.getItem('adminPassword') || '123456';
+            return localStorage.getItem('moonaAdminPassword') || '123456';
         }
 
         function changeAdminPassword() {
@@ -739,7 +722,6 @@
                 const newPass = prompt("كلمة السر الجديدة:");
                 if (newPass && newPass.trim() !== "") {
                     localStorage.setItem('moonaAdminPassword', newPass.trim());
-                    localStorage.setItem('adminPassword', newPass.trim());
                     alert("تم تحديث كلمة السر بنجاح!");
                 }
             } else if (currentPass !== null) {
@@ -768,7 +750,7 @@
         document.getElementById('secretAdminTrigger').addEventListener('click', () => {
             clickCount++;
             clearTimeout(clickTimer);
-            if (clickCount === 4) {
+            if (clickCount === 5) {
                 loginAdmin();
                 clickCount = 0;
             } else {
@@ -776,13 +758,12 @@
             }
         });
 
-        // Banners Management
         function loadBanners() {
             db.collection("moona_settings").doc("banners").onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
                     if (data.announcement) {
-                        document.getElementById('announcementText').innerHTML = `<span>🌿</span> ${data.announcement}`;
+                        document.getElementById('announcementText').innerHTML = `<span>🌿</span> ` + data.announcement;
                         document.getElementById('announcementInput').value = data.announcement;
                     }
                     if (data.bannerTitle) {
@@ -803,33 +784,32 @@
             const bannerSub = document.getElementById('bannerSubInput').value;
 
             db.collection("moona_settings").doc("banners").set({
-                announcement, bannerTitle, bannerSub, updatedAt: new Date()
-            }).then(() => alert("تم تحديث نصوص البنر بنجاح!"));
+                announcement,
+                bannerTitle,
+                bannerSub,
+                updatedAt: new Date()
+            }).then(() => {
+                alert("تم تحديث نصوص البنر بنجاح!");
+            });
         }
 
-        // Image Handling and Resizing
         function handleImageSelection(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    let width = img.width, height = img.height;
+                    let width = img.width;
+                    let height = img.height;
                     const max_size = 650;
-
-                    if (width > height) {
-                        if (width > max_size) { height *= max_size / width; width = max_size; }
-                    } else {
-                        if (height > max_size) { width *= max_size / height; height = max_size; }
-                    }
-
-                    canvas.width = width; canvas.height = height;
+                    if (width > height) { if (width > max_size) { height *= max_size / width; width = max_size; } } 
+                    else { if (height > max_size) { width *= max_size / height; height = max_size; } }
+                    canvas.width = width;
+                    canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
-
                     currentBase64Image = canvas.toDataURL('image/jpeg', 0.75);
                     const preview = document.getElementById('imagePreview');
                     preview.src = currentBase64Image;
@@ -840,7 +820,8 @@
             reader.readAsDataURL(file);
         }
 
-        // Load & Render Products with Firestore
+        let currentCategoryFilter = 'all';
+
         function loadProducts() {
             db.collection("products").onSnapshot((snapshot) => {
                 const grid = document.getElementById('productsGrid');
@@ -848,7 +829,7 @@
                 productsData = {};
 
                 if (snapshot.empty) {
-                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color:#777; padding:20px;">لا توجد منتجات حالياً.</p>';
+                    grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color:#777;">لا توجد منتجات حالياً.</p>';
                     return;
                 }
 
@@ -857,11 +838,13 @@
                     const pId = doc.id;
                     productsData[pId] = data;
 
+                    // إضافة زر الواتساب المباشر لكل منتج
+                    const waMsg = encodeURIComponent(`مرحباً، أريد طلب:\n${data.title}\nالسعر: ${data.price}`);
+                    
                     const cardHtml = `
                         <div class="product-card" data-category="${data.category}" data-name="${data.title}">
-                            ${data.isPopular ? '<span class="badge-popular">🔥 الأكثر طلباً</span>' : ''}
                             <div class="product-image-container">
-                                <img src="${data.image || 'https://via.placeholder.com/300?text=المونة+الحلبية'}" alt="${data.title}" class="product-image" onclick="openLightbox('${data.image}', '${data.title}')">
+                                <img src="${data.image || 'https://via.placeholder.com/200?text=المونة+الحلبية'}" alt="${data.title}" class="product-image" onclick="openLightbox('${data.image}', '${data.title}')">
                             </div>
                             <div class="product-info">
                                 <span class="product-category">${data.category}</span>
@@ -869,7 +852,10 @@
                                 <div class="product-desc">${data.desc || data.details || ''}</div>
                                 <div class="product-footer">
                                     <div class="product-price">${data.price}</div>
-                                    <button class="btn-add-cart" onclick="addToCart('${pId}')">➕ السلة</button>
+                                    <div style="display:flex; gap:5px;">
+                                        <button class="btn-add-cart" onclick="addToCart('${pId}')">🛒 إضافة</button>
+                                        <a href="https://wa.me/963933267910?text=${waMsg}" target="_blank" style="background:#25D366; color:white; text-decoration:none; padding:9px 10px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:1rem;">💬</a>
+                                    </div>
                                 </div>
                                 ${isAdmin ? `
                                     <div class="admin-actions">
@@ -886,34 +872,16 @@
             });
         }
 
-        // Category & Search Filters
-        function setCategoryFilter(cat, element) {
-            activeCategory = cat;
+        function filterByCategory(cat, btn) {
+            currentCategoryFilter = cat;
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            element.classList.add('active');
+            if(btn) btn.classList.add('active');
             filterProducts();
         }
 
-        function filterProducts() {
-            const searchValue = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.product-card');
-
-            cards.forEach(card => {
-                const name = card.getAttribute('data-name').toLowerCase();
-                const category = card.getAttribute('data-category');
-
-                const matchesSearch = name.includes(searchValue);
-                const matchesCategory = activeCategory === 'all' || category === activeCategory;
-
-                card.style.display = (matchesSearch && matchesCategory) ? 'flex' : 'none';
-            });
-        }
-
-        // Shopping Cart Management
         function addToCart(id) {
             const prod = productsData[id];
             if (!prod) return;
-
             const existingIndex = cart.findIndex(c => c.id === id);
             if (existingIndex > -1) {
                 cart[existingIndex].qty++;
@@ -936,13 +904,14 @@
             list.innerHTML = '';
 
             if (cart.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">سلة طلباتك فارغة حالياً 🌿</p>';
+                list.innerHTML = '<p style="text-align:center; color:#888; padding:15px;">السلة فارغة</p>';
+                document.getElementById('discountBox').innerHTML = '';
             } else {
                 cart.forEach((item, index) => {
                     list.innerHTML += `
                         <div class="cart-item">
                             <div>
-                                <strong style="font-size:0.92rem; color:var(--text-main);">${item.title}</strong><br>
+                                <strong style="font-size:0.9rem;">${item.title}</strong><br>
                                 <small style="color:#666;">السعر: ${item.price}</small>
                             </div>
                             <div class="cart-item-controls">
@@ -953,21 +922,31 @@
                         </div>
                     `;
                 });
-            }
-
-            if(appliedDiscount > 0) {
-                document.getElementById('discountContainer').style.display = 'block';
-                document.getElementById('discountText').innerText = appliedDiscount + "% خصم فوري";
+                renderDiscountBox();
             }
 
             document.getElementById('cartModal').style.display = 'flex';
         }
 
-        function closeCartModal() { document.getElementById('cartModal').style.display = 'none'; }
+        function renderDiscountBox() {
+            const discBox = document.getElementById('discountBox');
+            const discount = localStorage.getItem('moonaDiscount');
+            if (discount) {
+                discBox.innerHTML = `<div class="discount-applied-box"><span>🎁 كود الخصم مفعل</span><span>${discount}%</span></div>`;
+            } else {
+                discBox.innerHTML = '';
+            }
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
 
         function changeCartQty(index, delta) {
             cart[index].qty += delta;
-            if (cart[index].qty <= 0) cart.splice(index, 1);
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
             updateCartUI();
             openCartModal();
         }
@@ -977,87 +956,37 @@
                 alert("السلة فارغة!");
                 return;
             }
-
+            const discount = localStorage.getItem('moonaDiscount');
             let text = "أهلاً المونة الحلبية، أود طلب القائمة التالية:\n\n";
             cart.forEach((item) => {
                 text += `• ${item.title} - العدد: ${item.qty} - السعر: ${item.price}\n`;
             });
-
-            if (appliedDiscount > 0) {
-                text += `\n🎁 الخصم المكتسب من الدولاب: ${appliedDiscount}%\n`;
+            
+            if (discount) {
+                text += `\n🎁 لدي كود خصم بقيمة ${discount}%`;
             }
 
-            text += "\nيرجى تأكيد التوفر والتوصيل.";
+            text += "\n\nيرجى تأكيد التوفر والتوصيل.";
             window.open(`https://wa.me/963933267910?text=${encodeURIComponent(text)}`, '_blank');
         }
 
-        // Gamification Spin & Win Wheel System
-        const wheelSectors = ["خصم 5%", "خصم 10%", "خصم 15%", "توصيل مجاني", "هدية خاصة", "خصم 20%"];
-        const colors = ["#1b5e20", "#ffb300", "#2e7d32", "#ffa000", "#0f3813", "#f57f17"];
-
-        function drawWheel() {
-            const canvas = document.getElementById('wheelCanvas');
-            const ctx = canvas.getContext('2d');
-            const numSectors = wheelSectors.length;
-            const arc = Math.PI * 2 / numSectors;
-
-            for (let i = 0; i < numSectors; i++) {
-                ctx.beginPath();
-                ctx.fillStyle = colors[i];
-                ctx.moveTo(130, 130);
-                ctx.arc(130, 130, 130, i * arc, (i + 1) * arc);
-                ctx.fill();
-
-                ctx.save();
-                ctx.translate(130, 130);
-                ctx.rotate(i * arc + arc / 2);
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "bold 13px Cairo";
-                ctx.fillText(wheelSectors[i], 45, 5);
-                ctx.restore();
-            }
-        }
-
-        function openWheelModal() {
-            document.getElementById('wheelModal').style.display = 'flex';
-            drawWheel();
-        }
-        function closeWheelModal() { document.getElementById('wheelModal').style.display = 'none'; }
-
-        function spinWheel() {
-            if(hasSpunWheel) {
-                alert("لقد حصلت على الخصم الخاص بك بالفعل!");
-                return;
-            }
-
-            const wheelBox = document.getElementById('wheelBox');
-            const randomDeg = 1440 + Math.floor(Math.random() * 360);
-            wheelBox.style.transform = `rotate(${randomDeg}deg)`;
-            hasSpunWheel = true;
-
-            setTimeout(() => {
-                appliedDiscount = 10; // كخصم ثابت ومبسط
-                alert("🎉 مبروك! حصلت على خصم 10% تم ربطه بسلتك تلقائياً!");
-                closeWheelModal();
-            }, 4000);
-        }
-
-        // Lightbox Functions
         function openLightbox(imgUrl, caption) {
             if (!imgUrl) return;
             document.getElementById('lightboxImg').src = imgUrl;
             document.getElementById('lightboxCaption').innerText = caption || '';
             document.getElementById('lightboxModal').style.display = 'flex';
         }
-        function closeLightbox() { document.getElementById('lightboxModal').style.display = 'none'; }
 
-        // Product Form Submit (Add/Edit)
+        function closeLightbox() {
+            document.getElementById('lightboxModal').style.display = 'none';
+        }
+
         document.getElementById('addProductForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const pId = document.getElementById('pId').value;
             
             if (!currentBase64Image && !pId) {
-                alert("يرجى اختيار صورة للمنتج أولاً!");
+                alert("يرجى اختيار صورة للمنتج!");
                 return;
             }
 
@@ -1069,7 +998,9 @@
                 updatedAt: new Date()
             };
 
-            if (currentBase64Image) productData.image = currentBase64Image;
+            if (currentBase64Image) {
+                productData.image = currentBase64Image;
+            }
 
             if (pId) {
                 db.collection("products").doc(pId).update(productData).then(() => {
@@ -1088,24 +1019,20 @@
         function editProduct(id) {
             const data = productsData[id];
             if (!data) return;
-
             document.getElementById('pId').value = id;
             document.getElementById('pTitle').value = data.title;
             document.getElementById('pCategory').value = data.category;
             document.getElementById('pPrice').value = data.price;
             document.getElementById('pDesc').value = data.desc || data.details || '';
-
             if (data.image) {
                 currentBase64Image = data.image;
                 const preview = document.getElementById('imagePreview');
                 preview.src = data.image;
                 preview.style.display = 'inline-block';
             }
-
             document.getElementById('panelTitle').innerText = '✏️ تعديل صنف';
             document.getElementById('btnSubmit').innerText = '💾 حفظ التعديلات';
             document.getElementById('btnCancel').style.display = 'block';
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1113,7 +1040,9 @@
             document.getElementById('addProductForm').reset();
             document.getElementById('pId').value = '';
             currentBase64Image = "";
-            document.getElementById('imagePreview').style.display = 'none';
+            const preview = document.getElementById('imagePreview');
+            preview.src = '';
+            preview.style.display = 'none';
             document.getElementById('panelTitle').innerText = '🌿 إضافة / تعديل صنف';
             document.getElementById('btnSubmit').innerText = '➕ إضافة المنتج للموقع';
             document.getElementById('btnCancel').style.display = 'none';
@@ -1128,9 +1057,111 @@
             }
         }
 
-        // Initial Load
-        loadBanners();
-        loadProducts();
+        function filterProducts() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const category = card.getAttribute('data-category');
+
+                const matchesSearch = name.includes(searchValue);
+                const matchesCategory = (currentCategoryFilter === 'all' || category === currentCategoryFilter);
+
+                card.style.display = (matchesSearch && matchesCategory) ? 'flex' : 'none';
+            });
+        }
+
+        // ====== Wheel Logic (دولاب الحظ) ======
+        let wheelSpinning = false;
+        const wheelColors = ['#ffb300', '#25D366', '#1976d2', '#e53935', '#8e24aa', '#f57c00'];
+        const wheelTexts = ['خصم 5%', 'حظ أوفر', 'خصم 10%', 'حظ أوفر', 'خصم 15%', 'هدية'];
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const numSegments = 6;
+            const anglePerSegment = (Math.PI * 2) / numSegments;
+            
+            for (let i = 0; i < numSegments; i++) {
+                const startAngle = i * anglePerSegment;
+                const endAngle = startAngle + anglePerSegment;
+                
+                ctx.beginPath();
+                ctx.fillStyle = wheelColors[i];
+                ctx.moveTo(130, 130);
+                ctx.arc(130, 130, 130, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.save();
+                ctx.translate(130, 130);
+                ctx.rotate(startAngle + anglePerSegment / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 14px Cairo";
+                ctx.fillText(wheelTexts[i], 100, 5);
+                ctx.restore();
+            }
+        }
+
+        function openWheelModal() {
+            drawWheel();
+            document.getElementById('wheelModal').style.display = 'flex';
+            const hasSpun = localStorage.getItem('hasSpunWheel');
+            if (hasSpun) {
+                document.getElementById('spinBtn').innerText = 'لقد قمت باللف مسبقاً 🎡';
+                document.getElementById('spinBtn').disabled = true;
+                document.getElementById('spinBtn').style.opacity = '0.5';
+            }
+        }
+
+        function closeWheelModal() {
+            document.getElementById('wheelModal').style.display = 'none';
+        }
+
+        let currentWheelRotation = 0;
+
+        function spinWheel() {
+            if (wheelSpinning) return;
+            wheelSpinning = true;
+            
+            const wheel = document.getElementById('wheelBox');
+            const randomDeg = Math.floor(Math.random() * 360) + 1440; // 4+ full spins
+            currentWheelRotation += randomDeg;
+            wheel.style.transform = `rotate(${currentWheelRotation}deg)`;
+            
+            setTimeout(() => {
+                wheelSpinning = false;
+                localStorage.setItem('hasSpunWheel', 'true');
+                document.getElementById('spinBtn').innerText = 'لقد قمت باللف مسبقاً 🎡';
+                document.getElementById('spinBtn').disabled = true;
+                document.getElementById('spinBtn').style.opacity = '0.5';
+
+                // تحديد الجائزة بناءً على الزاوية (الافتراضية)
+                const actualDeg = currentWheelRotation % 360;
+                const segmentSize = 360 / 6;
+                const prizeIndex = Math.floor(actualDeg / segmentSize);
+
+                if (prizeIndex === 0 || prizeIndex === 2 || prizeIndex === 4) {
+                    const discounts = ['5', '10', '15'];
+                    const prize = discounts[Math.floor(prizeIndex/2)];
+                    localStorage.setItem('moonaDiscount', prize);
+                    alert(`🎉 مبروك! لقد ربحت خصم ${prize}%\nسيتم تطبيقه في السلة.`);
+                } else {
+                    alert("حظ أوفر المرة القادمة! 🎁");
+                }
+            }, 4200);
+        }
+
+        // ====== Init ======
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('year').innerText = new Date().getFullYear();
+            updateCartUI();
+            loadBanners();
+            loadProducts();
+        });
+
     </script>
 </body>
 </html>
